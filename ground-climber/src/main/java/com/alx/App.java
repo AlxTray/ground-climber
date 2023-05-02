@@ -2,9 +2,10 @@ package com.alx;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.dsl.FXGL;
+import static com.almasb.fxgl.dsl.FXGL.*;
 import com.almasb.fxgl.entity.Entity;
 
+import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -25,10 +26,21 @@ public class App extends GameApplication {
 
     @Override
     protected void initGame() {
-        player = FXGL.entityBuilder()
+        player = entityBuilder()
                 .at(500, 500)
                 .view(new Rectangle(25, 25, Color.BLUE))
                 .buildAndAttach();
+    }
+
+    @Override
+    protected void initInput() {
+        onKey(KeyCode.D, () -> {
+            player.translateX(5);
+        });
+
+        onKey(KeyCode.A, () -> {
+            player.translateX(-5);
+        });
     }
 
     @Override
@@ -38,7 +50,7 @@ public class App extends GameApplication {
         text.setTranslateX(50);
         text.setTranslateY(100);
     
-        FXGL.getGameScene().addUINode(text);
+        getGameScene().addUINode(text);
     }
 
     public static void main(String[] args) {
