@@ -1,8 +1,13 @@
 package com.alx;
 
+import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
+import static com.almasb.fxgl.dsl.FXGL.getGameScene;
+import static com.almasb.fxgl.dsl.FXGL.onKey;
+
+import java.util.Map;
+
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import static com.almasb.fxgl.dsl.FXGL.*;
 import com.almasb.fxgl.entity.Entity;
 
 import javafx.scene.input.KeyCode;
@@ -41,6 +46,12 @@ public class App extends GameApplication {
         onKey(KeyCode.A, () -> {
             player.translateX(-5);
         });
+    }
+
+    @Override
+    protected void initGameVars(Map<String, Object> vars) {
+        vars.put("xAccelerator", 0);
+        vars.put("yAccelerator", 0);
     }
 
     @Override
