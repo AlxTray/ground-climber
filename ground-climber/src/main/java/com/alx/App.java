@@ -21,6 +21,10 @@ import javafx.scene.text.Text;
  */
 public class App extends GameApplication {
 
+    private final double xAccleratorMax = 2.2;
+    private final double xAcceleratorModifier = 0.008;
+    private final double xAcceleratorDefault = 1.0;
+
     private Entity player;
 
     private UserAction moveLeft = new UserAction("Move Left") {
@@ -30,14 +34,14 @@ public class App extends GameApplication {
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
             player.translateX(-2 * xAccelerator);
-            if (xAccelerator < 2.2) {
-                gameVarsMap.setValue("xAccelerator", xAccelerator + 0.008);
+            if (xAccelerator < xAccleratorMax) {
+                gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
             }
         }
 
         @Override
         protected void onActionEnd() {
-            getWorldProperties().setValue("xAccelerator", 1.0);
+            getWorldProperties().setValue("xAccelerator", xAcceleratorDefault);
         }
     };
 
@@ -48,14 +52,14 @@ public class App extends GameApplication {
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
             player.translateX(2 * xAccelerator);
-            if (xAccelerator < 2.2) {
-                gameVarsMap.setValue("xAccelerator", xAccelerator + 0.008);
+            if (xAccelerator < xAccleratorMax) {
+                gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
             }
         }
 
         @Override
         protected void onActionEnd() {
-            getWorldProperties().setValue("xAccelerator", 1.0);
+            getWorldProperties().setValue("xAccelerator", xAcceleratorDefault);
         }
     };
 
