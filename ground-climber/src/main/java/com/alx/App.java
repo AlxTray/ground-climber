@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
  */
 public class App extends GameApplication {
 
+    private final int basePlayerSpeed = 2;
     private final double xAccleratorMax = 2.2;
     private final double xAcceleratorModifier = 0.008;
     private final double xAcceleratorDefault = 1.0;
@@ -33,7 +34,7 @@ public class App extends GameApplication {
             PropertyMap gameVarsMap = getWorldProperties();
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
-            player.translateX(-2 * xAccelerator);
+            player.translateX(-basePlayerSpeed * xAccelerator);
             if (xAccelerator < xAccleratorMax) {
                 gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
             }
@@ -51,7 +52,7 @@ public class App extends GameApplication {
             PropertyMap gameVarsMap = getWorldProperties();
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
-            player.translateX(2 * xAccelerator);
+            player.translateX(basePlayerSpeed * xAccelerator);
             if (xAccelerator < xAccleratorMax) {
                 gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
             }
