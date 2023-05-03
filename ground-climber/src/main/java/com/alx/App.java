@@ -103,6 +103,13 @@ public class App extends GameApplication {
         getGameScene().addUINode(text);
     }
 
+    @Override
+    protected void onUpdate(double tpf) {
+        if (player.getY() <= getAppHeight() - 25) {
+            player.translateY(1);
+        }
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
