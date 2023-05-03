@@ -1,14 +1,15 @@
 package com.alx;
 
-import static com.almasb.fxgl.dsl.FXGL.entityBuilder;
-import static com.almasb.fxgl.dsl.FXGL.getGameScene;
-import static com.almasb.fxgl.dsl.FXGL.onKey;
+import static com.almasb.fxgl.dsl.FXGL.*;
 
 import java.util.Map;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.core.collection.PropertyMap;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.input.Input;
+import com.almasb.fxgl.input.UserAction;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
@@ -21,6 +22,42 @@ import javafx.scene.text.Text;
 public class App extends GameApplication {
 
     private Entity player;
+
+    private UserAction moveLeft = new UserAction("Move Left") {
+        @Override
+        protected void onAction() {
+            PropertyMap gameVarsMap = getWorldProperties();
+            double xAccelerator = gameVarsMap.getDouble("xAccelerator");
+
+            player.translateX(-2 * xAccelerator);
+            if (xAccelerator < 2.2) {
+                gameVarsMap.setValue("xAccelerator", xAccelerator + 0.008);
+            }
+        }
+
+        @Override
+        protected void onActionEnd() {
+            getWorldProperties().setValue("xAccelerator", 1.0);
+        }
+    };
+
+    private UserAction moveRight = new UserAction("Move Right") {
+        @Override
+        protected void onAction() {
+            PropertyMap gameVarsMap = getWorldProperties();
+            double xAccelerator = gameVarsMap.getDouble("xAccelerator");
+
+            player.translateX(2 * xAccelerator);
+            if (xAccelerator < 2.2) {
+                gameVarsMap.setValue("xAccelerator", xAccelerator + 0.008);
+            }
+        }
+
+        @Override
+        protected void onActionEnd() {
+            getWorldProperties().setValue("xAccelerator", 1.0);
+        }
+    };
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -39,19 +76,16 @@ public class App extends GameApplication {
 
     @Override
     protected void initInput() {
-        onKey(KeyCode.D, () -> {
-            player.translateX(5);
-        });
+        Input input = getInput();
 
-        onKey(KeyCode.A, () -> {
-            player.translateX(-5);
-        });
+        input.addAction(moveLeft, KeyCode.A);
+        input.addAction(moveRight, KeyCode.D);
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("xAccelerator", 0);
-        vars.put("yAccelerator", 0);
+        vars.put("xAccelerator", 1.0);
+        vars.put("yAccelerator", 1.0);
     }
 
     @Override
