@@ -33,12 +33,14 @@ public class App extends GameApplication {
     private final double yAcceleratorModifier = 0.008;
     private final double yAcceleratorDefault = 1.0;
 
+    private PropertyMap gameVarsMap;
+
+    
     private Entity player;
 
     private UserAction moveLeft = new UserAction("Move Left") {
         @Override
         protected void onAction() {
-            PropertyMap gameVarsMap = getWorldProperties();
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
             player.translateX(-basePlayerSpeed * xAccelerator);
@@ -49,14 +51,13 @@ public class App extends GameApplication {
 
         @Override
         protected void onActionEnd() {
-            getWorldProperties().setValue("xAccelerator", xAcceleratorDefault);
+            gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
         }
     };
 
     private UserAction moveRight = new UserAction("Move Right") {
         @Override
         protected void onAction() {
-            PropertyMap gameVarsMap = getWorldProperties();
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
             player.translateX(basePlayerSpeed * xAccelerator);
@@ -67,14 +68,14 @@ public class App extends GameApplication {
 
         @Override
         protected void onActionEnd() {
-            getWorldProperties().setValue("xAccelerator", xAcceleratorDefault);
+            gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
         }
     };
 
+    // TODO: #4 Add a way to stop the player from jumping when the player is falling/already jumping
     private UserAction jump = new UserAction("Jump") {
         @Override
         protected void onAction() {
-            PropertyMap gameVarsMap = getWorldProperties();
             double yAccelerator = gameVarsMap.getDouble("yAccelerator");
             if (yAccelerator < yAcceleratorMax) {
                 gameVarsMap.setValue("yAccelerator", yAccelerator + yAcceleratorModifier);
@@ -83,7 +84,6 @@ public class App extends GameApplication {
 
         @Override
         protected void onActionEnd() {
-            PropertyMap gameVarsMap = getWorldProperties();
             gameVarsMap.setValue("jumping", true);
         }
     };
@@ -118,6 +118,8 @@ public class App extends GameApplication {
         vars.put("yAccelerator", yAcceleratorDefault);
         vars.put("jumping", false);
         vars.put("distanceJumped", distanceJumpedDefault);
+
+        gameVarsMap = getWorldProperties();
     }
 
     @Override
@@ -132,9 +134,6 @@ public class App extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
-        PropertyMap gameVarsMap = getWorldProperties();
-        System.out.println(gameVarsMap.getBoolean("jumping"));
-
         if (gameVarsMap.getBoolean("jumping")) {
             final double yAccelerator = gameVarsMap.getDouble("yAccelerator");
             final double amountToJump = -jumpHeightInterval * yAccelerator;
