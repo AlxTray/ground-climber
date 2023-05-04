@@ -22,9 +22,16 @@ import javafx.scene.text.Text;
 public class App extends GameApplication {
 
     private final int basePlayerSpeed = 2;
-    private final double xAccleratorMax = 2.2;
+    private final double xAcceleratorMax = 2.2;
     private final double xAcceleratorModifier = 0.008;
     private final double xAcceleratorDefault = 1.0;
+
+    private final int jumpHeightInterval = 2;
+    private final int baseJumpHeight = 75;
+    private final double distanceJumpedDefault = 0.0;
+    private final int yAcceleratorMax = 3;
+    private final double yAcceleratorModifier = 0.008;
+    private final double yAcceleratorDefault = 1.0;
 
     private Entity player;
 
@@ -35,7 +42,7 @@ public class App extends GameApplication {
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
             player.translateX(-basePlayerSpeed * xAccelerator);
-            if (xAccelerator < xAccleratorMax) {
+            if (xAccelerator < xAcceleratorMax) {
                 gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
             }
         }
@@ -53,7 +60,7 @@ public class App extends GameApplication {
             double xAccelerator = gameVarsMap.getDouble("xAccelerator");
 
             player.translateX(basePlayerSpeed * xAccelerator);
-            if (xAccelerator < xAccleratorMax) {
+            if (xAccelerator < xAcceleratorMax) {
                 gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
             }
         }
@@ -61,6 +68,23 @@ public class App extends GameApplication {
         @Override
         protected void onActionEnd() {
             getWorldProperties().setValue("xAccelerator", xAcceleratorDefault);
+        }
+    };
+
+    private UserAction jump = new UserAction("Jump") {
+        @Override
+        protected void onAction() {
+            PropertyMap gameVarsMap = getWorldProperties();
+            double yAccelerator = gameVarsMap.getDouble("yAccelerator");
+            if (yAccelerator < yAcceleratorMax) {
+                gameVarsMap.setValue("yAccelerator", yAccelerator + yAcceleratorModifier);
+            }
+        }
+
+        @Override
+        protected void onActionEnd() {
+            PropertyMap gameVarsMap = getWorldProperties();
+            gameVarsMap.setValue("jumping", true);
         }
     };
 
@@ -85,12 +109,15 @@ public class App extends GameApplication {
 
         input.addAction(moveLeft, KeyCode.A);
         input.addAction(moveRight, KeyCode.D);
+        input.addAction(jump, KeyCode.SPACE);
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
-        vars.put("xAccelerator", 1.0);
-        vars.put("yAccelerator", 1.0);
+        vars.put("xAccelerator", xAcceleratorDefault);
+        vars.put("yAccelerator", yAcceleratorDefault);
+        vars.put("jumping", false);
+        vars.put("distanceJumped", distanceJumpedDefault);
     }
 
     @Override
@@ -105,6 +132,21 @@ public class App extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
+        PropertyMap gameVarsMap = getWorldProperties();
+        System.out.println(gameVarsMap.getBoolean("jumping"));
+
+        if (gameVarsMap.getBoolean("jumping")) {
+            final double yAccelerator = gameVarsMap.getDouble("yAccelerator");
+            final double amountToJump = -jumpHeightInterval * yAccelerator;
+            player.translateY(amountToJump);
+            inc("distanceJumped", amountToJump);
+            if (gameVarsMap.getDouble("distanceJumped") <= -baseJumpHeight * yAccelerator) {
+                gameVarsMap.setValue("jumping", false);
+                gameVarsMap.setValue("yAccelerator", yAcceleratorDefault);
+                gameVarsMap.setValue("distanceJumped", distanceJumpedDefault);
+            }
+        }
+        // TODO: #3 Change current gravity stop collision with BLOCK entity, not bottom of the screen
         if (player.getY() <= getAppHeight() - 25) {
             player.translateY(1);
         }
