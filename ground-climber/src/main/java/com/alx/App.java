@@ -163,7 +163,7 @@ public class App extends GameApplication {
             double gravity = gameVarsMap.getDouble("gravity");
             player.translateY(gravity);
             if (gravity < gravityMax) {
-                gameVarsMap.setValue("gravity", gameVarsMap.getDouble("gravity") + gravityModifier);
+                gameVarsMap.setValue("gravity", gravity + gravityModifier);
             }
         }
         else {
