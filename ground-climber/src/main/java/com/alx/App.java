@@ -34,7 +34,7 @@ public class App extends GameApplication {
     private final double yAcceleratorDefault = 1.0;
 
     private final double gravityDefault = 1.0;
-    private final double gravityModifier = 0.1;
+    private final double gravityModifier = 0.15;
     private final int gravityMax = 3;
 
     private final int appSizeHeight = 600;
@@ -84,7 +84,6 @@ public class App extends GameApplication {
         }
     };
 
-    // TODO: #4 Add a way to stop the player from jumping when the player is falling/already jumping
     private UserAction jump = new UserAction("Jump") {
         @Override
         protected void onAction() {
