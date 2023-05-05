@@ -112,6 +112,10 @@ public class App extends GameApplication {
                 .at(playerSpawnX, playerSpawnY)
                 .view(new Rectangle(playerWidth, playerHeight, Color.BLUE))
                 .buildAndAttach();
+
+        getGameWorld().addEntityFactory(new ProceduralLevelFactory());
+        ProceduralLevelFactory levelFactory = new ProceduralLevelFactory();
+        levelFactory.spawnStartingPlatforms();
     }
 
     @Override
