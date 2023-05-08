@@ -59,57 +59,6 @@ public class App extends GameApplication {
 
     private Entity player;
 
-    private UserAction moveLeft = new UserAction("Move Left") {
-        @Override
-        protected void onAction() {
-            double xAccelerator = gameVarsMap.getDouble("xAccelerator");
-
-            player.getComponent(PlayerComponent.class).moveLeft(basePlayerSpeed * xAccelerator);
-            if (xAccelerator < xAcceleratorMax) {
-                gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
-            }
-        }
-
-        @Override
-        protected void onActionEnd() {
-            player.getComponent(PlayerComponent.class).stopX();
-            gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
-        }
-    };
-
-    private UserAction moveRight = new UserAction("Move Right") {
-        @Override
-        protected void onAction() {
-            double xAccelerator = gameVarsMap.getDouble("xAccelerator");
-
-            player.getComponent(PlayerComponent.class).moveRight(basePlayerSpeed * xAccelerator);
-            if (xAccelerator < xAcceleratorMax) {
-                gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
-            }
-        }
-
-        @Override
-        protected void onActionEnd() {
-            player.getComponent(PlayerComponent.class).stopX();
-            gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
-        }
-    };
-
-    private UserAction jump = new UserAction("Jump") {
-        @Override
-        protected void onAction() {
-            double yAccelerator = gameVarsMap.getDouble("yAccelerator");
-            if (yAccelerator < yAcceleratorMax) {
-                gameVarsMap.setValue("yAccelerator", yAccelerator + yAcceleratorModifier);
-            }
-        }
-
-        @Override
-        protected void onActionEnd() {
-            gameVarsMap.setValue("jumping", true);
-        }
-    };
-
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(appSizeWidth);
@@ -123,7 +72,7 @@ public class App extends GameApplication {
     protected void initGame() {
         PhysicsComponent physics = new PhysicsComponent();
         physics.setBodyType(BodyType.DYNAMIC);
-        physics.addGroundSensor(new HitBox("GroundSensor", new Point2D(0, 0), BoundingShape.box(1, 1)));
+        physics.addGroundSensor(new HitBox("GroundSensor", new Point2D(16, 38), BoundingShape.box(6, 8)));
         physics.setFixtureDef(new FixtureDef().friction(0.0f));
 
         player = entityBuilder()
@@ -143,11 +92,56 @@ public class App extends GameApplication {
 
     @Override
     protected void initInput() {
-        Input input = getInput();
-
-        input.addAction(moveLeft, KeyCode.A);
-        input.addAction(moveRight, KeyCode.D);
-        input.addAction(jump, KeyCode.SPACE);
+        getInput().addAction(new UserAction("Move Left") {
+            @Override
+            protected void onAction() {
+                double xAccelerator = gameVarsMap.getDouble("xAccelerator");
+    
+                player.getComponent(PlayerComponent.class).moveLeft(basePlayerSpeed * xAccelerator);
+                if (xAccelerator < xAcceleratorMax) {
+                    gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
+                }
+            }
+    
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stopX();
+                gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
+            }
+        }, KeyCode.A);
+    
+        getInput().addAction(new UserAction("Move Right") {
+            @Override
+            protected void onAction() {
+                double xAccelerator = gameVarsMap.getDouble("xAccelerator");
+    
+                player.getComponent(PlayerComponent.class).moveRight(basePlayerSpeed * xAccelerator);
+                if (xAccelerator < xAcceleratorMax) {
+                    gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
+                }
+            }
+    
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stopX();
+                gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
+            }
+        }, KeyCode.D);
+    
+        getInput().addAction(new UserAction("Jump") {
+            @Override
+            protected void onAction() {
+                double yAccelerator = gameVarsMap.getDouble("yAccelerator");
+                if (yAccelerator < yAcceleratorMax) {
+                    gameVarsMap.setValue("yAccelerator", yAccelerator + yAcceleratorModifier);
+                }
+            }
+    
+            @Override
+            protected void onActionEnd() {
+                gameVarsMap.setValue("jumping", true);
+            }
+        }, KeyCode.SPACE);
     }
 
     @Override
