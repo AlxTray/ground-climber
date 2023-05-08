@@ -13,15 +13,17 @@ import javafx.scene.shape.Rectangle;
 
 public class ProceduralLevelFactory implements EntityFactory {
 
-    private final int[][] startingPlatformCoords = {{0, 550}, {100, 550}, {150, 550}, {230, 550}, {300, 550}, {400, 550}, {450, 550}, {500, 550}, {650, 550}};
+    private final int[][] startingPlatformCoords = {{0, 50, 150}, {100, 100, 75}, {230, 50, 50}, {300, 50, 50}, {400, 150, 30}, {650, 110, 80}};
 
     private enum EntityType {
         PLAYER, PLATFORM, COIN, ENEMY, DEATH
     }
 
     public void spawnStartingPlatforms() {
-        for (int[] coords : startingPlatformCoords) { 
-            getGameWorld().spawn("platform", coords[0], coords[1]);
+        for (int[] coords : startingPlatformCoords) {
+            set("currentPlatformWidth", coords[1]);
+            set("currentPlatformHeight", coords[2]);
+            getGameWorld().spawn("platform", coords[0], 600 - geti("currentPlatformHeight"));
         }
     }
 
@@ -29,7 +31,7 @@ public class ProceduralLevelFactory implements EntityFactory {
     public Entity newPlatform(SpawnData data) {
         return entityBuilder(data)
             .type(EntityType.PLATFORM)
-            .viewWithBBox(new Rectangle(50, 50))
+            .viewWithBBox(new Rectangle(geti("currentPlatformWidth"), geti("currentPlatformHeight")))
             .with(new PhysicsComponent())
             .build();
     }
