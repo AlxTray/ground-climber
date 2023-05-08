@@ -7,6 +7,7 @@ import java.util.Map;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.collection.PropertyMap;
+import com.almasb.fxgl.dsl.views.ScrollingBackgroundView;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.entity.components.IrremovableComponent;
@@ -17,6 +18,7 @@ import com.almasb.fxgl.physics.HitBox;
 import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
 import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.texture.Texture;
 
 import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
@@ -159,7 +161,13 @@ public class App extends GameApplication {
         text.setText("Ground Climber");
         text.setTranslateX(50);
         text.setTranslateY(100);
-    
+
+        entityBuilder()
+            .view(new ScrollingBackgroundView(texture("tile.png").getImage(), getAppWidth(), getAppHeight()))
+            .zIndex(-1)
+            .with(new IrremovableComponent())
+            .buildAndAttach();
+
         getGameScene().addUINode(text);
     }
 
