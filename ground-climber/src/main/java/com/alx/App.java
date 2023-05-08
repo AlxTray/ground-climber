@@ -23,6 +23,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * JavaFX App
@@ -171,6 +172,11 @@ public class App extends GameApplication {
 
     @Override
     protected void onUpdate(double tpf) {
+        if (player.getY() > appSizeHeight) {
+            Stage fxglStage = (Stage) getGameScene().getRoot().getScene().getWindow();
+            fxglStage.close();
+        }
+
         if (!gameVarsMap.getBoolean("jumping")) {
             return;
         }
