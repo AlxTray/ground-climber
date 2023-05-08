@@ -52,8 +52,6 @@ public class App extends GameApplication {
     private final int playerWidth = 25;
     private final int playerHeight = 25;
 
-    private PropertyMap gameVarsMap;
-
     private enum EntityType {
         PLAYER, PLATFORM, COIN, ENEMY, DEATH
     }
@@ -96,51 +94,51 @@ public class App extends GameApplication {
         getInput().addAction(new UserAction("Move Left") {
             @Override
             protected void onAction() {
-                double xAccelerator = gameVarsMap.getDouble("xAccelerator");
+                double xAccelerator = getd("xAccelerator");
     
                 player.getComponent(PlayerComponent.class).moveLeft(basePlayerSpeed * xAccelerator);
                 if (xAccelerator < xAcceleratorMax) {
-                    gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
+                    set("xAccelerator", xAccelerator + xAcceleratorModifier);
                 }
             }
     
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stopX();
-                gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
+                set("xAccelerator", xAcceleratorDefault);
             }
         }, KeyCode.A);
     
         getInput().addAction(new UserAction("Move Right") {
             @Override
             protected void onAction() {
-                double xAccelerator = gameVarsMap.getDouble("xAccelerator");
+                double xAccelerator = getd("xAccelerator");
     
                 player.getComponent(PlayerComponent.class).moveRight(basePlayerSpeed * xAccelerator);
                 if (xAccelerator < xAcceleratorMax) {
-                    gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
+                    set("xAccelerator", xAccelerator + xAcceleratorModifier);
                 }
             }
     
             @Override
             protected void onActionEnd() {
                 player.getComponent(PlayerComponent.class).stopX();
-                gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
+                set("xAccelerator", xAcceleratorDefault);
             }
         }, KeyCode.D);
     
         getInput().addAction(new UserAction("Jump") {
             @Override
             protected void onAction() {
-                double yAccelerator = gameVarsMap.getDouble("yAccelerator");
+                double yAccelerator = getd("yAccelerator");
                 if (yAccelerator < yAcceleratorMax) {
-                    gameVarsMap.setValue("yAccelerator", yAccelerator + yAcceleratorModifier);
+                    set("yAccelerator", yAccelerator + yAcceleratorModifier);
                 }
             }
     
             @Override
             protected void onActionEnd() {
-                gameVarsMap.setValue("jumping", true);
+                set("jumping", true);
             }
         }, KeyCode.SPACE);
     }
@@ -153,8 +151,6 @@ public class App extends GameApplication {
         vars.put("distanceJumped", distanceJumpedDefault);
         vars.put("currentlyPlatformWidth", 50);
         vars.put("currentlyPlatformHeight", 50);
-
-        gameVarsMap = getWorldProperties();
     }
 
     @Override
@@ -179,19 +175,19 @@ public class App extends GameApplication {
             fxglStage.close();
         }
 
-        if (!gameVarsMap.getBoolean("jumping")) {
+        if (!getb("jumping")) {
             return;
         }
 
-        final double yAccelerator = gameVarsMap.getDouble("yAccelerator");
+        final double yAccelerator = getd("yAccelerator");
         final double amountToJump = jumpHeightInterval * yAccelerator;
         player.getComponent(PlayerComponent.class).jump(amountToJump);
         inc("distanceJumped", amountToJump);
-        if (gameVarsMap.getDouble("distanceJumped") >= baseJumpHeight * yAccelerator) {
+        if (getd("distanceJumped") >= baseJumpHeight * yAccelerator) {
             player.getComponent(PlayerComponent.class).stopY();
-            gameVarsMap.setValue("jumping", false);
-            gameVarsMap.setValue("yAccelerator", yAcceleratorDefault);
-            gameVarsMap.setValue("distanceJumped", distanceJumpedDefault);
+            set("jumping", false);
+            set("yAccelerator", yAcceleratorDefault);
+            set("distanceJumped", distanceJumpedDefault);
         }
     }
 

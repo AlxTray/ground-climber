@@ -15,6 +15,8 @@ public class ProceduralLevelFactory implements EntityFactory {
 
     private final int[][] startingPlatformCoords = {{0, 50, 150}, {100, 100, 75}, {230, 50, 50}, {300, 50, 50}, {400, 150, 30}, {650, 110, 80}};
 
+    private final int appSizeHeight = 600;
+
     private enum EntityType {
         PLAYER, PLATFORM, COIN, ENEMY, DEATH
     }
@@ -23,7 +25,7 @@ public class ProceduralLevelFactory implements EntityFactory {
         for (int[] coords : startingPlatformCoords) {
             set("currentPlatformWidth", coords[1]);
             set("currentPlatformHeight", coords[2]);
-            getGameWorld().spawn("platform", coords[0], 600 - geti("currentPlatformHeight"));
+            getGameWorld().spawn("platform", coords[0], appSizeHeight - geti("currentPlatformHeight"));
         }
     }
 
