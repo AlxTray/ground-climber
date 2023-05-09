@@ -80,8 +80,7 @@ public class App extends GameApplication {
                 .buildAndAttach();
 
         getGameWorld().addEntityFactory(new ProceduralLevelFactory());
-        ProceduralLevelFactory levelFactory = new ProceduralLevelFactory();
-        levelFactory.spawnStartingPlatforms();
+        ProceduralLevelFactory.spawnStartingPlatforms();
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
