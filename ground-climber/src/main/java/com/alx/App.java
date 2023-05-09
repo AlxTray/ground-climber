@@ -7,35 +7,44 @@ import java.util.Map;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.core.collection.PropertyMap;
+import com.almasb.fxgl.dsl.views.ScrollingBackgroundView;
 import com.almasb.fxgl.entity.Entity;
+import com.almasb.fxgl.entity.components.CollidableComponent;
+import com.almasb.fxgl.entity.components.IrremovableComponent;
 import com.almasb.fxgl.input.Input;
 import com.almasb.fxgl.input.UserAction;
+import com.almasb.fxgl.physics.BoundingShape;
+import com.almasb.fxgl.physics.HitBox;
+import com.almasb.fxgl.physics.PhysicsComponent;
+import com.almasb.fxgl.physics.box2d.dynamics.BodyType;
+import com.almasb.fxgl.physics.box2d.dynamics.FixtureDef;
+import com.almasb.fxgl.texture.Texture;
 
+import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 /**
  * JavaFX App
  */
 public class App extends GameApplication {
 
-    private final int basePlayerSpeed = 2;
+    private final int basePlayerSpeed = 100;
     private final double xAcceleratorMax = 2.2;
     private final double xAcceleratorModifier = 0.008;
     private final double xAcceleratorDefault = 1.0;
 
-    private final int jumpHeightInterval = 2;
-    private final int baseJumpHeight = 75;
+    private final int jumpHeightInterval = 100;
+    private final int baseJumpHeight = 5000;
     private final double distanceJumpedDefault = 0.0;
     private final double yAcceleratorMax = 2.5;
     private final double yAcceleratorModifier = 0.02;
     private final double yAcceleratorDefault = 1.0;
 
-    private final double gravityDefault = 1.0;
-    private final double gravityModifier = 0.15;
-    private final int gravityMax = 3;
+    private final double gravityDefault = 300;
 
     private final int appSizeHeight = 600;
     private final int appSizeWidth = 800;
@@ -45,93 +54,105 @@ public class App extends GameApplication {
     private final int playerWidth = 25;
     private final int playerHeight = 25;
 
-    private PropertyMap gameVarsMap;
-
+    private enum EntityType {
+        PLAYER, PLATFORM, COIN, ENEMY, DEATH
+    }
 
     private Entity player;
-
-    private UserAction moveLeft = new UserAction("Move Left") {
-        @Override
-        protected void onAction() {
-            double xAccelerator = gameVarsMap.getDouble("xAccelerator");
-
-            player.translateX(-basePlayerSpeed * xAccelerator);
-            if (xAccelerator < xAcceleratorMax) {
-                gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
-            }
-        }
-
-        @Override
-        protected void onActionEnd() {
-            gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
-        }
-    };
-
-    private UserAction moveRight = new UserAction("Move Right") {
-        @Override
-        protected void onAction() {
-            double xAccelerator = gameVarsMap.getDouble("xAccelerator");
-
-            player.translateX(basePlayerSpeed * xAccelerator);
-            if (xAccelerator < xAcceleratorMax) {
-                gameVarsMap.setValue("xAccelerator", xAccelerator + xAcceleratorModifier);
-            }
-        }
-
-        @Override
-        protected void onActionEnd() {
-            gameVarsMap.setValue("xAccelerator", xAcceleratorDefault);
-        }
-    };
-
-    private UserAction jump = new UserAction("Jump") {
-        @Override
-        protected void onAction() {
-            double yAccelerator = gameVarsMap.getDouble("yAccelerator");
-            if (yAccelerator < yAcceleratorMax) {
-                gameVarsMap.setValue("yAccelerator", yAccelerator + yAcceleratorModifier);
-            }
-        }
-
-        @Override
-        protected void onActionEnd() {
-            gameVarsMap.setValue("jumping", true);
-        }
-    };
 
     @Override
     protected void initSettings(GameSettings settings) {
         settings.setWidth(appSizeWidth);
         settings.setHeight(appSizeHeight);
         settings.setTitle("Ground Climber");
+
+        settings.setDeveloperMenuEnabled(true);
     }
 
     @Override
     protected void initGame() {
+        PhysicsComponent physics = new PhysicsComponent();
+        physics.setBodyType(BodyType.DYNAMIC);
+        physics.addGroundSensor(new HitBox("GroundSensor", new Point2D(16, 38), BoundingShape.box(6, 8)));
+        physics.setFixtureDef(new FixtureDef().friction(0.0f));
+
         player = entityBuilder()
+                .type(EntityType.PLAYER)
                 .at(playerSpawnX, playerSpawnY)
-                .view(new Rectangle(playerWidth, playerHeight, Color.BLUE))
+                .viewWithBBox(new Rectangle(playerWidth, playerHeight, Color.BLUE))
+                .with(physics)
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new PlayerComponent())
                 .buildAndAttach();
+
+        getGameWorld().addEntityFactory(new ProceduralLevelFactory());
+        ProceduralLevelFactory levelFactory = new ProceduralLevelFactory();
+        levelFactory.spawnStartingPlatforms();
     }
 
     @Override
     protected void initInput() {
-        Input input = getInput();
-
-        input.addAction(moveLeft, KeyCode.A);
-        input.addAction(moveRight, KeyCode.D);
-        input.addAction(jump, KeyCode.SPACE);
+        getInput().addAction(new UserAction("Move Left") {
+            @Override
+            protected void onAction() {
+                double xAccelerator = getd("xAccelerator");
+    
+                player.getComponent(PlayerComponent.class).moveLeft(basePlayerSpeed * xAccelerator);
+                if (xAccelerator < xAcceleratorMax) {
+                    set("xAccelerator", xAccelerator + xAcceleratorModifier);
+                }
+            }
+    
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stopX();
+                set("xAccelerator", xAcceleratorDefault);
+            }
+        }, KeyCode.A);
+    
+        getInput().addAction(new UserAction("Move Right") {
+            @Override
+            protected void onAction() {
+                double xAccelerator = getd("xAccelerator");
+    
+                player.getComponent(PlayerComponent.class).moveRight(basePlayerSpeed * xAccelerator);
+                if (xAccelerator < xAcceleratorMax) {
+                    set("xAccelerator", xAccelerator + xAcceleratorModifier);
+                }
+            }
+    
+            @Override
+            protected void onActionEnd() {
+                player.getComponent(PlayerComponent.class).stopX();
+                set("xAccelerator", xAcceleratorDefault);
+            }
+        }, KeyCode.D);
+    
+        getInput().addAction(new UserAction("Jump") {
+            @Override
+            protected void onAction() {
+                double yAccelerator = getd("yAccelerator");
+                if (yAccelerator < yAcceleratorMax) {
+                    set("yAccelerator", yAccelerator + yAcceleratorModifier);
+                }
+            }
+    
+            @Override
+            protected void onActionEnd() {
+                set("jumping", true);
+            }
+        }, KeyCode.SPACE);
     }
 
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("xAccelerator", xAcceleratorDefault);
         vars.put("yAccelerator", yAcceleratorDefault);
-        vars.put("gravity", gravityDefault);
         vars.put("jumping", false);
         vars.put("distanceJumped", distanceJumpedDefault);
-
-        gameVarsMap = getWorldProperties();
+        vars.put("currentlyPlatformWidth", 50);
+        vars.put("currentlyPlatformHeight", 50);
     }
 
     @Override
@@ -140,33 +161,41 @@ public class App extends GameApplication {
         text.setText("Ground Climber");
         text.setTranslateX(50);
         text.setTranslateY(100);
-    
+
+        entityBuilder()
+            .view(new ScrollingBackgroundView(texture("tile.png").getImage(), getAppWidth(), getAppHeight()))
+            .zIndex(-1)
+            .with(new IrremovableComponent())
+            .buildAndAttach(); 
+
         getGameScene().addUINode(text);
     }
 
     @Override
+    protected void initPhysics() {
+        getPhysicsWorld().setGravity(0, gravityDefault);
+    }
+
+    @Override
     protected void onUpdate(double tpf) {
-        if (gameVarsMap.getBoolean("jumping")) {
-            final double yAccelerator = gameVarsMap.getDouble("yAccelerator");
-            final double amountToJump = -jumpHeightInterval * yAccelerator;
-            player.translateY(amountToJump);
-            inc("distanceJumped", amountToJump);
-            if (gameVarsMap.getDouble("distanceJumped") <= -baseJumpHeight * yAccelerator) {
-                gameVarsMap.setValue("jumping", false);
-                gameVarsMap.setValue("yAccelerator", yAcceleratorDefault);
-                gameVarsMap.setValue("distanceJumped", distanceJumpedDefault);
-            }
+        if (player.getY() > appSizeHeight) {
+            Stage fxglStage = (Stage) getGameScene().getRoot().getScene().getWindow();
+            fxglStage.close();
         }
-        // TODO: #3 Change current gravity stop collision with BLOCK entity, not bottom of the screen
-        if (player.getY() <= getAppHeight() - 25) {
-            double gravity = gameVarsMap.getDouble("gravity");
-            player.translateY(gravity);
-            if (gravity < gravityMax) {
-                gameVarsMap.setValue("gravity", gravity + gravityModifier);
-            }
+
+        if (!getb("jumping")) {
+            return;
         }
-        else {
-            gameVarsMap.setValue("gravity", gravityDefault);
+
+        final double yAccelerator = getd("yAccelerator");
+        final double amountToJump = jumpHeightInterval * yAccelerator;
+        player.getComponent(PlayerComponent.class).jump(amountToJump);
+        inc("distanceJumped", amountToJump);
+        if (getd("distanceJumped") >= baseJumpHeight * yAccelerator) {
+            player.getComponent(PlayerComponent.class).stopY();
+            set("jumping", false);
+            set("yAccelerator", yAcceleratorDefault);
+            set("distanceJumped", distanceJumpedDefault);
         }
     }
 
