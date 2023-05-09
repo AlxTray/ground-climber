@@ -166,7 +166,7 @@ public class App extends GameApplication {
             .view(new ScrollingBackgroundView(texture("tile.png").getImage(), getAppWidth(), getAppHeight()))
             .zIndex(-1)
             .with(new IrremovableComponent())
-            .buildAndAttach();
+            .buildAndAttach(); 
 
         getGameScene().addUINode(text);
     }
