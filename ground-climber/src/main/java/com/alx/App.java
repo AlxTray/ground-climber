@@ -2,6 +2,7 @@ package com.alx;
 
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
+import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.views.ScrollingBackgroundView;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
@@ -39,7 +40,6 @@ public class App extends GameApplication {
     private final double yAcceleratorDefault = 1.0;
 
     private final int appSizeHeight = 600;
-    private final int appSizeWidth = 800;
 
     private enum EntityType {
         PLAYER, PLATFORM, COIN, ENEMY, DEATH
@@ -49,6 +49,7 @@ public class App extends GameApplication {
 
     @Override
     protected void initSettings(GameSettings settings) {
+        final int appSizeWidth = 800;
         settings.setWidth(appSizeWidth);
         settings.setHeight(appSizeHeight);
         settings.setTitle("Ground Climber");
@@ -81,6 +82,10 @@ public class App extends GameApplication {
         getGameWorld().addEntityFactory(new ProceduralLevelFactory());
         ProceduralLevelFactory levelFactory = new ProceduralLevelFactory();
         levelFactory.spawnStartingPlatforms();
+
+        Viewport viewport = getGameScene().getViewport();
+        viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
+        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
     }
 
     @Override
@@ -177,6 +182,7 @@ public class App extends GameApplication {
             fxglStage.close();
         }
 
+        /* TODO: Add check using GroundSensor to see if player is not on ground and then return */
         if (!getb("jumping")) return;
 
         final double yAccelerator = getd("yAccelerator");
