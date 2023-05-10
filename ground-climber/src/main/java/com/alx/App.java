@@ -149,8 +149,6 @@ public class App extends GameApplication {
         vars.put("yAccelerator", yAcceleratorDefault);
         vars.put("jumping", false);
         vars.put("distanceJumped", distanceJumpedDefault);
-        vars.put("currentlyPlatformWidth", 50);
-        vars.put("currentlyPlatformHeight", 50);
     }
 
     @Override
