@@ -79,8 +79,10 @@ public class App extends GameApplication {
                 .with(new PlayerComponent())
                 .buildAndAttach();
 
-        getGameWorld().addEntityFactory(new ProceduralLevelFactory());
-        ProceduralLevelFactory.spawnStartingPlatforms();
+        ProceduralLevelFactory levelFactory = new ProceduralLevelFactory();
+        getGameWorld().addEntityFactory(levelFactory);
+        levelFactory.spawnStartingPlatforms();
+        levelFactory.spawnPlatformSet();
 
         Viewport viewport = getGameScene().getViewport();
         viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
