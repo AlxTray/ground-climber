@@ -40,7 +40,7 @@ public class ProceduralLevelFactory implements EntityFactory {
         double[] lastPlatformCoords = new double[]{random(lastPlatformX + 50, lastPlatformX + 150),
                 getAppHeight() - (currentPlatformHeight + platformRandomSeed)};
         for (int i = 0; i < 10; i++) {
-            currentPlatformWidth = random(55, 200) - platformRandomSeed;
+            currentPlatformWidth = random(55, 250) - platformRandomSeed;
             currentPlatformHeight = random(55, currentPlatformHeight + 55) - platformRandomSeed;
             Entity spawnedPlatform = getGameWorld().spawn("platform",
                     lastPlatformCoords[0] + random(15, 175),
@@ -52,11 +52,11 @@ public class ProceduralLevelFactory implements EntityFactory {
         setRandomSeed();
     }
 
-    public void setRandomSeed() {
+    private void setRandomSeed() {
         platformRandomSeed = generateRandomSeed();
     }
 
-    public int generateRandomSeed() {
+    private int generateRandomSeed() {
         return random(1, 50);
     }
 

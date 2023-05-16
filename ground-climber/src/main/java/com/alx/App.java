@@ -47,6 +47,8 @@ public class App extends GameApplication {
 
     private Entity player;
 
+    private ProceduralLevelFactory levelFactory;
+
     @Override
     protected void initSettings(GameSettings settings) {
         final int appSizeWidth = 800;
@@ -79,7 +81,7 @@ public class App extends GameApplication {
                 .with(new PlayerComponent())
                 .buildAndAttach();
 
-        ProceduralLevelFactory levelFactory = new ProceduralLevelFactory();
+        levelFactory = new ProceduralLevelFactory();
         getGameWorld().addEntityFactory(levelFactory);
         levelFactory.spawnStartingPlatforms();
         levelFactory.spawnPlatformSet();
