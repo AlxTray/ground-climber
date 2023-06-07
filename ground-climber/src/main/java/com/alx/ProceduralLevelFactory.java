@@ -16,6 +16,8 @@ public class ProceduralLevelFactory implements EntityFactory {
     private int currentPlatformWidth = 50;
     private int currentPlatformHeight = 50;
 
+    private double lastPlatformInSetX;
+
     private enum EntityType {
         PLAYER, PLATFORM, COIN, ENEMY, DEATH
     }
@@ -49,7 +51,17 @@ public class ProceduralLevelFactory implements EntityFactory {
                     getAppHeight() - currentPlatformHeight};
         }
         lastPlatformX = lastPlatformCoords[0];
+        lastPlatformInSetX = lastPlatformX;
         setRandomSeed();
+    }
+
+    public double getLastInSetX() {
+        System.out.println(lastPlatformInSetX);
+        return lastPlatformInSetX;
+    }
+
+    public void resetLastPlatformInSetX() {
+        lastPlatformInSetX = -1.0;
     }
 
     private void setRandomSeed() {
