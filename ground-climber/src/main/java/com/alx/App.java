@@ -186,9 +186,8 @@ public class App extends GameApplication {
         /* TODO: Add check using GroundSensor to see if player is not on ground and then return */
         if (!getb("jumping")) return;
 
-        if ((levelFactory.getLastInSetX() - player.getX()) < 200 && (levelFactory.getLastInSetX() - player.getX()) > 0) {
+        if ((levelFactory.getLastInSetX() - player.getX()) < 800 && (levelFactory.getLastInSetX() - player.getX()) > 0) {
             levelFactory.spawnPlatformSet();
-            levelFactory.resetLastPlatformInSetX(); 
         }
 
         final double yAccelerator = getd("yAccelerator");

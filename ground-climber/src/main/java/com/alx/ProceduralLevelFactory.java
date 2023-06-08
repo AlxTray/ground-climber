@@ -39,6 +39,7 @@ public class ProceduralLevelFactory implements EntityFactory {
     }
 
     public void spawnPlatformSet() {
+        lastPlatformInSetX = -1;
         double[] lastPlatformCoords = new double[]{random(lastPlatformX + 50, lastPlatformX + 150),
                 getAppHeight() - (currentPlatformHeight + platformRandomSeed)};
         for (int i = 0; i < 10; i++) {
@@ -56,12 +57,7 @@ public class ProceduralLevelFactory implements EntityFactory {
     }
 
     public double getLastInSetX() {
-        System.out.println(lastPlatformInSetX);
         return lastPlatformInSetX;
-    }
-
-    public void resetLastPlatformInSetX() {
-        lastPlatformInSetX = -1.0;
     }
 
     private void setRandomSeed() {
