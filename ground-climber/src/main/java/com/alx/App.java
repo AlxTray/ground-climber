@@ -180,7 +180,7 @@ public class App extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         /* TODO: Instead of closing, if on start screen respawn, if started then restart */
-        if (player.getY() > appSizeHeight) {
+        if (player.getY() > appSizeHeight || (player.getX() + 40) < viewport.getX()) { // 30 as player width + buffer
             Stage fxglStage = (Stage) getGameScene().getRoot().getScene().getWindow();
             fxglStage.close();
         }
