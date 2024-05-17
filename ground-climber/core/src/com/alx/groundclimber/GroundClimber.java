@@ -23,6 +23,8 @@ public class GroundClimber extends ApplicationAdapter {
 	private SpriteBatch batch;
 	private OrthographicCamera camera;
 	private Rectangle player;
+	private float velocityY;
+	private int jumpFrames;
 
 	@Override
 	public void create() {
@@ -69,8 +71,17 @@ public class GroundClimber extends ApplicationAdapter {
 		if(Gdx.input.isKeyPressed(Input.Keys.A)) player.x -= 450 * Gdx.graphics.getDeltaTime();
 		if(Gdx.input.isKeyPressed(Input.Keys.D)) player.x += 450 * Gdx.graphics.getDeltaTime();
 
+		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && player.y == 20) {
+			velocityY = 8;
+			jumpFrames = 20;
+		}
+		if (jumpFrames > 0) jumpFrames--;
+		else velocityY = -10;
+		player.y += velocityY;
+
 		// make sure the bucket stays within the screen bounds
 		if(player.x < 0) player.x = 0;
+		if (player.y < 20) player.y = 20;
 		if(player.x > 800 - 64) player.x = 800 - 64;
 	}
 
