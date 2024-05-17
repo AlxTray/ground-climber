@@ -40,12 +40,14 @@ public class App extends GameApplication {
     private final double yAcceleratorDefault = 1.0;
 
     private final int appSizeHeight = 600;
+    private final int startingAreaEndX = 700;
 
     private enum EntityType {
         PLAYER, PLATFORM, COIN, ENEMY, DEATH
     }
 
     private Entity player;
+    private Viewport viewport;
 
     private ProceduralLevelFactory levelFactory;
 
@@ -86,9 +88,9 @@ public class App extends GameApplication {
         levelFactory.spawnStartingPlatforms();
         levelFactory.spawnPlatformSet();
 
-        Viewport viewport = getGameScene().getViewport();
+        viewport = getGameScene().getViewport();
         viewport.setBounds(-1500, 0, 250 * 70, getAppHeight());
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        //viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
     }
 
     @Override
@@ -178,9 +180,13 @@ public class App extends GameApplication {
     @Override
     protected void onUpdate(double tpf) {
         /* TODO: Instead of closing, if on start screen respawn, if started then restart */
-        if (player.getY() > appSizeHeight) {
+        if (player.getY() > appSizeHeight || (player.getX() + 40) < viewport.getX()) { // 30 as player width + buffer
             Stage fxglStage = (Stage) getGameScene().getRoot().getScene().getWindow();
             fxglStage.close();
+        }
+
+        if (player.getX() > startingAreaEndX) {
+            viewport.setX(viewport.getX() + 1);
         }
 
         /* TODO: Add check using GroundSensor to see if player is not on ground and then return */
