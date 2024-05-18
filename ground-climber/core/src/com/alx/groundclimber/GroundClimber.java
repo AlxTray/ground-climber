@@ -24,7 +24,8 @@ public class GroundClimber extends ApplicationAdapter {
 	private OrthographicCamera camera;
 	private Rectangle player;
 	private float velocityY;
-	private int jumpFrames;
+	private float jumpFrames;
+	private double jumpXMultiplier;
 
 	@Override
 	public void create() {
@@ -68,21 +69,26 @@ public class GroundClimber extends ApplicationAdapter {
 		batch.end();
 
 		// process user input
-		if(Gdx.input.isKeyPressed(Input.Keys.A)) player.x -= 450 * Gdx.graphics.getDeltaTime();
-		if(Gdx.input.isKeyPressed(Input.Keys.D)) player.x += 450 * Gdx.graphics.getDeltaTime();
+		if (Gdx.input.isKeyPressed(Input.Keys.A)) player.x -= (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
+		if (Gdx.input.isKeyPressed(Input.Keys.D)) player.x += (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
 
 		if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && player.y == 20) {
-			velocityY = 8;
-			jumpFrames = 20;
+			velocityY = 600 * Gdx.graphics.getDeltaTime();
+			jumpFrames = 33 * Gdx.graphics.getDeltaTime();
 		}
-		if (jumpFrames > 0) jumpFrames--;
-		else velocityY = -10;
+		if (jumpFrames > 0) {
+			jumpFrames -= Gdx.graphics.getDeltaTime();
+			jumpXMultiplier = 1.6;
+		} else {
+			velocityY = -610 * Gdx.graphics.getDeltaTime();
+			jumpXMultiplier = 1;
+		}
 		player.y += velocityY;
 
 		// make sure the bucket stays within the screen bounds
-		if(player.x < 0) player.x = 0;
+		if (player.x < 0) player.x = 0;
 		if (player.y < 20) player.y = 20;
-		if(player.x > 800 - 64) player.x = 800 - 64;
+		if (player.x > 800 - 64) player.x = 800 - 64;
 	}
 
 	@Override
