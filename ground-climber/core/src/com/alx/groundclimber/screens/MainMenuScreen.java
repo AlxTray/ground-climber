@@ -1,5 +1,6 @@
-package com.alx.groundclimber;
+package com.alx.groundclimber.screens;
 
+import com.alx.groundclimber.GroundClimber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
