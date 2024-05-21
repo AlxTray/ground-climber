@@ -1,6 +1,8 @@
 package com.alx.groundclimber.screens;
 
 import com.alx.groundclimber.GroundClimber;
+import com.alx.groundclimber.Platform;
+import com.alx.groundclimber.PlatformGenerator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -9,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
@@ -23,6 +26,8 @@ public class GameScreen implements Screen {
     float velocityY;
     float jumpFrames;
     double jumpXMultiplier;
+
+    Array<Platform> initialPlatforms = PlatformGenerator.generateInitialBatch();
 
     public GameScreen(GroundClimber game) {
         this.game = game;
@@ -69,6 +74,9 @@ public class GameScreen implements Screen {
         // all drops
         batch.begin();
         batch.draw(playerImage, player.x, player.y);
+        for (Platform platform : initialPlatforms) {
+            batch.draw(playerImage, platform.position.x, platform.position.y);
+        }
         batch.end();
 
         // process user input
