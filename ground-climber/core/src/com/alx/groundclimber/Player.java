@@ -23,18 +23,24 @@ public class Player {
     }
 
     public void handleKeyPresses(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) bounds.x -= (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) bounds.x += (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
+        final int BASE_X_MOVE_AMOUNT = 450;
+        final int BASE_Y_JUMP_VELOCITY = 600;
+        final int BASE_Y_DROP_VELOCITY = -610;
+        final int BASE_NO_JUMP_FRAMES = 33;
+        final double X_MOVEMENT_JUMP_MULTIPLIER = 1.6;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) bounds.x -= (BASE_X_MOVE_AMOUNT * jumpXMultiplier) * delta;
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) bounds.x += (BASE_X_MOVE_AMOUNT * jumpXMultiplier) * delta;
 
         if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && bounds.y == 20) {
-            velocityY = 600 * Gdx.graphics.getDeltaTime();
-            jumpFrames = 33 * Gdx.graphics.getDeltaTime();
+            velocityY = BASE_Y_JUMP_VELOCITY * delta;
+            jumpFrames = BASE_NO_JUMP_FRAMES * delta;
         }
         if (jumpFrames > 0) {
-            jumpFrames -= Gdx.graphics.getDeltaTime();
-            jumpXMultiplier = 1.6;
+            jumpFrames -= delta;
+            jumpXMultiplier = X_MOVEMENT_JUMP_MULTIPLIER;
         } else {
-            velocityY = -610 * Gdx.graphics.getDeltaTime();
+            velocityY = BASE_Y_DROP_VELOCITY * delta;
             jumpXMultiplier = 1;
         }
         bounds.y += velocityY;
