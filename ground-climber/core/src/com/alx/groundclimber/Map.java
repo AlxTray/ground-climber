@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.Array;
 public class Map {
 
     int PLAYER_INITIAL_RADIUS = 5;
-    int PLAYER_INITIAL_Y = 60;
+    int PLAYER_INITIAL_Y = 500;
     int PLAYER_INITIAL_X = 50;
 
     Player player;
@@ -28,7 +28,7 @@ public class Map {
     Array<Platform> initialPlatformBatch = new Array<Platform>();
 
     public Map() {
-        world = new World(new Vector2(0, -800), true);
+        world = new World(new Vector2(0, -450), true);
         spawnNewPlayer(
                 PLAYER_INITIAL_X,
                 PLAYER_INITIAL_Y,

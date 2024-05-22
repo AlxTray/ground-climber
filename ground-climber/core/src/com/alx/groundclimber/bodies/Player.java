@@ -9,19 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 
 public class Player {
 
-    final int BASE_X_MOVE_AMOUNT = 450;
-    final int BASE_Y_JUMP_VELOCITY = 600;
-    final int BASE_Y_DROP_VELOCITY = -610;
-    final int BASE_NO_JUMP_FRAMES = 33;
-    final double X_MOVEMENT_JUMP_MULTIPLIER = 1.6;
     final int MAX_VELOCITY = 240;
 
     public Body body;
     World world;
-
-    float velocityY;
-    float jumpFrames;
-    double jumpXMultiplier;
 
     public Player(World world, int x, int y, int radius) {
         this.world = world;
@@ -36,9 +27,9 @@ public class Player {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = playerShape;
-        fixtureDef.density = 5f;
+        fixtureDef.density = 1f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0f;
+        fixtureDef.restitution = 0.99f;
         body.createFixture(fixtureDef);
 
         playerShape.dispose();
@@ -52,37 +43,13 @@ public class Player {
         Vector2 velocity = this.body.getLinearVelocity();
         Vector2 position = this.body.getPosition();
 
+        System.out.println(velocity.x);
         if (Gdx.input.isKeyPressed(Input.Keys.A) && velocity.x > -MAX_VELOCITY) {
-            this.body.applyLinearImpulse((velocity.x < 0) ? -300f : -700f, 0, position.x, position.y, true);
+            this.body.applyLinearImpulse((velocity.x < 0) ? -300f : -450f, 0, position.x, position.y, true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && velocity.x < MAX_VELOCITY) {
-            this.body.applyLinearImpulse((velocity.x > 0) ? 300f : 700f, 0, position.x, position.y, true);
+            this.body.applyLinearImpulse((velocity.x > 0) ? 300f : 450f, 0, position.x, position.y, true);
         }
-
-        System.out.println(velocity.y);
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && velocity.y == 0f) {
-            this.body.applyForceToCenter(0, 10f, true);
-        }
-
-//        if (Gdx.input.isKeyPressed(Input.Keys.A)) position.x -= (BASE_X_MOVE_AMOUNT * jumpXMultiplier) * delta;
-//        if (Gdx.input.isKeyPressed(Input.Keys.D)) position.x += (BASE_X_MOVE_AMOUNT * jumpXMultiplier) * delta;
-//
-//        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && position.y == 20) {
-//            velocityY = BASE_Y_JUMP_VELOCITY * delta;
-//            jumpFrames = BASE_NO_JUMP_FRAMES * delta;
-//        }
-//        if (jumpFrames > 0) {
-//            jumpFrames -= delta;
-//            jumpXMultiplier = X_MOVEMENT_JUMP_MULTIPLIER;
-//        } else {
-//            velocityY = BASE_Y_DROP_VELOCITY * delta;
-//            jumpXMultiplier = 1;
-//        }
-//        position.y += velocityY;
-//
-//        if (position.x < 0) position.x = 0;
-//        if (position.y < 20) position.y = 20;
-//        if (position.x > 800 - 64) position.x = 800 - 64;
     }
 
 }
