@@ -28,7 +28,7 @@ public class Map {
     Array<Platform> initialPlatformBatch = new Array<Platform>();
 
     public Map() {
-        world = new World(new Vector2(0, 0), true);
+        world = new World(new Vector2(0, -800), true);
         spawnNewPlayer(
                 PLAYER_INITIAL_X,
                 PLAYER_INITIAL_Y,

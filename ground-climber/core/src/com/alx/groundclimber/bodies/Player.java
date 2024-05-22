@@ -14,7 +14,7 @@ public class Player {
     final int BASE_Y_DROP_VELOCITY = -610;
     final int BASE_NO_JUMP_FRAMES = 33;
     final double X_MOVEMENT_JUMP_MULTIPLIER = 1.6;
-    final int MAX_VELOCITY = 10;
+    final int MAX_VELOCITY = 240;
 
     public Body body;
     World world;
@@ -38,7 +38,7 @@ public class Player {
         fixtureDef.shape = playerShape;
         fixtureDef.density = 5f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 1f;
+        fixtureDef.restitution = 0f;
         body.createFixture(fixtureDef);
 
         playerShape.dispose();
@@ -52,13 +52,16 @@ public class Player {
         Vector2 velocity = this.body.getLinearVelocity();
         Vector2 position = this.body.getPosition();
 
-        System.out.println(velocity.x);
-
         if (Gdx.input.isKeyPressed(Input.Keys.A) && velocity.x > -MAX_VELOCITY) {
-            this.body.applyLinearImpulse(-0.80f, 0, position.x, position.y, true);
+            this.body.applyLinearImpulse((velocity.x < 0) ? -300f : -700f, 0, position.x, position.y, true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && velocity.x < MAX_VELOCITY) {
-            this.body.applyLinearImpulse(0.80f, 0, position.x, position.y, true);
+            this.body.applyLinearImpulse((velocity.x > 0) ? 300f : 700f, 0, position.x, position.y, true);
+        }
+
+        System.out.println(velocity.y);
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && velocity.y == 0f) {
+            this.body.applyForceToCenter(0, 10f, true);
         }
 
 //        if (Gdx.input.isKeyPressed(Input.Keys.A)) position.x -= (BASE_X_MOVE_AMOUNT * jumpXMultiplier) * delta;
