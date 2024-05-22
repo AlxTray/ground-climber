@@ -1,8 +1,6 @@
 package com.alx.groundclimber.screens;
 
-import com.alx.groundclimber.GroundClimber;
-import com.alx.groundclimber.Platform;
-import com.alx.groundclimber.PlatformGenerator;
+import com.alx.groundclimber.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -22,7 +20,7 @@ public class GameScreen implements Screen {
     Sound jumpSound;
     SpriteBatch batch;
     OrthographicCamera camera;
-    Rectangle player;
+    Map map;
     float velocityY;
     float jumpFrames;
     double jumpXMultiplier;
@@ -42,12 +40,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
 
-        // create a Rectangle to logically represent the bucket
-        player = new Rectangle();
-        player.x = 800 / 2 - 64 / 2;
-        player.y = 20;
-        player.width = 64;
-        player.height = 64;
+        map = new Map();
     }
 
     @Override
@@ -73,17 +66,17 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         batch.begin();
-        batch.draw(playerImage, player.x, player.y);
+        batch.draw(playerImage, map.player.bounds.x, map.player.bounds.y);
         for (Platform platform : initialPlatforms) {
             batch.draw(playerImage, platform.position.x, platform.position.y);
         }
         batch.end();
 
         // process user input
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) player.x -= (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) player.x += (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) map.player.bounds.x -= (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) map.player.bounds.x += (450 * jumpXMultiplier) * Gdx.graphics.getDeltaTime();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && player.y == 20) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE) && map.player.bounds.y == 20) {
             velocityY = 600 * Gdx.graphics.getDeltaTime();
             jumpFrames = 33 * Gdx.graphics.getDeltaTime();
         }
@@ -94,12 +87,12 @@ public class GameScreen implements Screen {
             velocityY = -610 * Gdx.graphics.getDeltaTime();
             jumpXMultiplier = 1;
         }
-        player.y += velocityY;
+        map.player.bounds.y += velocityY;
 
         // make sure the bucket stays within the screen bounds
-        if (player.x < 0) player.x = 0;
-        if (player.y < 20) player.y = 20;
-        if (player.x > 800 - 64) player.x = 800 - 64;
+        if (map.player.bounds.x < 0) map.player.bounds.x = 0;
+        if (map.player.bounds.y < 20) map.player.bounds.y = 20;
+        if (map.player.bounds.x > 800 - 64) map.player.bounds.x = 800 - 64;
     }
 
     @Override
