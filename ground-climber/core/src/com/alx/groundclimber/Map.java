@@ -21,6 +21,7 @@ public class Map {
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture playerImage;
+    Texture backgroundImage;
 
     World world;
     PlatformGenerator platGenerator;
@@ -46,6 +47,7 @@ public class Map {
         batch = new SpriteBatch();
 
         playerImage = new Texture(Gdx.files.internal("bucket.png"));
+        backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         platGenerator = new PlatformGenerator(world);
         initialPlatformBatch = platGenerator.generateInitialBatch();
@@ -58,7 +60,7 @@ public class Map {
     }
 
     public void update(float delta) {
-//        if (player.body.getPosition().x > 100) camera.translate(0.35f, 0);
+        if (player.body.getPosition().x > 100) camera.translate(0.35f, 0);
         camera.update();
         player.update(delta);
 
@@ -66,6 +68,15 @@ public class Map {
             debugRenderer.render(world, camera.combined);
         } else {
             batch.begin();
+            batch.disableBlending();
+            batch.draw(
+                    backgroundImage,
+                    camera.position.x - (camera.viewportWidth / 2),
+                    camera.position.y - (camera.viewportHeight / 2),
+                    camera.viewportWidth,
+                    camera.viewportHeight
+            );
+            batch.enableBlending();
             batch.setProjectionMatrix(camera.combined);
             batch.draw(playerImage, player.body.getPosition().x, player.body.getPosition().y);
             for (Platform platform : initialPlatformBatch) {
