@@ -30,9 +30,9 @@ public class Map {
     Array<Platform> initialPlatformBatch = new Array<Platform>();
 
     Box2DDebugRenderer debugRenderer;
-    boolean debugMode;
+    int debugMode;
 
-    public Map(boolean debugMode) {
+    public Map(int debugMode) {
         this.debugMode = debugMode;
 
         world = new World(new Vector2(0, -450), true);
@@ -46,7 +46,7 @@ public class Map {
         camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
 
-        playerImage = new Texture(Gdx.files.internal("bucket.png"));
+        playerImage = new Texture(Gdx.files.internal("ball.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         platGenerator = new PlatformGenerator(world);
@@ -64,9 +64,7 @@ public class Map {
         camera.update();
         player.update(delta);
 
-        if (debugMode) {
-            debugRenderer.render(world, camera.combined);
-        } else {
+        if (debugMode != 2) {
             batch.begin();
             batch.disableBlending();
             batch.draw(
@@ -78,11 +76,14 @@ public class Map {
             );
             batch.enableBlending();
             batch.setProjectionMatrix(camera.combined);
-            batch.draw(playerImage, player.body.getPosition().x, player.body.getPosition().y);
+            batch.draw(playerImage, player.body.getPosition().x - 16, player.body.getPosition().y - 16);
             for (Platform platform : initialPlatformBatch) {
                 platform.draw(batch, 1);
             }
             batch.end();
+        }
+        if (debugMode != 0) {
+            debugRenderer.render(world, camera.combined);
         }
 
         world.step(delta, 6, 2);
