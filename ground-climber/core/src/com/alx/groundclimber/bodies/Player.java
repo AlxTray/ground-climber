@@ -43,7 +43,6 @@ public class Player {
         Vector2 velocity = this.body.getLinearVelocity();
         Vector2 position = this.body.getPosition();
 
-        System.out.println(velocity.x);
         if (Gdx.input.isKeyPressed(Input.Keys.A) && velocity.x > -MAX_VELOCITY) {
             this.body.applyLinearImpulse((velocity.x < 0) ? -300f : -450f, 0, position.x, position.y, true);
         }

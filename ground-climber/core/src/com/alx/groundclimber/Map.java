@@ -50,6 +50,7 @@ public class Map {
     }
 
     public void update(float delta) {
+        if (player.body.getPosition().x > 100) camera.translate(0.35f, 0);
         camera.update();
         player.update(delta);
 
