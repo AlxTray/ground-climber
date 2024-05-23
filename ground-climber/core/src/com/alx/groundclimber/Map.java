@@ -7,12 +7,13 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 
 public class Map {
 
-    int PLAYER_INITIAL_RADIUS = 5;
+    int PLAYER_INITIAL_RADIUS = 16;
     int PLAYER_INITIAL_Y = 500;
     int PLAYER_INITIAL_X = 50;
 
@@ -27,7 +28,12 @@ public class Map {
     Array<Platform> platformBatch = new Array<Platform>();
     Array<Platform> initialPlatformBatch = new Array<Platform>();
 
-    public Map() {
+    Box2DDebugRenderer debugRenderer;
+    boolean debugMode;
+
+    public Map(boolean debugMode) {
+        this.debugMode = debugMode;
+
         world = new World(new Vector2(0, -450), true);
         spawnNewPlayer(
                 PLAYER_INITIAL_X,
@@ -43,6 +49,8 @@ public class Map {
 
         platGenerator = new PlatformGenerator(world);
         initialPlatformBatch = platGenerator.generateInitialBatch();
+
+        debugRenderer = new Box2DDebugRenderer();
     }
 
     public void spawnNewPlayer(int x, int y, int radius) {
@@ -50,17 +58,21 @@ public class Map {
     }
 
     public void update(float delta) {
-        if (player.body.getPosition().x > 100) camera.translate(0.35f, 0);
+//        if (player.body.getPosition().x > 100) camera.translate(0.35f, 0);
         camera.update();
         player.update(delta);
 
-        batch.begin();
-        batch.setProjectionMatrix(camera.combined);
-        batch.draw(playerImage, player.body.getPosition().x, player.body.getPosition().y);
-        for (Platform platform : initialPlatformBatch) {
-            platform.draw(batch, 1);
+        if (debugMode) {
+            debugRenderer.render(world, camera.combined);
+        } else {
+            batch.begin();
+            batch.setProjectionMatrix(camera.combined);
+            batch.draw(playerImage, player.body.getPosition().x, player.body.getPosition().y);
+            for (Platform platform : initialPlatformBatch) {
+                platform.draw(batch, 1);
+            }
+            batch.end();
         }
-        batch.end();
 
         world.step(delta, 6, 2);
     }

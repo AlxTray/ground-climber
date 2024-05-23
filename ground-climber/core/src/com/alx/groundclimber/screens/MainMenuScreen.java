@@ -29,11 +29,15 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "Welcome to Ground Climber! ", 100, 150);
-        game.font.draw(game.batch, "Press enter to begin!", 100, 100);
+        game.font.draw(game.batch, "Press enter to begin! Or backspace to enable debug rendering", 100, 100);
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameScreen(game, false));
+            dispose();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            game.setScreen(new GameScreen(game, true));
             dispose();
         }
     }

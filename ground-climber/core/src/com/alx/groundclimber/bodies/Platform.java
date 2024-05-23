@@ -10,11 +10,10 @@ public class Platform extends Image {
     Body body;
     World world;
 
-    public Platform(World world, int x, int y, int height, int width) {
-        super(new Texture(Gdx.files.internal("bucket.png")));
+    public Platform(World world, float x, float y, float height, float width) {
+        super(new Texture(Gdx.files.internal("grass.jpg")));
         this.setPosition(x, y);
         this.setSize(width, height);
-        this.setOrigin(width / 2,height / 2);
 
         this.world = world;
 
@@ -24,8 +23,8 @@ public class Platform extends Image {
         body = world.createBody(bodyDef);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2, height / 2);
-
+        shape.setAsBox(this.getWidth() / 2, this.getHeight() / 2);
+        body.setTransform(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2), 0);
         body.createFixture(shape, 0.0f);
 
         shape.dispose();

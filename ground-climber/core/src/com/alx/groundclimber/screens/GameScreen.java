@@ -17,9 +17,9 @@ public class GameScreen implements Screen {
     final GroundClimber game;
     Map map;
 
-    public GameScreen(GroundClimber game) {
+    public GameScreen(GroundClimber game, boolean debugMode) {
         this.game = game;
-        map = new Map();
+        map = new Map(debugMode);
     }
 
     @Override

@@ -15,10 +15,9 @@ public class PlatformGenerator {
     }
 
     public Array<Platform> generateInitialBatch() {
-        Array<Platform> initialPlatforms = new Array<Platform>();
-        initialPlatforms.add(new Platform(world, 0, 0, 50, 1200));
-        initialPlatforms.add(new Platform(world,20, 0, 20, 50));
-        initialPlatforms.add(new Platform(world,120, 0, 40, 30));
+        Array<Platform> initialPlatforms = new Array<Platform>();;
+        initialPlatforms.add(new Platform(world,0, 0, 40f, 200f));
+        initialPlatforms.add(new Platform(world,260f, 0, 70f, 120f));
 
         return initialPlatforms;
     }

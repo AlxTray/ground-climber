@@ -27,9 +27,9 @@ public class Player {
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = playerShape;
-        fixtureDef.density = 1f;
+        fixtureDef.density = 0.25f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 0.99f;
+        fixtureDef.restitution = 0.98f;
         body.createFixture(fixtureDef);
 
         playerShape.dispose();
