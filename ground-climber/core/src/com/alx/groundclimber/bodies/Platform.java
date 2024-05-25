@@ -11,7 +11,7 @@ public class Platform extends Image {
     World world;
 
     public Platform(World world, float x, float y, float height, float width) {
-        super(new Texture(Gdx.files.internal("grass.jpg")));
+        super(new Texture(Gdx.files.internal("normal_platform.png")));
         this.setPosition(x, y);
         this.setSize(width, height);
 

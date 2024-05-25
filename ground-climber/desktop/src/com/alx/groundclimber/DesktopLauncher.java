@@ -10,7 +10,6 @@ public class DesktopLauncher {
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
 		config.setWindowedMode(800, 480);
 		config.useVsync(true);
-		config.setForegroundFPS(165);
 		config.setTitle("Ground Climber");
 		new Lwjgl3Application(new GroundClimber(), config);
 	}

@@ -35,7 +35,7 @@ public class Map {
     public Map(int debugMode) {
         this.debugMode = debugMode;
 
-        world = new World(new Vector2(0, -450), true);
+        world = new World(new Vector2(0, -75), true);
         spawnNewPlayer(
                 PLAYER_INITIAL_X,
                 PLAYER_INITIAL_Y,
@@ -86,7 +86,7 @@ public class Map {
             debugRenderer.render(world, camera.combined);
         }
 
-        world.step(delta, 6, 2);
+        world.step(1/60f, 6, 2);
     }
 
     public void dispose() {

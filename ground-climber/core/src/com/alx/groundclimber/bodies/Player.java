@@ -36,18 +36,18 @@ public class Player {
     }
 
     public void update(float delta) {
-        handleKeyPresses(delta);
+        handleKeyPresses();
     }
 
-    public void handleKeyPresses(float delta) {
+    public void handleKeyPresses() {
         Vector2 velocity = this.body.getLinearVelocity();
         Vector2 position = this.body.getPosition();
 
         if (Gdx.input.isKeyPressed(Input.Keys.A) && velocity.x > -MAX_VELOCITY) {
-            this.body.applyLinearImpulse((velocity.x < 0) ? -300f : -450f, 0, position.x, position.y, true);
+            this.body.applyLinearImpulse((velocity.x < 0) ? -115f : -150f, 0, position.x, position.y, true);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.D) && velocity.x < MAX_VELOCITY) {
-            this.body.applyLinearImpulse((velocity.x > 0) ? 300f : 450f, 0, position.x, position.y, true);
+            this.body.applyLinearImpulse((velocity.x > 0) ? 115f : 150f, 0, position.x, position.y, true);
         }
     }
 
