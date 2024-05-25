@@ -28,6 +28,7 @@ public class Map {
 
     Array<Platform> platformBatch = new Array<Platform>();
     Array<Platform> initialPlatformBatch = new Array<Platform>();
+    Platform lastPlatformInBatch;
 
     Box2DDebugRenderer debugRenderer;
     int debugMode;
@@ -51,6 +52,7 @@ public class Map {
 
         platGenerator = new PlatformGenerator(world);
         initialPlatformBatch = platGenerator.generateInitialBatch();
+        lastPlatformInBatch = new Platform(world,520f, 0, 20f, 60f);
 
         debugRenderer = new Box2DDebugRenderer();
     }
@@ -64,6 +66,15 @@ public class Map {
         camera.update();
         player.update(delta);
 
+        if (player.body.getPosition().y < 0) {
+            Gdx.app.exit();
+        }
+
+        if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
+            platformBatch = platGenerator.generatePlatformBatch(world, camera);
+            lastPlatformInBatch = platformBatch.get(platformBatch.size - 1);
+        }
+
         if (debugMode != 2) {
             batch.begin();
             batch.disableBlending();
@@ -76,10 +87,19 @@ public class Map {
             );
             batch.enableBlending();
             batch.setProjectionMatrix(camera.combined);
-            batch.draw(playerImage, player.body.getPosition().x - 16, player.body.getPosition().y - 16);
+            batch.draw(
+                    playerImage,
+                    player.body.getPosition().x - (playerImage.getWidth() / 2f),
+                    player.body.getPosition().y - (playerImage.getHeight() / 2f)
+            );
+
             for (Platform platform : initialPlatformBatch) {
                 platform.draw(batch, 1);
             }
+            for (Platform platform : platformBatch) {
+                platform.draw(batch, 1);
+            }
+
             batch.end();
         }
         if (debugMode != 0) {
