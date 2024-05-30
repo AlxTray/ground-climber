@@ -62,11 +62,11 @@ public class Map {
     }
 
     public void update(float delta) {
-        if (player.body.getPosition().x > 100) camera.translate(0.35f, 0);
+        if (player.body.getPosition().x > 100) camera.translate(0.6f, 0);
         camera.update();
         player.update(delta);
 
-        if (player.body.getPosition().y < 0) {
+        if (player.body.getPosition().y < 0 || player.body.getPosition().x < (camera.position.x - (camera.viewportWidth / 2))) {
             Gdx.app.exit();
         }
 
