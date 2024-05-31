@@ -17,29 +17,18 @@ public class Map {
     int PLAYER_INITIAL_Y = 500;
     int PLAYER_INITIAL_X = 50;
 
-    OrthographicCamera camera;
-    SpriteBatch batch;
-    Texture playerImage;
-    Texture backgroundImage;
-
-    World world;
     PlatformGenerator platGenerator;
 
     // Map objects
-    Player player;
-    Array<Platform> platforms = new Array<Platform>();
+    public World world;
+    public Player player;
+    public Array<Platform> platforms = new Array<Platform>();
 
     // Attributes for use in endless mode so that only batches of platforms are active at once
     Array<Platform> initialPlatformBatch = new Array<Platform>();
     Platform lastPlatformInBatch;
 
-    // Debug rendering
-    Box2DDebugRenderer debugRenderer;
-    int debugMode;
-
-    public Map(int debugMode) {
-        this.debugMode = debugMode;
-
+    public Map() {
         world = new World(new Vector2(0, -75), true);
         spawnNewPlayer(
                 PLAYER_INITIAL_X,
@@ -47,18 +36,9 @@ public class Map {
                 PLAYER_INITIAL_RADIUS
         );
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
-        batch = new SpriteBatch();
-
-        playerImage = new Texture(Gdx.files.internal("ball.png"));
-        backgroundImage = new Texture(Gdx.files.internal("background.png"));
-
         platGenerator = new PlatformGenerator(world);
         initialPlatformBatch = platGenerator.generateInitialBatch();
         lastPlatformInBatch = new Platform(world,520f, 0, 20f, 60f);
-
-        debugRenderer = new Box2DDebugRenderer();
     }
 
     public void spawnNewPlayer(int x, int y, int radius) {
@@ -66,55 +46,20 @@ public class Map {
     }
 
     public void update(float delta) {
-        if (player.body.getPosition().x > 100) camera.translate(0.6f, 0);
-        camera.update();
         player.update(delta);
 
-        if (player.body.getPosition().y < 0 || player.body.getPosition().x < (camera.position.x - (camera.viewportWidth / 2))) {
+        if (player.body.getPosition().y < 0) {
             Gdx.app.exit();
         }
 
         if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
-            platforms = platGenerator.generatePlatformBatch(world, camera);
+            platforms = platGenerator.generatePlatformBatch(world);
             lastPlatformInBatch = platforms.get(platforms.size - 1);
-        }
-
-        if (debugMode != 2) {
-            batch.begin();
-            batch.disableBlending();
-            batch.draw(
-                    backgroundImage,
-                    camera.position.x - (camera.viewportWidth / 2),
-                    camera.position.y - (camera.viewportHeight / 2),
-                    camera.viewportWidth,
-                    camera.viewportHeight
-            );
-            batch.enableBlending();
-            batch.setProjectionMatrix(camera.combined);
-            batch.draw(
-                    playerImage,
-                    player.body.getPosition().x - (playerImage.getWidth() / 2f),
-                    player.body.getPosition().y - (playerImage.getHeight() / 2f)
-            );
-
-            for (Platform platform : initialPlatformBatch) {
-                platform.draw(batch, 1);
-            }
-            for (Platform platform : platforms) {
-                platform.draw(batch, 1);
-            }
-
-            batch.end();
-        }
-        if (debugMode != 0) {
-            debugRenderer.render(world, camera.combined);
         }
 
         world.step(1/60f, 6, 2);
     }
 
     public void dispose() {
-        playerImage.dispose();
-        batch.dispose();
     }
 }

@@ -29,7 +29,7 @@ public class PlatformGenerator {
         return initialPlatforms;
     }
 
-    public Array<Platform> generatePlatformBatch(World world, OrthographicCamera camera) {
+    public Array<Platform> generatePlatformBatch(World world) {
         int randomSeed = MathUtils.random(1, 50);
         Array<Platform> platformBatch = new Array<>();
         double[] lastPlatformCoords = new double[]{

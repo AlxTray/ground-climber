@@ -16,10 +16,12 @@ public class GameScreen implements Screen {
 
     final GroundClimber game;
     Map map;
+    MapRenderer mapRenderer;
 
     public GameScreen(GroundClimber game, int debugMode) {
         this.game = game;
-        map = new Map(debugMode);
+        map = new Map();
+        mapRenderer = new MapRenderer(map, debugMode);
     }
 
     @Override
@@ -29,9 +31,9 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0.3f, 0.3f, 0.46f, 1);
-
         map.update(delta);
+        ScreenUtils.clear(0.3f, 0.3f, 0.46f, 1);
+        mapRenderer.render();
     }
 
     @Override
