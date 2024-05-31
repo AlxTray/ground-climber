@@ -17,7 +17,6 @@ public class Map {
     int PLAYER_INITIAL_Y = 500;
     int PLAYER_INITIAL_X = 50;
 
-    Player player;
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture playerImage;
@@ -26,10 +25,15 @@ public class Map {
     World world;
     PlatformGenerator platGenerator;
 
-    Array<Platform> platformBatch = new Array<Platform>();
+    // Map objects
+    Player player;
+    Array<Platform> platforms = new Array<Platform>();
+
+    // Attributes for use in endless mode so that only batches of platforms are active at once
     Array<Platform> initialPlatformBatch = new Array<Platform>();
     Platform lastPlatformInBatch;
 
+    // Debug rendering
     Box2DDebugRenderer debugRenderer;
     int debugMode;
 
@@ -71,8 +75,8 @@ public class Map {
         }
 
         if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
-            platformBatch = platGenerator.generatePlatformBatch(world, camera);
-            lastPlatformInBatch = platformBatch.get(platformBatch.size - 1);
+            platforms = platGenerator.generatePlatformBatch(world, camera);
+            lastPlatformInBatch = platforms.get(platforms.size - 1);
         }
 
         if (debugMode != 2) {
@@ -96,7 +100,7 @@ public class Map {
             for (Platform platform : initialPlatformBatch) {
                 platform.draw(batch, 1);
             }
-            for (Platform platform : platformBatch) {
+            for (Platform platform : platforms) {
                 platform.draw(batch, 1);
             }
 
