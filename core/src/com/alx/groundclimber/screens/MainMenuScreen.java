@@ -1,5 +1,6 @@
 package com.alx.groundclimber.screens;
 
+import com.alx.groundclimber.GameMode;
 import com.alx.groundclimber.GroundClimber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -11,6 +12,7 @@ public class MainMenuScreen implements Screen {
 
     final GroundClimber game;
 
+    int debugMode = 0;
     OrthographicCamera camera;
 
     public MainMenuScreen(final GroundClimber game) {
@@ -29,20 +31,27 @@ public class MainMenuScreen implements Screen {
 
         game.batch.begin();
         game.font.draw(game.batch, "Welcome to Ground Climber! ", 100, 150);
-        game.font.draw(game.batch, "Press enter to begin! Or F1 to enable debug rendering, or F2 for only debug rendering", 100, 100);
+        game.font.draw(game.batch, "Press Enter to begin, or Backspace for Endless mode!\n" +
+                "Press F2 to enable debug rendering, or F3 for only debug rendering\n" +
+                "F1 will reset the above options", 100, 100);
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.setScreen(new GameScreen(game, 0));
+            game.setScreen(new GameScreen(game, GameMode.NORMAL, debugMode));
+            dispose();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
             dispose();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
-            game.setScreen(new GameScreen(game, 1));
-            dispose();
+            debugMode = 0;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
-            game.setScreen(new GameScreen(game, 2));
-            dispose();
+            debugMode = 1;
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.F3)) {
+            debugMode = 2;
         }
     }
 

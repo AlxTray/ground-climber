@@ -17,15 +17,12 @@ public class Map implements Json.Serializable {
 
     PlatformGenerator platGenerator;
 
-    // Map objects
     public World world;
     public Player player;
+    GameMode gameMode;
 
-    // Level dependant objects
     public Array<Platform> platforms = new Array<>();
 
-    // Attributes for use in endless mode so that only batches of platforms are active at once
-    Array<Platform> initialPlatformBatch = new Array<>();
     Platform lastPlatformInBatch;
 
     public Map() {
@@ -35,10 +32,16 @@ public class Map implements Json.Serializable {
                 PLAYER_INITIAL_Y,
                 PLAYER_INITIAL_RADIUS
         );
+    }
 
-        platGenerator = new PlatformGenerator(world);
-        //initialPlatformBatch = platGenerator.generateInitialBatch();
-        //lastPlatformInBatch = new Platform(world,520f, 0, 20f, 60f);
+    public void setGameMode(GameMode gameMode) {
+        this.gameMode = gameMode;
+
+        if (gameMode.equals(GameMode.ENDLESS)) {
+            platGenerator = new PlatformGenerator(world);
+            platforms = platGenerator.generateInitialBatch();
+            lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
+        }
     }
 
     public void spawnNewPlayer(int x, int y, int radius) {
@@ -52,10 +55,12 @@ public class Map implements Json.Serializable {
             Gdx.app.exit();
         }
 
-        //if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
-        //    platforms = platGenerator.generatePlatformBatch(world);
-        //    lastPlatformInBatch = platforms.get(platforms.size - 1);
-        //}
+        if (gameMode.equals(GameMode.ENDLESS)) {
+            if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
+                platforms = platGenerator.generatePlatformBatch(world);
+                lastPlatformInBatch = platforms.get(platforms.size - 1);
+            }
+        }
 
         world.step(1/60f, 6, 2);
     }

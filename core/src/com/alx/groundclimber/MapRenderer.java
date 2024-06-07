@@ -55,9 +55,6 @@ public class MapRenderer {
                     map.player.body.getPosition().y - (playerImage.getHeight() / 2f)
             );
 
-            for (Platform platform : map.initialPlatformBatch) {
-                platform.draw(batch, 1);
-            }
             for (Platform platform : map.platforms) {
                 platform.draw(batch, 1);
             }

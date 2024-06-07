@@ -20,12 +20,20 @@ public class GameScreen implements Screen {
     Map map;
     MapRenderer mapRenderer;
 
-    public GameScreen(GroundClimber game, int debugMode) {
+    public GameScreen(GroundClimber game, GameMode gameMode, int debugMode) {
         this.game = game;
 
-        FileHandle fileHandle = Gdx.files.internal("levels/level1.json");
-        Json json = new Json();
-        map = json.fromJson(Map.class, fileHandle.readString());
+        switch (gameMode) {
+            case NORMAL:
+                FileHandle fileHandle = Gdx.files.internal("levels/level1.json");
+                Json json = new Json();
+                map = json.fromJson(Map.class, fileHandle.readString());
+                break;
+            case ENDLESS:
+                map = new Map();
+                break;
+        }
+        map.setGameMode(gameMode);
 
         mapRenderer = new MapRenderer(map, debugMode);
     }
