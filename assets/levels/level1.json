@@ -1,0 +1,15 @@
+{
+  "data": {
+    "name": "tutorial"
+  },
+  "objects": {
+    "platforms": [
+      {
+        "x": 0,
+        "y": 0,
+        "height": 40,
+        "width": 200
+      }
+    ]
+  }
+}

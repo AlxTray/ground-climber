@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
@@ -20,7 +22,11 @@ public class GameScreen implements Screen {
 
     public GameScreen(GroundClimber game, int debugMode) {
         this.game = game;
-        map = new Map();
+
+        FileHandle fileHandle = Gdx.files.internal("levels/level1.json");
+        Json json = new Json();
+        map = json.fromJson(Map.class, fileHandle.readString());
+
         mapRenderer = new MapRenderer(map, debugMode);
     }
 
