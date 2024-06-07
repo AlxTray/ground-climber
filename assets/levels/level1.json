@@ -5,6 +5,7 @@
   "objects": {
     "platforms": [
       {
+        "type": "normal",
         "x": 0,
         "y": 0,
         "height": 40,

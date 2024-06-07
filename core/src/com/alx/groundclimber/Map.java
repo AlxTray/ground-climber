@@ -22,10 +22,10 @@ public class Map implements Json.Serializable {
     public Player player;
 
     // Level dependant objects
-    public Array<Platform> platforms = new Array<Platform>();
+    public Array<Platform> platforms = new Array<>();
 
     // Attributes for use in endless mode so that only batches of platforms are active at once
-    Array<Platform> initialPlatformBatch = new Array<Platform>();
+    Array<Platform> initialPlatformBatch = new Array<>();
     Platform lastPlatformInBatch;
 
     public Map() {
@@ -70,10 +70,11 @@ public class Map implements Json.Serializable {
 
     @Override
     public void read(Json json, JsonValue jsonData) {
+        PlatformFactory platformFactory = new PlatformFactory(world);
         JsonValue normalPlatforms = jsonData.get("objects").get("platforms");
         for (JsonValue platformData = normalPlatforms.child; platformData != null; platformData = platformData.next) {
-            platforms.add(new Platform(
-                    world,
+            platforms.add(platformFactory.createPlatform(
+                    platformData.get("type").asString(),
                     platformData.get("x").asFloat(),
                     platformData.get("y").asFloat(),
                     platformData.get("height").asFloat(),
