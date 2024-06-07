@@ -1,5 +1,6 @@
 package com.alx.groundclimber.screens;
 
+import com.alx.groundclimber.DebugRenderMode;
 import com.alx.groundclimber.GameMode;
 import com.alx.groundclimber.GroundClimber;
 import com.badlogic.gdx.Gdx;
@@ -12,7 +13,7 @@ public class MainMenuScreen implements Screen {
 
     final GroundClimber game;
 
-    int debugMode = 0;
+    DebugRenderMode debugMode = DebugRenderMode.NORMAL;
     OrthographicCamera camera;
 
     public MainMenuScreen(final GroundClimber game) {
@@ -45,13 +46,13 @@ public class MainMenuScreen implements Screen {
             dispose();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
-            debugMode = 0;
+            debugMode = DebugRenderMode.NORMAL;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
-            debugMode = 1;
+            debugMode = DebugRenderMode.OVERLAY;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F3)) {
-            debugMode = 2;
+            debugMode = DebugRenderMode.ONLY;
         }
     }
 

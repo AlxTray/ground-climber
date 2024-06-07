@@ -2,15 +2,8 @@ package com.alx.groundclimber.screens;
 
 import com.alx.groundclimber.*;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -20,7 +13,7 @@ public class GameScreen implements Screen {
     Map map;
     MapRenderer mapRenderer;
 
-    public GameScreen(GroundClimber game, GameMode gameMode, int debugMode) {
+    public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode) {
         this.game = game;
 
         switch (gameMode) {

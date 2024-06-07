@@ -17,9 +17,9 @@ public class MapRenderer {
 
     // Debug rendering
     Box2DDebugRenderer debugRenderer;
-    int debugMode;
+    DebugRenderMode debugMode;
 
-    public MapRenderer(Map map, int debugMode) {
+    public MapRenderer(Map map, DebugRenderMode debugMode) {
         this.map = map;
         this.debugMode = debugMode;
 
@@ -37,7 +37,7 @@ public class MapRenderer {
         if (map.player.body.getPosition().x > 100) camera.translate(0.6f, 0);
         camera.update();
 
-        if (debugMode != 2) {
+        if (!debugMode.equals(DebugRenderMode.ONLY)) {
             batch.begin();
             batch.disableBlending();
             batch.draw(
@@ -61,7 +61,7 @@ public class MapRenderer {
 
             batch.end();
         }
-        if (debugMode != 0) {
+        if (!debugMode.equals(DebugRenderMode.NORMAL)) {
             debugRenderer.render(map.world, camera.combined);
         }
     }
