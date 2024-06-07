@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 public class MapRenderer {
 
     Map map;
+    GameMode gameMode;
     OrthographicCamera camera;
     SpriteBatch batch;
     Texture playerImage;
@@ -19,8 +20,9 @@ public class MapRenderer {
     Box2DDebugRenderer debugRenderer;
     DebugRenderMode debugMode;
 
-    public MapRenderer(Map map, DebugRenderMode debugMode) {
+    public MapRenderer(Map map, GameMode gameMode, DebugRenderMode debugMode) {
         this.map = map;
+        this.gameMode = gameMode;
         this.debugMode = debugMode;
 
         camera = new OrthographicCamera();
@@ -34,7 +36,12 @@ public class MapRenderer {
     }
 
     public void render() {
-        if (map.player.body.getPosition().x > 100) camera.translate(0.6f, 0);
+        if (gameMode.equals(GameMode.ENDLESS) && map.player.body.getPosition().x > 100) {
+            camera.translate(0.6f, 0);
+        }
+        if (gameMode.equals(GameMode.NORMAL)) {
+            camera.position.set(map.player.body.getPosition().x, map.player.body.getPosition().y, 0);
+        }
         camera.update();
 
         if (!debugMode.equals(DebugRenderMode.ONLY)) {

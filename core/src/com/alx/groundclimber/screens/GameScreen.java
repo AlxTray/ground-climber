@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
         }
         map.setGameMode(gameMode);
 
-        mapRenderer = new MapRenderer(map, debugMode);
+        mapRenderer = new MapRenderer(map, gameMode, debugMode);
     }
 
     @Override
