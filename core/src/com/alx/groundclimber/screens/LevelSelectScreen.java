@@ -8,7 +8,16 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.ScreenUtils;
+
+import java.util.Optional;
 
 public class LevelSelectScreen implements Screen {
 
@@ -16,6 +25,8 @@ public class LevelSelectScreen implements Screen {
     final DebugRenderMode debugMode;
 
     OrthographicCamera camera;
+    Stage stage;
+    Skin skin;
     FileHandle[] levelFiles;
 
     public LevelSelectScreen(final GroundClimber game, final DebugRenderMode debugMode) {
@@ -25,7 +36,33 @@ public class LevelSelectScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+
         levelFiles = Gdx.files.internal("levels").list();
+        int buttonXIncrement = 0;
+        for (FileHandle levelFile : levelFiles) {
+            TextButton levelButton = new TextButton(levelFile.name(), skin);
+            levelButton.setPosition(100 + buttonXIncrement, 110);
+
+            levelButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Label clickedButtonLabel = (Label) event.getTarget();
+                    game.setScreen(new GameScreen(
+                            game,
+                            GameMode.NORMAL,
+                            debugMode,
+                            clickedButtonLabel.getText().toString()
+                    ));
+                }
+            });
+
+            stage.addActor(levelButton);
+            buttonXIncrement += 100;
+        }
     }
 
     @Override
@@ -35,11 +72,11 @@ public class LevelSelectScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        stage.act(delta);
+        stage.draw();
+
         game.batch.begin();
-        game.font.draw(game.batch, "Select from the following levels, using number keys.", 100, 150);
-        for (FileHandle levelFile : levelFiles) {
-            game.font.draw(game.batch, levelFile.name(), 100, 110);
-        }
+        game.font.draw(game.batch, "Select from the following levels.", 100, 150);
         game.batch.end();
     }
 
