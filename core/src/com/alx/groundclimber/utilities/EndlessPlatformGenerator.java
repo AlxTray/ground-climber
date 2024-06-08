@@ -19,7 +19,7 @@ public class EndlessPlatformGenerator {
     }
 
     public Array<Platform> generateInitialBatch() {
-        Array<Platform> initialPlatforms = new Array<Platform>();;
+        Array<Platform> initialPlatforms = new Array<>();
         initialPlatforms.add(platformFactory.createPlatform("normal",0, 0, 40f, 200f));
         initialPlatforms.add(platformFactory.createPlatform("normal",260f, 0, 70f, 120f));
         initialPlatforms.add(platformFactory.createPlatform("normal",520f, 0, 20f, 60f));
@@ -54,5 +54,5 @@ public class EndlessPlatformGenerator {
 
         return platformBatch;
     }
-;
+
 }

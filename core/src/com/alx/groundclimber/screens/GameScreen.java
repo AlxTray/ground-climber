@@ -70,5 +70,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
+        mapRenderer.dispose();
     }
 }
