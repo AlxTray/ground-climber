@@ -1,4 +1,4 @@
-package com.alx.groundclimber;
+package com.alx.groundclimber.utilities;
 
 import com.alx.groundclimber.bodies.CrackedPlatform;
 import com.alx.groundclimber.bodies.NormalPlatform;

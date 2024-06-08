@@ -1,6 +1,10 @@
 package com.alx.groundclimber.screens;
 
 import com.alx.groundclimber.*;
+import com.alx.groundclimber.enums.DebugRenderMode;
+import com.alx.groundclimber.enums.GameMode;
+import com.alx.groundclimber.map.Map;
+import com.alx.groundclimber.map.MapRenderer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;

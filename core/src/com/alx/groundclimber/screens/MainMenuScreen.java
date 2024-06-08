@@ -1,7 +1,7 @@
 package com.alx.groundclimber.screens;
 
-import com.alx.groundclimber.DebugRenderMode;
-import com.alx.groundclimber.GameMode;
+import com.alx.groundclimber.enums.DebugRenderMode;
+import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.GroundClimber;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;

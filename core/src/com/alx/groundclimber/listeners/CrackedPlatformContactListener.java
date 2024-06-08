@@ -1,4 +1,4 @@
-package com.alx.groundclimber;
+package com.alx.groundclimber.listeners;
 
 import com.alx.groundclimber.bodies.CrackedPlatform;
 import com.badlogic.gdx.physics.box2d.*;

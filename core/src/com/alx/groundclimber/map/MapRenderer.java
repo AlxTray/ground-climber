@@ -1,5 +1,7 @@
-package com.alx.groundclimber;
+package com.alx.groundclimber.map;
 
+import com.alx.groundclimber.enums.DebugRenderMode;
+import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;

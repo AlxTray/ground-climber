@@ -1,4 +1,4 @@
-package com.alx.groundclimber;
+package com.alx.groundclimber.utilities;
 
 import com.alx.groundclimber.bodies.Platform;
 import com.badlogic.gdx.math.MathUtils;
