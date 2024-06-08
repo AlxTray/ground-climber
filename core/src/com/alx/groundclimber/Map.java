@@ -15,7 +15,7 @@ public class Map implements Json.Serializable {
     int PLAYER_INITIAL_Y = 500;
     int PLAYER_INITIAL_X = 50;
 
-    PlatformGenerator platGenerator;
+    EndlessPlatformGenerator platGenerator;
     CrackedPlatformContactListener crackedPlatformContactListener;
 
     public World world;
@@ -43,7 +43,7 @@ public class Map implements Json.Serializable {
         this.gameMode = gameMode;
 
         if (gameMode.equals(GameMode.ENDLESS)) {
-            platGenerator = new PlatformGenerator(world);
+            platGenerator = new EndlessPlatformGenerator(world);
             platforms = platGenerator.generateInitialBatch();
             lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
         }
@@ -75,7 +75,7 @@ public class Map implements Json.Serializable {
 
         if (gameMode.equals(GameMode.ENDLESS)) {
             if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
-                platforms = platGenerator.generatePlatformBatch(world);
+                platforms = platGenerator.generatePlatformBatch();
                 lastPlatformInBatch = platforms.get(platforms.size - 1);
             }
         }
