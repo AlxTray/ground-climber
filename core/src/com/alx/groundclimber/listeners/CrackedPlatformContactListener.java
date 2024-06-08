@@ -19,13 +19,13 @@ public class CrackedPlatformContactListener implements ContactListener {
         if (bodyAUserData instanceof CrackedPlatform) {
             crackedPlatform = (CrackedPlatform) bodyAUserData;
             crackedPlatform.incrementCrackLevel();
-            if (crackedPlatform.getCrackLevel() >= 4) {
+            if (crackedPlatform.getCrackLevel() >= 3) {
                 platformsToDestroy.add(bodyA);
             }
         } else if (bodyBUserData instanceof CrackedPlatform) {
             crackedPlatform = (CrackedPlatform) bodyBUserData;
             crackedPlatform.incrementCrackLevel();
-            if (crackedPlatform.getCrackLevel() >= 4) {
+            if (crackedPlatform.getCrackLevel() >= 3) {
                 platformsToDestroy.add(bodyB);
             }
         }

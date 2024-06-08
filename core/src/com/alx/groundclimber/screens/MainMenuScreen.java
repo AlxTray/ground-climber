@@ -38,7 +38,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.setScreen(new GameScreen(game, GameMode.NORMAL, debugMode));
+            game.setScreen(new LevelSelectScreen(game, debugMode));
             dispose();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
@@ -58,32 +58,26 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void show() {
-
     }
 
     @Override
     public void resize(int i, int i1) {
-
     }
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
     public void dispose() {
-
     }
 
 }
