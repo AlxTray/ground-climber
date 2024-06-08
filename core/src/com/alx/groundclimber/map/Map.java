@@ -64,6 +64,19 @@ public class Map implements Json.Serializable {
             Gdx.app.exit();
         }
 
+        destroyObjects();
+
+        if (gameMode.equals(GameMode.ENDLESS)) {
+            if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
+                platforms = platGenerator.generatePlatformBatch();
+                lastPlatformInBatch = platforms.get(platforms.size - 1);
+            }
+        }
+
+        world.step(1/60f, 6, 2);
+    }
+
+    public void destroyObjects() {
         // Grab all queued objects to destroy from listeners
         // So that all objects can be destroyed at once and will not be locked
         objectsToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
@@ -76,15 +89,6 @@ public class Map implements Json.Serializable {
         }
         crackedPlatformContactListener.clearPlatformsToDestroy();
         objectsToDestroy.clear();
-
-        if (gameMode.equals(GameMode.ENDLESS)) {
-            if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
-                platforms = platGenerator.generatePlatformBatch();
-                lastPlatformInBatch = platforms.get(platforms.size - 1);
-            }
-        }
-
-        world.step(1/60f, 6, 2);
     }
 
     public void dispose() {
