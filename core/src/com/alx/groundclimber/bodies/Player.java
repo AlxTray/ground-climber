@@ -19,6 +19,7 @@ public class Player {
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
+        body.setUserData(this);
 
         CircleShape playerShape = new CircleShape();
         playerShape.setRadius(radius);

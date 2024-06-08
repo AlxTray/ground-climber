@@ -1,5 +1,6 @@
 package com.alx.groundclimber;
 
+import com.alx.groundclimber.bodies.CrackedPlatform;
 import com.alx.groundclimber.bodies.NormalPlatform;
 import com.alx.groundclimber.bodies.Platform;
 import com.badlogic.gdx.physics.box2d.World;
@@ -16,6 +17,8 @@ public class PlatformFactory {
         switch (type) {
             case "normal":
                 return new NormalPlatform(world, x, y, height, width);
+            case "cracked":
+                return new CrackedPlatform(world, x, y, height, width);
             default:
                 throw new IllegalArgumentException("Invalid platform type " + type);
         }

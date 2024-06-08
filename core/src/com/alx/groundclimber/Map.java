@@ -4,7 +4,7 @@ import com.alx.groundclimber.bodies.Platform;
 import com.alx.groundclimber.bodies.Player;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
@@ -16,10 +16,12 @@ public class Map implements Json.Serializable {
     int PLAYER_INITIAL_X = 50;
 
     PlatformGenerator platGenerator;
+    CrackedPlatformContactListener crackedPlatformContactListener;
 
     public World world;
     public Player player;
     GameMode gameMode;
+    Array<Body> objectsToDestroy = new Array<>();
 
     public Array<Platform> platforms = new Array<>();
 
@@ -32,6 +34,9 @@ public class Map implements Json.Serializable {
                 PLAYER_INITIAL_Y,
                 PLAYER_INITIAL_RADIUS
         );
+
+        crackedPlatformContactListener = new CrackedPlatformContactListener();
+        world.setContactListener(crackedPlatformContactListener);
     }
 
     public void setGameMode(GameMode gameMode) {
@@ -54,6 +59,19 @@ public class Map implements Json.Serializable {
         if (player.body.getPosition().y < 0) {
             Gdx.app.exit();
         }
+
+        // Grab all queued objects to destroy from listeners
+        // So that all objects can be destroyed at once and will not be locked
+        objectsToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
+
+        for (Body objectToDestroy : objectsToDestroy) {
+            Object objectData = objectToDestroy.getUserData();
+            platforms.removeValue((Platform) objectData, false);
+
+            world.destroyBody(objectToDestroy);
+        }
+        crackedPlatformContactListener.clearPlatformsToDestroy();
+        objectsToDestroy.clear();
 
         if (gameMode.equals(GameMode.ENDLESS)) {
             if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
