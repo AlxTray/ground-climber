@@ -25,7 +25,10 @@ public class Platform extends Image {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(this.getWidth() / 2, this.getHeight() / 2);
         body.setTransform(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2), 0);
-        body.createFixture(shape, 0.0f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        body.createFixture(fixtureDef);
 
         shape.dispose();
     }
