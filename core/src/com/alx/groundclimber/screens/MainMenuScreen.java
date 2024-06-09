@@ -7,18 +7,24 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
 
     final GroundClimber game;
 
+    SpriteBatch batch;
+    BitmapFont font;
     DebugRenderMode debugMode = DebugRenderMode.NORMAL;
     OrthographicCamera camera;
 
     public MainMenuScreen(final GroundClimber game) {
         this.game = game;
 
+        batch = new SpriteBatch();
+        font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
     }
@@ -28,22 +34,20 @@ public class MainMenuScreen implements Screen {
         ScreenUtils.clear(0.3f, 0.3f, 0.46f, 1);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Welcome to Ground Climber! ", 100, 150);
-        game.font.draw(game.batch, "Press Enter to begin, or Backspace for Endless mode!\n" +
+        batch.begin();
+        font.draw(batch, "Welcome to Ground Climber! ", 100, 150);
+        font.draw(batch, "Press Enter to begin, or Backspace for Endless mode!\n" +
                 "Press F2 to enable debug rendering, or F3 for only debug rendering\n" +
                 "F1 will reset the above options", 100, 100);
-        game.batch.end();
+        batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             game.setScreen(new LevelSelectScreen(game, debugMode));
-            dispose();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
             game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
-            dispose();
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
             debugMode = DebugRenderMode.NORMAL;
@@ -78,6 +82,8 @@ public class MainMenuScreen implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        font.dispose();
     }
 
 }

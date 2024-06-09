@@ -4,10 +4,11 @@ import com.alx.groundclimber.GroundClimber;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -26,6 +27,8 @@ public class LevelSelectScreen implements Screen {
     final GroundClimber game;
     final DebugRenderMode debugMode;
 
+    SpriteBatch batch;
+    BitmapFont font;
     OrthographicCamera camera;
     Stage stage;
     Skin skin;
@@ -35,6 +38,8 @@ public class LevelSelectScreen implements Screen {
         this.game = game;
         this.debugMode = debugMode;
 
+        batch = new SpriteBatch();
+        font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
 
@@ -76,14 +81,14 @@ public class LevelSelectScreen implements Screen {
         ScreenUtils.clear(0.3f, 0.3f, 0.46f, 1);
 
         camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        batch.setProjectionMatrix(camera.combined);
 
         stage.act(delta);
         stage.draw();
 
-        game.batch.begin();
-        game.font.draw(game.batch, "Select from the following levels.", 100, 150);
-        game.batch.end();
+        batch.begin();
+        font.draw(batch, "Select from the following levels.", 100, 150);
+        batch.end();
     }
 
     @Override
@@ -108,6 +113,8 @@ public class LevelSelectScreen implements Screen {
 
     @Override
     public void dispose() {
+        batch.dispose();
+        font.dispose();
     }
 
 }
