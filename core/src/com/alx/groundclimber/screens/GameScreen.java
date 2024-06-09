@@ -25,12 +25,12 @@ public class GameScreen implements Screen {
     public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
         this.game = game;
 
-        for (String levelName : selectedLevelNames) {
-            selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
-        }
-
         switch (gameMode) {
             case NORMAL:
+                for (String levelName : selectedLevelNames) {
+                    selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
+                }
+
                 Json json = new Json();
                 map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
                 break;

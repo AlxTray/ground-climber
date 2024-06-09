@@ -50,12 +50,22 @@ public class LevelSelectScreen implements Screen {
             levelButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
-                    Label clickedButtonLabel = (Label) event.getTarget();
+                    Actor target = event.getTarget();
+
+                    String buttonText = "???";
+                    if (target instanceof Label) {
+                        Label clickedButtonLabel = (Label) event.getTarget();
+                        buttonText = clickedButtonLabel.getText().toString();
+                    } else if (target instanceof TextButton) {
+                        TextButton clickedButton = (TextButton) event.getTarget();
+                        buttonText = clickedButton.getText().toString();
+                    }
+
                     game.setScreen(new GameScreen(
                             game,
                             GameMode.NORMAL,
                             debugMode,
-                            clickedButtonLabel.getText().toString()
+                            buttonText
                     ));
                 }
             });
