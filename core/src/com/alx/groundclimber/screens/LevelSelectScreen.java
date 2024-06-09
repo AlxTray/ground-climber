@@ -15,6 +15,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.Optional;
@@ -42,36 +44,30 @@ public class LevelSelectScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         levelFiles = Gdx.files.internal("levels").list();
-        int buttonXIncrement = 0;
+        float buttonXIncrement = 0;
         for (FileHandle levelFile : levelFiles) {
-            TextButton levelButton = new TextButton(levelFile.name(), skin);
+            JsonReader jsonReader = new JsonReader();
+            JsonValue jsonData = jsonReader.parse(levelFile);
+
+            TextButton levelButton = new TextButton(jsonData.get("data").get("name").asString(), skin);
             levelButton.setPosition(100 + buttonXIncrement, 110);
+            levelButton.setName(levelFile.name());
 
             levelButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     Actor target = event.getTarget();
-
-                    String buttonText = "???";
-                    if (target instanceof Label) {
-                        Label clickedButtonLabel = (Label) event.getTarget();
-                        buttonText = clickedButtonLabel.getText().toString();
-                    } else if (target instanceof TextButton) {
-                        TextButton clickedButton = (TextButton) event.getTarget();
-                        buttonText = clickedButton.getText().toString();
-                    }
-
                     game.setScreen(new GameScreen(
                             game,
                             GameMode.NORMAL,
                             debugMode,
-                            buttonText
+                            (target instanceof Label) ? target.getParent().getName() : target.getName()
                     ));
                 }
             });
 
             stage.addActor(levelButton);
-            buttonXIncrement += 100;
+            buttonXIncrement += levelButton.getWidth() + 10;
         }
     }
 
