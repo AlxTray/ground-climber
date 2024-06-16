@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class LevelSelectScreen implements Screen {
@@ -49,6 +50,7 @@ public class LevelSelectScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         levelFiles = Gdx.files.internal("levels").list();
+        Gdx.app.log("Level Select DEBUG", "Finished grabbing all level files: " + Arrays.toString(levelFiles));
         float buttonXIncrement = 0;
         for (FileHandle levelFile : levelFiles) {
             JsonReader jsonReader = new JsonReader();
@@ -57,16 +59,19 @@ public class LevelSelectScreen implements Screen {
             TextButton levelButton = new TextButton(jsonData.get("data").get("name").asString(), skin);
             levelButton.setPosition(100 + buttonXIncrement, 110);
             levelButton.setName(levelFile.name());
+            Gdx.app.debug("Level Select DEBUG", "Successfully created button for level: " + levelFile.name());
 
             levelButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     Actor target = event.getTarget();
+                    String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
+                    Gdx.app.log("Level Select Button INFO", "Selected level: " + levelName);
                     game.setScreen(new GameScreen(
                             game,
                             GameMode.NORMAL,
                             debugMode,
-                            (target instanceof Label) ? target.getParent().getName() : target.getName()
+                            levelName
                     ));
                 }
             });
@@ -115,6 +120,7 @@ public class LevelSelectScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        Gdx.app.debug("Level Select DEBUG", "Disposed objects");
     }
 
 }

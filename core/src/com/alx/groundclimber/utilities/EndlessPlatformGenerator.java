@@ -1,6 +1,7 @@
 package com.alx.groundclimber.utilities;
 
 import com.alx.groundclimber.bodies.Platform;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -29,6 +30,7 @@ public class EndlessPlatformGenerator {
 
     public Array<Platform> generatePlatformBatch() {
         int randomSeed = MathUtils.random(1, 50);
+        Gdx.app.debug("PlatformGenerator", "Batch seed: " + randomSeed);
         Array<Platform> platformBatch = new Array<>();
         double[] lastPlatformCoords = new double[]{
                 MathUtils.random((int) (lastPlatformX + 50), (int) lastPlatformX + 150),

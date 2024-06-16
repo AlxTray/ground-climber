@@ -25,6 +25,7 @@ public class GameScreen implements Screen {
     public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
         this.game = game;
 
+        Gdx.app.log("Game Screen INFO", "The current game mode is: " + gameMode.name());
         switch (gameMode) {
             case NORMAL:
                 for (String levelName : selectedLevelNames) {
@@ -32,10 +33,13 @@ public class GameScreen implements Screen {
                 }
 
                 Json json = new Json();
-                map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
+                String selectedFirstLevel = selectedLevelFiles.first().readString();
+                map = json.fromJson(Map.class, selectedFirstLevel);
+                Gdx.app.log("Game Screen INFO", "Created new map for JSON data: " + selectedFirstLevel);
                 break;
             case ENDLESS:
                 map = new Map();
+                Gdx.app.log("Game Screen INFO", "Created new empty map for ENDLESS mode");
                 break;
         }
         map.setGameMode(gameMode);
@@ -74,6 +78,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         mapRenderer.dispose();
+        Gdx.app.debug("Game Screen DEBUG", "Disposed objects");
     }
 
 }

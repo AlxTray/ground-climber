@@ -67,7 +67,6 @@ public class MapRenderer {
             for (Platform platform : map.platforms) {
                 platform.draw(batch, 1);
             }
-
             batch.end();
         }
         if (!debugMode.equals(DebugRenderMode.NORMAL)) {
@@ -78,6 +77,7 @@ public class MapRenderer {
     public void dispose() {
         playerImage.dispose();
         batch.dispose();
+        Gdx.app.debug("MapRenderer DEBUG", "Disposed objects");
     }
 
 }
