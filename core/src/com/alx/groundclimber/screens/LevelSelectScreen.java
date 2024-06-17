@@ -50,7 +50,10 @@ public class LevelSelectScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         levelFiles = Gdx.files.internal("levels").list();
-        Gdx.app.log("Level Select DEBUG", "Finished grabbing all level files: " + Arrays.toString(levelFiles));
+        Gdx.app.log(
+                "Level Select DEBUG",
+                String.format("Finished grabbing all level files: %s", Arrays.toString(levelFiles))
+        );
         float buttonXIncrement = 0;
         for (FileHandle levelFile : levelFiles) {
             JsonReader jsonReader = new JsonReader();
@@ -59,7 +62,10 @@ public class LevelSelectScreen implements Screen {
             TextButton levelButton = new TextButton(jsonData.get("data").get("name").asString(), skin);
             levelButton.setPosition(100 + buttonXIncrement, 110);
             levelButton.setName(levelFile.name());
-            Gdx.app.debug("Level Select DEBUG", "Successfully created button for level: " + levelFile.name());
+            Gdx.app.debug(
+                    "Level Select DEBUG",
+                    String.format("Successfully created button for level: %s", levelFile.name())
+            );
 
             levelButton.addListener(new ClickListener() {
                 @Override
@@ -68,7 +74,10 @@ public class LevelSelectScreen implements Screen {
                     // If the text in the button is clicked the event is for the Label not TextButton
                     // So, if the event is Label the TextButton is the parent Actor
                     String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
-                    Gdx.app.log("Level Select Button INFO", "Selected level: " + levelName);
+                    Gdx.app.log(
+                            "Level Select Button INFO",
+                            String.format("Selected level: %s", levelName)
+                    );
                     game.setScreen(new GameScreen(
                             game,
                             GameMode.NORMAL,

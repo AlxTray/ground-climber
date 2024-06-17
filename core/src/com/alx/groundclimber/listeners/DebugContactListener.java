@@ -12,7 +12,14 @@ public class DebugContactListener implements ContactListener {
         Object bodyAUserData = bodyA.getUserData();
         Object bodyBUserData = bodyB.getUserData();
 
-        Gdx.app.debug("Contact DEBUG", "Object " + bodyAUserData.getClass().getSimpleName() + " collided with " + bodyBUserData.getClass().getSimpleName());
+        Gdx.app.debug(
+                "Contact DEBUG",
+                String.format(
+                        "Object %s collided with %s",
+                        bodyAUserData.getClass().getSimpleName(),
+                        bodyBUserData.getClass().getSimpleName()
+                )
+        );
     }
 
 

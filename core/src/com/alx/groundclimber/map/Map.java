@@ -98,7 +98,10 @@ public class Map implements Json.Serializable {
             platforms.removeValue((Platform) objectData, false);
 
             world.destroyBody(objectToDestroy);
-            Gdx.app.debug("Map DEBUG", "The object " + objectData.getClass().getSimpleName() + " has been destroyed from world");
+            Gdx.app.debug(
+                    "Map DEBUG",
+                    String.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName())
+            );
         }
         objectsToDestroy.clear();
     }

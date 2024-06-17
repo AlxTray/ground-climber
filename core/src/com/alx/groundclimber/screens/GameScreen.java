@@ -25,7 +25,10 @@ public class GameScreen implements Screen {
     public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
         this.game = game;
 
-        Gdx.app.log("Game Screen INFO", "The current game mode is: " + gameMode.name());
+        Gdx.app.log(
+                "Game Screen INFO",
+                String.format("The current game mode is: %s", gameMode.name())
+        );
         switch (gameMode) {
             case NORMAL:
                 for (String levelName : selectedLevelNames) {

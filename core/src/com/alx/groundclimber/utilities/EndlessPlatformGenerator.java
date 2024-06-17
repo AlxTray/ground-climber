@@ -30,7 +30,10 @@ public class EndlessPlatformGenerator {
 
     public Array<Platform> generatePlatformBatch() {
         int randomSeed = MathUtils.random(1, 50);
-        Gdx.app.debug("PlatformGenerator", "Batch seed: " + randomSeed);
+        Gdx.app.debug(
+                "PlatformGenerator",
+                String.format("Batch seed: %s", randomSeed)
+        );
         Array<Platform> platformBatch = new Array<>();
         double[] lastPlatformCoords = new double[]{
                 MathUtils.random((int) (lastPlatformX + 50), (int) lastPlatformX + 150),
