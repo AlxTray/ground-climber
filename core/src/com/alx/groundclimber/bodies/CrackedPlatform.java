@@ -15,8 +15,13 @@ public class CrackedPlatform extends Platform {
     public void incrementCrackLevel() {
         crackLevel++;
         Gdx.app.debug(
-                "Cracked Platform DEBUG",
-                String.format("Cracked level for platform at (%s, %s) is %s", this.getX(), this.getY(), this.crackLevel)
+                "CrackedPlatform - DEBUG",
+                String.format(
+                        "Cracked level for platform at (%s, %s) is now %s",
+                        this.getX(),
+                        this.getY(),
+                        this.crackLevel
+                )
         );
     }
 
