@@ -65,6 +65,8 @@ public class LevelSelectScreen implements Screen {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     Actor target = event.getTarget();
+                    // If the text in the button is clicked the event is for the Label not TextButton
+                    // So, if the event is Label the TextButton is the parent Actor
                     String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
                     Gdx.app.log("Level Select Button INFO", "Selected level: " + levelName);
                     game.setScreen(new GameScreen(

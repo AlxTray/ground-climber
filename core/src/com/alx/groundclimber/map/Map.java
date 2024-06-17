@@ -53,6 +53,7 @@ public class Map implements Json.Serializable {
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
 
+        // Generate initial endless platform batch here as when Map is instantiated the game mode is not known
         if (gameMode.equals(GameMode.ENDLESS)) {
             platGenerator = new EndlessPlatformGenerator(world);
             platforms = platGenerator.generateInitialBatch();
@@ -69,6 +70,7 @@ public class Map implements Json.Serializable {
     public void update(float delta) {
         player.update(delta);
 
+        // Kill player if they leave map bounds
         if (player.body.getPosition().y < 0) {
             Gdx.app.log("Map INFO", "Player has fell out of bounds");
             Gdx.app.exit();
