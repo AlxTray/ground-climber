@@ -8,6 +8,14 @@ public class CrackedPlatformContactListener implements ContactListener {
 
     Array<Body> platformsToDestroy = new Array<>();
 
+    public Array<Body> getPlatformsToDestroy() {
+        return platformsToDestroy;
+    }
+
+    public void clearPlatformsToDestroy() {
+        platformsToDestroy.clear();
+    }
+
     @Override
     public void beginContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
@@ -29,14 +37,6 @@ public class CrackedPlatformContactListener implements ContactListener {
                 platformsToDestroy.add(bodyB);
             }
         }
-    }
-
-    public Array<Body> getPlatformsToDestroy() {
-        return platformsToDestroy;
-    }
-
-    public void clearPlatformsToDestroy() {
-        platformsToDestroy.clear();
     }
 
 

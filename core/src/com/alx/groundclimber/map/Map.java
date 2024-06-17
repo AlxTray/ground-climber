@@ -3,16 +3,18 @@ package com.alx.groundclimber.map;
 import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
 import com.alx.groundclimber.bodies.Player;
+import com.alx.groundclimber.listeners.ContactListenerImpl;
 import com.alx.groundclimber.listeners.CrackedPlatformContactListener;
+import com.alx.groundclimber.listeners.DebugContactListener;
 import com.alx.groundclimber.utilities.EndlessPlatformGenerator;
 import com.alx.groundclimber.utilities.PlatformFactory;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
-import com.sun.org.slf4j.internal.LoggerFactory;
 
 public class Map implements Json.Serializable {
 
@@ -21,7 +23,7 @@ public class Map implements Json.Serializable {
     int PLAYER_INITIAL_X = 50;
 
     EndlessPlatformGenerator platGenerator;
-    CrackedPlatformContactListener crackedPlatformContactListener;
+    ContactListenerImpl contactListener;
 
     public World world;
     public Player player;
@@ -40,8 +42,12 @@ public class Map implements Json.Serializable {
                 PLAYER_INITIAL_RADIUS
         );
 
-        crackedPlatformContactListener = new CrackedPlatformContactListener();
-        world.setContactListener(crackedPlatformContactListener);
+        contactListener = new ContactListenerImpl();
+        contactListener.addContactListener(new CrackedPlatformContactListener());
+        if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
+            contactListener.addContactListener(new DebugContactListener());
+        }
+        world.setContactListener(contactListener);
     }
 
     public void setGameMode(GameMode gameMode) {
@@ -83,7 +89,7 @@ public class Map implements Json.Serializable {
     public void destroyQueuedObjects() {
         // Grab all queued objects to destroy from listeners
         // So that all objects can be destroyed at once and will not be locked
-        objectsToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
+        objectsToDestroy.addAll(contactListener.getBodiesToDestroy());
 
         for (Body objectToDestroy : objectsToDestroy) {
             Object objectData = objectToDestroy.getUserData();
@@ -92,7 +98,6 @@ public class Map implements Json.Serializable {
             world.destroyBody(objectToDestroy);
             Gdx.app.debug("Map DEBUG", "The object: " + objectData.getClass().getName() + " has been destroyed from world");
         }
-        crackedPlatformContactListener.clearPlatformsToDestroy();
         objectsToDestroy.clear();
     }
 

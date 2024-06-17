@@ -33,9 +33,8 @@ public class GameScreen implements Screen {
                 }
 
                 Json json = new Json();
-                String selectedFirstLevel = selectedLevelFiles.first().readString();
-                map = json.fromJson(Map.class, selectedFirstLevel);
-                Gdx.app.log("Game Screen INFO", "Created new map for JSON data: " + selectedFirstLevel);
+                map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
+                Gdx.app.log("Game Screen INFO", "Created new map for selected level data");
                 break;
             case ENDLESS:
                 map = new Map();
