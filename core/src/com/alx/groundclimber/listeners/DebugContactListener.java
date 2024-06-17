@@ -13,7 +13,7 @@ public class DebugContactListener implements ContactListener {
         Object bodyBUserData = bodyB.getUserData();
 
         Gdx.app.debug(
-                "Contact DEBUG",
+                "Contact - DEBUG",
                 String.format(
                         "Object %s collided with %s",
                         bodyAUserData.getClass().getSimpleName(),

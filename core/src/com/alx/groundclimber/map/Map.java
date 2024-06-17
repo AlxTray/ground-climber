@@ -58,13 +58,13 @@ public class Map implements Json.Serializable {
             platGenerator = new EndlessPlatformGenerator(world);
             platforms = platGenerator.generateInitialBatch();
             lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
-            Gdx.app.log("Map INFO", "Successfully generated initial endless platforms");
+            Gdx.app.log("Map - INFO", "Successfully generated initial endless platforms");
         }
     }
 
     public void spawnNewPlayer(int x, int y, int radius) {
         player = new Player(world, x, y, radius);
-        Gdx.app.log("Map INFO", "New player spawned successfully");
+        Gdx.app.log("Map - INFO", "New player spawned successfully");
     }
 
     public void update(float delta) {
@@ -72,7 +72,7 @@ public class Map implements Json.Serializable {
 
         // Kill player if they leave map bounds
         if (player.body.getPosition().y < 0) {
-            Gdx.app.log("Map INFO", "Player has fell out of bounds");
+            Gdx.app.debug("Map - DEBUG", "Player has fell out of bounds");
             Gdx.app.exit();
         }
 
@@ -80,7 +80,7 @@ public class Map implements Json.Serializable {
             if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
                 platforms = platGenerator.generatePlatformBatch();
                 lastPlatformInBatch = platforms.get(platforms.size - 1);
-                Gdx.app.log("Map INFO", "Successfully generated new endless platform batch");
+                Gdx.app.log("Map - INFO", "Successfully generated new endless platform batch");
             }
         }
 
@@ -99,7 +99,7 @@ public class Map implements Json.Serializable {
 
             world.destroyBody(objectToDestroy);
             Gdx.app.debug(
-                    "Map DEBUG",
+                    "Map - DEBUG",
                     String.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName())
             );
         }
@@ -118,7 +118,7 @@ public class Map implements Json.Serializable {
     public void read(Json json, JsonValue jsonData) {
         PlatformFactory platformFactory = new PlatformFactory(world);
         JsonValue normalPlatforms = jsonData.get("objects").get("platforms");
-        Gdx.app.log("Map INFO", "Loading level data...");
+        Gdx.app.log("Map - INFO", "Loading level data...");
         for (JsonValue platformData = normalPlatforms.child; platformData != null; platformData = platformData.next) {
             platforms.add(platformFactory.createPlatform(
                     platformData.get("type").asString(),
@@ -128,7 +128,10 @@ public class Map implements Json.Serializable {
                     platformData.get("width").asFloat()
             ));
         }
-        Gdx.app.log("Map INFO", "Level data loaded successfully");
+        Gdx.app.log(
+                "Map - INFO",
+                String.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString())
+        );
     }
 
 }

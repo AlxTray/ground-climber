@@ -77,7 +77,7 @@ public class MapRenderer {
     public void dispose() {
         playerImage.dispose();
         batch.dispose();
-        Gdx.app.debug("MapRenderer DEBUG", "Disposed objects");
+        Gdx.app.debug("MapRenderer - DEBUG", "Disposed objects");
     }
 
 }

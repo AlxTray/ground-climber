@@ -44,24 +44,24 @@ public class MainMenuScreen implements Screen {
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            Gdx.app.debug("Main Menu DEBUG", "Changing to Level Select screen");
+            Gdx.app.debug("MainMenu - DEBUG", "Changing to Level Select screen");
             game.setScreen(new LevelSelectScreen(game, debugMode));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
-            Gdx.app.debug("Main Menu DEBUG", "Changing to Game screen");
+            Gdx.app.debug("MainMenu - DEBUG", "Changing to Game screen");
             game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
             debugMode = DebugRenderMode.NORMAL;
-            Gdx.app.log("Main Menu INFO", "Updated render debug mode to: NORMAL");
+            Gdx.app.log("MainMenu - INFO", "Updated render debug mode to: NORMAL");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
             debugMode = DebugRenderMode.OVERLAY;
-            Gdx.app.log("Main Menu INFO", "Updated render debug mode to: OVERLAY");
+            Gdx.app.log("MainMenu - INFO", "Updated render debug mode to: OVERLAY");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F3)) {
             debugMode = DebugRenderMode.ONLY;
-            Gdx.app.log("Main Menu INFO", "Updated render debug mode to: ONLY");
+            Gdx.app.log("MainMenu - INFO", "Updated render debug mode to: ONLY");
         }
     }
 
@@ -89,7 +89,7 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
-        Gdx.app.debug("Main Menu DEBUG", "Disposed objects");
+        Gdx.app.debug("MainMenu - DEBUG", "Disposed objects");
     }
 
 }

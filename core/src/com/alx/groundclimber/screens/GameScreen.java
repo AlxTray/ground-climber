@@ -26,7 +26,7 @@ public class GameScreen implements Screen {
         this.game = game;
 
         Gdx.app.log(
-                "Game Screen INFO",
+                "GameScreen - INFO",
                 String.format("The current game mode is: %s", gameMode.name())
         );
         switch (gameMode) {
@@ -37,11 +37,10 @@ public class GameScreen implements Screen {
 
                 Json json = new Json();
                 map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
-                Gdx.app.log("Game Screen INFO", "Created new map for selected level data");
                 break;
             case ENDLESS:
                 map = new Map();
-                Gdx.app.log("Game Screen INFO", "Created new empty map for ENDLESS mode");
+                Gdx.app.log("GameScreen - INFO", "Empty map successfully created for ENDLESS mode");
                 break;
         }
         map.setGameMode(gameMode);
@@ -80,7 +79,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         mapRenderer.dispose();
-        Gdx.app.debug("Game Screen DEBUG", "Disposed objects");
+        Gdx.app.debug("GameScreen - DEBUG", "Disposed objects");
     }
 
 }

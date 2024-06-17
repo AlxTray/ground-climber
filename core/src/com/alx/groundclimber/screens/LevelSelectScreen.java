@@ -50,9 +50,9 @@ public class LevelSelectScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         levelFiles = Gdx.files.internal("levels").list();
-        Gdx.app.log(
-                "Level Select DEBUG",
-                String.format("Finished grabbing all level files: %s", Arrays.toString(levelFiles))
+        Gdx.app.debug(
+                "LevelSelect - DEBUG",
+                String.format("Found the following level files: %s", Arrays.toString(levelFiles))
         );
         float buttonXIncrement = 0;
         for (FileHandle levelFile : levelFiles) {
@@ -63,7 +63,7 @@ public class LevelSelectScreen implements Screen {
             levelButton.setPosition(100 + buttonXIncrement, 110);
             levelButton.setName(levelFile.name());
             Gdx.app.debug(
-                    "Level Select DEBUG",
+                    "LevelSelect - DEBUG",
                     String.format("Successfully created button for level: %s", levelFile.name())
             );
 
@@ -75,7 +75,7 @@ public class LevelSelectScreen implements Screen {
                     // So, if the event is Label the TextButton is the parent Actor
                     String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
                     Gdx.app.log(
-                            "Level Select Button INFO",
+                            "LevelSelectButton - INFO",
                             String.format("Selected level: %s", levelName)
                     );
                     game.setScreen(new GameScreen(
@@ -131,7 +131,7 @@ public class LevelSelectScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
-        Gdx.app.debug("Level Select DEBUG", "Disposed objects");
+        Gdx.app.debug("LevelSelect - DEBUG", "Disposed objects");
     }
 
 }

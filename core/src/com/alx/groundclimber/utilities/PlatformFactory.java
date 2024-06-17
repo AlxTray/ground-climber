@@ -17,10 +17,10 @@ public class PlatformFactory {
     public Platform createPlatform(String type, float x, float y, float height, float width) {
         switch (type) {
             case "normal":
-                Gdx.app.debug("PlatformFactory DEBUG", "Generated normal platform");
+                Gdx.app.debug("PlatformFactory - DEBUG", "Generated normal platform");
                 return new NormalPlatform(world, x, y, height, width);
             case "cracked":
-                Gdx.app.debug("PlatformFactory DEBUG", "Generated cracked platform");
+                Gdx.app.debug("PlatformFactory - DEBUG", "Generated cracked platform");
                 return new CrackedPlatform(world, x, y, height, width);
             default:
                 throw new IllegalArgumentException("Invalid platform type " + type);
