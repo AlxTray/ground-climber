@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class LevelSelectScreen implements Screen {
@@ -49,6 +50,10 @@ public class LevelSelectScreen implements Screen {
         skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
 
         levelFiles = Gdx.files.internal("levels").list();
+        Gdx.app.debug(
+                "LevelSelect - DEBUG",
+                String.format("Found the following level files: %s", Arrays.toString(levelFiles))
+        );
         float buttonXIncrement = 0;
         for (FileHandle levelFile : levelFiles) {
             JsonReader jsonReader = new JsonReader();
@@ -57,16 +62,27 @@ public class LevelSelectScreen implements Screen {
             TextButton levelButton = new TextButton(jsonData.get("data").get("name").asString(), skin);
             levelButton.setPosition(100 + buttonXIncrement, 110);
             levelButton.setName(levelFile.name());
+            Gdx.app.debug(
+                    "LevelSelect - DEBUG",
+                    String.format("Successfully created button for level: %s", levelFile.name())
+            );
 
             levelButton.addListener(new ClickListener() {
                 @Override
                 public void clicked(InputEvent event, float x, float y) {
                     Actor target = event.getTarget();
+                    // If the text in the button is clicked the event is for the Label not TextButton
+                    // So, if the event is Label the TextButton is the parent Actor
+                    String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
+                    Gdx.app.log(
+                            "LevelSelectButton - INFO",
+                            String.format("Selected level: %s", levelName)
+                    );
                     game.setScreen(new GameScreen(
                             game,
                             GameMode.NORMAL,
                             debugMode,
-                            (target instanceof Label) ? target.getParent().getName() : target.getName()
+                            levelName
                     ));
                 }
             });
@@ -115,6 +131,7 @@ public class LevelSelectScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        Gdx.app.debug("LevelSelect - DEBUG", "Disposed objects");
     }
 
 }

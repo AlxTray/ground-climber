@@ -44,19 +44,24 @@ public class MainMenuScreen implements Screen {
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+            Gdx.app.debug("MainMenu - DEBUG", "Changing to Level Select screen");
             game.setScreen(new LevelSelectScreen(game, debugMode));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            Gdx.app.debug("MainMenu - DEBUG", "Changing to Game screen");
             game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
             debugMode = DebugRenderMode.NORMAL;
+            Gdx.app.log("MainMenu - INFO", "Updated render debug mode to: NORMAL");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
             debugMode = DebugRenderMode.OVERLAY;
+            Gdx.app.log("MainMenu - INFO", "Updated render debug mode to: OVERLAY");
         }
         if (Gdx.input.isKeyPressed(Input.Keys.F3)) {
             debugMode = DebugRenderMode.ONLY;
+            Gdx.app.log("MainMenu - INFO", "Updated render debug mode to: ONLY");
         }
     }
 
@@ -84,6 +89,7 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         batch.dispose();
         font.dispose();
+        Gdx.app.debug("MainMenu - DEBUG", "Disposed objects");
     }
 
 }

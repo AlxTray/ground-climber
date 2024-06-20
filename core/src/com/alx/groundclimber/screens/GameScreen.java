@@ -25,6 +25,10 @@ public class GameScreen implements Screen {
     public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
         this.game = game;
 
+        Gdx.app.log(
+                "GameScreen - INFO",
+                String.format("The current game mode is: %s", gameMode.name())
+        );
         switch (gameMode) {
             case NORMAL:
                 for (String levelName : selectedLevelNames) {
@@ -36,6 +40,7 @@ public class GameScreen implements Screen {
                 break;
             case ENDLESS:
                 map = new Map();
+                Gdx.app.log("GameScreen - INFO", "Empty map successfully created for ENDLESS mode");
                 break;
         }
         map.setGameMode(gameMode);
@@ -74,6 +79,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         map.dispose();
         mapRenderer.dispose();
+        Gdx.app.debug("GameScreen - DEBUG", "Disposed objects");
     }
 
 }

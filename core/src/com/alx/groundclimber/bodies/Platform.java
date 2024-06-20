@@ -24,6 +24,7 @@ public class Platform extends Image {
 
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(this.getWidth() / 2, this.getHeight() / 2);
+        // Move body to fit texture
         body.setTransform(this.getX() + (this.getWidth() / 2), this.getY() + (this.getHeight() / 2), 0);
 
         FixtureDef fixtureDef = new FixtureDef();

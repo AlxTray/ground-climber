@@ -3,9 +3,12 @@ package com.alx.groundclimber.map;
 import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
 import com.alx.groundclimber.bodies.Player;
+import com.alx.groundclimber.listeners.ContactListenerImpl;
 import com.alx.groundclimber.listeners.CrackedPlatformContactListener;
+import com.alx.groundclimber.listeners.DebugContactListener;
 import com.alx.groundclimber.utilities.EndlessPlatformGenerator;
 import com.alx.groundclimber.utilities.PlatformFactory;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -20,7 +23,7 @@ public class Map implements Json.Serializable {
     int PLAYER_INITIAL_X = 50;
 
     EndlessPlatformGenerator platGenerator;
-    CrackedPlatformContactListener crackedPlatformContactListener;
+    ContactListenerImpl contactListener;
 
     public World world;
     public Player player;
@@ -39,28 +42,37 @@ public class Map implements Json.Serializable {
                 PLAYER_INITIAL_RADIUS
         );
 
-        crackedPlatformContactListener = new CrackedPlatformContactListener();
-        world.setContactListener(crackedPlatformContactListener);
+        contactListener = new ContactListenerImpl();
+        contactListener.addContactListener(new CrackedPlatformContactListener());
+        if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
+            contactListener.addContactListener(new DebugContactListener());
+        }
+        world.setContactListener(contactListener);
     }
 
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
 
+        // Generate initial endless platform batch here as when Map is instantiated the game mode is not known
         if (gameMode.equals(GameMode.ENDLESS)) {
             platGenerator = new EndlessPlatformGenerator(world);
             platforms = platGenerator.generateInitialBatch();
             lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
+            Gdx.app.log("Map - INFO", "Successfully generated initial endless platforms");
         }
     }
 
     public void spawnNewPlayer(int x, int y, int radius) {
         player = new Player(world, x, y, radius);
+        Gdx.app.log("Map - INFO", "New player spawned successfully");
     }
 
     public void update(float delta) {
         player.update(delta);
 
+        // Kill player if they leave map bounds
         if (player.body.getPosition().y < 0) {
+            Gdx.app.debug("Map - DEBUG", "Player has fell out of bounds");
             Gdx.app.exit();
         }
 
@@ -68,6 +80,7 @@ public class Map implements Json.Serializable {
             if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
                 platforms = platGenerator.generatePlatformBatch();
                 lastPlatformInBatch = platforms.get(platforms.size - 1);
+                Gdx.app.log("Map - INFO", "Successfully generated new endless platform batch");
             }
         }
 
@@ -78,15 +91,18 @@ public class Map implements Json.Serializable {
     public void destroyQueuedObjects() {
         // Grab all queued objects to destroy from listeners
         // So that all objects can be destroyed at once and will not be locked
-        objectsToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
+        objectsToDestroy.addAll(contactListener.getBodiesToDestroy());
 
         for (Body objectToDestroy : objectsToDestroy) {
             Object objectData = objectToDestroy.getUserData();
             platforms.removeValue((Platform) objectData, false);
 
             world.destroyBody(objectToDestroy);
+            Gdx.app.debug(
+                    "Map - DEBUG",
+                    String.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName())
+            );
         }
-        crackedPlatformContactListener.clearPlatformsToDestroy();
         objectsToDestroy.clear();
     }
 
@@ -102,6 +118,7 @@ public class Map implements Json.Serializable {
     public void read(Json json, JsonValue jsonData) {
         PlatformFactory platformFactory = new PlatformFactory(world);
         JsonValue normalPlatforms = jsonData.get("objects").get("platforms");
+        Gdx.app.log("Map - INFO", "Loading level data...");
         for (JsonValue platformData = normalPlatforms.child; platformData != null; platformData = platformData.next) {
             platforms.add(platformFactory.createPlatform(
                     platformData.get("type").asString(),
@@ -111,6 +128,10 @@ public class Map implements Json.Serializable {
                     platformData.get("width").asFloat()
             ));
         }
+        Gdx.app.log(
+                "Map - INFO",
+                String.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString())
+        );
     }
 
 }
