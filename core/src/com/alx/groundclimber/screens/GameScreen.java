@@ -46,6 +46,7 @@ public class GameScreen implements Screen {
         map.setGameMode(gameMode);
 
         mapRenderer = new MapRenderer(map, gameMode, debugMode);
+        map.attachRenderer(mapRenderer);
     }
 
     @Override
@@ -54,9 +55,8 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        map.update(delta);
         ScreenUtils.clear(0.3f, 0.3f, 0.46f, 1);
-        mapRenderer.render();
+        map.update(delta);
     }
 
     @Override

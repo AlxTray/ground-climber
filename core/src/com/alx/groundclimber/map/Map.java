@@ -10,6 +10,7 @@ import com.alx.groundclimber.utilities.EndlessPlatformGenerator;
 import com.alx.groundclimber.utilities.PlatformFactory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
@@ -24,13 +25,17 @@ public class Map implements Json.Serializable {
 
     EndlessPlatformGenerator platGenerator;
     ContactListenerImpl contactListener;
+    MapRenderer mapRenderer;
 
     public World world;
     public Player player;
+    OrthographicCamera camera;
     GameMode gameMode;
     Array<Body> objectsToDestroy = new Array<>();
 
     public Array<Platform> platforms = new Array<>();
+    Array<Integer> bounds = new Array<>();
+    Array<Float> cameraStartPos = new Array<>();
 
     Platform lastPlatformInBatch;
 
@@ -41,6 +46,9 @@ public class Map implements Json.Serializable {
                 PLAYER_INITIAL_Y,
                 PLAYER_INITIAL_RADIUS
         );
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, 800, 480);
 
         contactListener = new ContactListenerImpl();
         contactListener.addContactListener(new CrackedPlatformContactListener());
@@ -62,6 +70,10 @@ public class Map implements Json.Serializable {
         }
     }
 
+    public void attachRenderer(MapRenderer mapRenderer) {
+        this.mapRenderer = mapRenderer;
+    }
+
     public void spawnNewPlayer(int x, int y, int radius) {
         player = new Player(world, x, y, radius);
         Gdx.app.log("Map - INFO", "New player spawned successfully");
@@ -69,6 +81,14 @@ public class Map implements Json.Serializable {
 
     public void update(float delta) {
         player.update(delta);
+
+        if (gameMode.equals(GameMode.ENDLESS) && player.body.getPosition().x > 100) {
+            camera.translate(0.6f, 0);
+        }
+        if (gameMode.equals(GameMode.NORMAL)) {
+            camera.position.set(player.body.getPosition().x, player.body.getPosition().y, 0);
+        }
+        camera.update();
 
         // Kill player if they leave map bounds
         if (player.body.getPosition().y < 0) {
@@ -86,6 +106,8 @@ public class Map implements Json.Serializable {
 
         destroyQueuedObjects();
         world.step(1/60f, 6, 2);
+
+        mapRenderer.render(camera);
     }
 
     public void destroyQueuedObjects() {
@@ -116,11 +138,21 @@ public class Map implements Json.Serializable {
 
     @Override
     public void read(Json json, JsonValue jsonData) {
-        PlatformFactory platformFactory = new PlatformFactory(world);
-        JsonValue normalPlatforms = jsonData.get("objects").get("platforms");
         Gdx.app.log("Map - INFO", "Loading level data...");
-        for (JsonValue platformData = normalPlatforms.child; platformData != null; platformData = platformData.next) {
-            platforms.add(platformFactory.createPlatform(
+        JsonValue bounds = jsonData.get("data").get("bounds");
+        for (JsonValue boundsData = bounds.child; boundsData != null; boundsData = boundsData.next) {
+            this.bounds.add(boundsData.asInt());
+        }
+
+        JsonValue cameraPos = jsonData.get("data").get("bounds");
+        for (JsonValue cameraPosData = cameraPos.child; cameraPosData != null; cameraPosData = cameraPosData.next) {
+            this.cameraStartPos.add(cameraPosData.asFloat());
+        }
+
+        PlatformFactory platformFactory = new PlatformFactory(world);
+        JsonValue platforms = jsonData.get("objects").get("platforms");
+        for (JsonValue platformData = platforms.child; platformData != null; platformData = platformData.next) {
+            this.platforms.add(platformFactory.createPlatform(
                     platformData.get("type").asString(),
                     platformData.get("x").asFloat(),
                     platformData.get("y").asFloat(),

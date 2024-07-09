@@ -13,7 +13,6 @@ public class MapRenderer {
 
     Map map;
     GameMode gameMode;
-    OrthographicCamera camera;
     SpriteBatch batch;
     Texture playerImage;
     Texture backgroundImage;
@@ -27,25 +26,14 @@ public class MapRenderer {
         this.gameMode = gameMode;
         this.debugMode = debugMode;
 
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
         batch = new SpriteBatch();
-
         playerImage = new Texture(Gdx.files.internal("ball.png"));
         backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
         debugRenderer = new Box2DDebugRenderer();
     }
 
-    public void render() {
-        if (gameMode.equals(GameMode.ENDLESS) && map.player.body.getPosition().x > 100) {
-            camera.translate(0.6f, 0);
-        }
-        if (gameMode.equals(GameMode.NORMAL)) {
-            camera.position.set(map.player.body.getPosition().x, map.player.body.getPosition().y, 0);
-        }
-        camera.update();
-
+    public void render(OrthographicCamera camera) {
         if (!debugMode.equals(DebugRenderMode.ONLY)) {
             batch.begin();
             batch.disableBlending();
