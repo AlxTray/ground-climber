@@ -22,6 +22,7 @@ public class Map implements Json.Serializable {
     int PLAYER_INITIAL_RADIUS = 16;
     int PLAYER_INITIAL_Y = 500;
     int PLAYER_INITIAL_X = 50;
+    int CAMERA_MOVEMENT_THRESHOLD = 300;
 
     EndlessPlatformGenerator platGenerator;
     ContactListenerImpl contactListener;
@@ -35,7 +36,6 @@ public class Map implements Json.Serializable {
 
     public Array<Platform> platforms = new Array<>();
     Array<Integer> bounds = new Array<>();
-    Array<Float> cameraStartPos = new Array<>();
 
     Platform lastPlatformInBatch;
 
@@ -86,7 +86,7 @@ public class Map implements Json.Serializable {
             camera.translate(0.6f, 0);
         }
         if (gameMode.equals(GameMode.NORMAL)) {
-            camera.position.set(player.body.getPosition().x, player.body.getPosition().y, 0);
+            repositionCamera();
         }
         camera.update();
 
@@ -128,6 +128,28 @@ public class Map implements Json.Serializable {
         objectsToDestroy.clear();
     }
 
+    private void repositionCamera() {
+        float cameraLeft = camera.position.x - camera.viewportWidth / 2 + CAMERA_MOVEMENT_THRESHOLD;
+        float cameraRight = camera.position.x + camera.viewportWidth / 2 - CAMERA_MOVEMENT_THRESHOLD;
+        float cameraBottom = camera.position.y - camera.viewportHeight / 2 + CAMERA_MOVEMENT_THRESHOLD;
+        float cameraTop = camera.position.y + camera.viewportHeight / 2 - CAMERA_MOVEMENT_THRESHOLD;
+        Vector2 playerPos = player.body.getPosition();
+
+        if (playerPos.x < cameraLeft) {
+            camera.translate(-1.3f, 0);
+
+        }
+        if (playerPos.x > cameraRight) {
+            camera.translate(1.3f, 0);
+        }
+        if (playerPos.y < cameraBottom) {
+            camera.translate(0, -1.3f);
+        }
+        if (playerPos.x > cameraTop) {
+            camera.translate(0, 1.3f);
+        }
+    }
+
     public void dispose() {
     }
 
@@ -144,10 +166,14 @@ public class Map implements Json.Serializable {
             this.bounds.add(boundsData.asInt());
         }
 
-        JsonValue cameraPos = jsonData.get("data").get("bounds");
-        for (JsonValue cameraPosData = cameraPos.child; cameraPosData != null; cameraPosData = cameraPosData.next) {
-            this.cameraStartPos.add(cameraPosData.asFloat());
-        }
+        JsonValue cameraPos = jsonData.get("data").get("camera_start_pos");
+        float[] _cameraStartPos = cameraPos.asFloatArray();
+        // This is getting a float[] of length two [x, y] but camera requires a float[] of [x, y, z]
+        // this is 2D so did not want to have needless 0 in every level JSON camera position attribute
+        float[] cameraStartPos = new float[3];
+        System.arraycopy(_cameraStartPos, 0, cameraStartPos, 0, 2);
+        cameraStartPos[2] = 0;
+        camera.position.set(cameraStartPos);
 
         PlatformFactory platformFactory = new PlatformFactory(world);
         JsonValue platforms = jsonData.get("objects").get("platforms");
