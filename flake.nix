@@ -5,7 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      javaVersion = 21;
+      javaVersion = 17;
 
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
@@ -22,6 +22,10 @@
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
           packages = with pkgs; [ gradle ];
+
+	  shellHook = ''
+	    export LD_LIBRARY_PATH=$(nix build --print-out-paths --no-link nixpkgs#libGL)/lib
+	  '';  
         };
       });
     };
