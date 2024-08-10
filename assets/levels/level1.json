@@ -1,8 +1,8 @@
 {
   "data": {
     "name": "Tutorial",
-    "bounds": [400, 240, 1000, 10000],
-    "camera_start_pos": [400, 240]
+    "bounds": [0, 0, 1000, 1000],
+    "camera_start_pos": [50, 500]
   },
   "objects": {
     "platforms": [

@@ -135,17 +135,17 @@ public class Map implements Json.Serializable {
         float cameraTop = camera.position.y + camera.viewportHeight / 2 - CAMERA_MOVEMENT_THRESHOLD;
         Vector2 playerPos = player.body.getPosition();
 
-        if (playerPos.x < cameraLeft) {
+        // Have to add/subtract threshold back so the camera stop bound is absolute to the position defined
+        if (playerPos.x < cameraLeft && (cameraLeft - CAMERA_MOVEMENT_THRESHOLD) > bounds.get(0)) {
             camera.translate(-1.3f, 0);
-
         }
-        if (playerPos.x > cameraRight) {
+        if (playerPos.x > cameraRight && (cameraRight + CAMERA_MOVEMENT_THRESHOLD) < bounds.get(3)) {
             camera.translate(1.3f, 0);
         }
-        if (playerPos.y < cameraBottom) {
+        if (playerPos.y < cameraBottom && (cameraBottom - CAMERA_MOVEMENT_THRESHOLD) > bounds.get(1)) {
             camera.translate(0, -1.3f);
         }
-        if (playerPos.x > cameraTop) {
+        if (playerPos.y > cameraTop && (cameraTop + CAMERA_MOVEMENT_THRESHOLD) < bounds.get(2)) {
             camera.translate(0, 1.3f);
         }
     }
