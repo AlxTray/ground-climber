@@ -10,6 +10,7 @@ import com.alx.groundclimber.utilities.EndlessPlatformGenerator;
 import com.alx.groundclimber.utilities.PlatformFactory;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
@@ -96,6 +97,10 @@ public class Map implements Json.Serializable {
       repositionCamera();
     }
     camera.update();
+
+    if (Gdx.input.isKeyJustPressed(Keys.F3)) {
+      mapRenderer.toggleDebugInfo();
+    }
 
     // Kill player if they leave map bounds
     if (player.body.getPosition().y < 0) {
