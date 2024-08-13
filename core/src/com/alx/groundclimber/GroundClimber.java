@@ -7,16 +7,16 @@ import com.badlogic.gdx.Gdx;
 
 public class GroundClimber extends Game {
 
-	public void create() {
-		Gdx.app.setLogLevel(Application.LOG_DEBUG);
-		this.setScreen(new MainMenuScreen(this));
-	}
+  public void create() {
+    Gdx.app.setLogLevel(Application.LOG_DEBUG);
+    this.setScreen(new MainMenuScreen(this));
+  }
 
-	public void render() {
-		super.render();
-	}
+  public void render() {
+    super.render();
+  }
 
-	public void dispose() {
-	}
+  public void dispose() {
+  }
 
 }

@@ -1,7 +1,7 @@
 {
   "data": {
     "name": "Tutorial",
-    "bounds": [0, 0, 1000, 1000],
+    "bounds": [0, 0, 1000, 1500],
     "camera_start_pos": [50, 500]
   },
   "objects": {
@@ -26,6 +26,13 @@
         "y": 0,
         "height": 25,
         "width": 200
+      },
+      {
+        "type": "normal",
+        "x": 800,
+        "y": 0,
+        "height": 15,
+        "width": 1000
       }
     ]
   }

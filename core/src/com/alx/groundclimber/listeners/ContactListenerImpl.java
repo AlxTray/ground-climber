@@ -5,43 +5,42 @@ import com.badlogic.gdx.utils.Array;
 
 public class ContactListenerImpl implements ContactListener {
 
-    Array<ContactListener> contactListeners = new Array<>();
+  Array<ContactListener> contactListeners = new Array<>();
 
-    public void addContactListener(ContactListener contactListener) {
-        contactListeners.add(contactListener);
+  public void addContactListener(ContactListener contactListener) {
+    contactListeners.add(contactListener);
+  }
+
+  public Array<Body> getBodiesToDestroy() {
+    Array<Body> bodiesToDestroy = new Array<>();
+    for (ContactListener contactListener : contactListeners) {
+      if (contactListener.getClass().getSimpleName().equals("CrackedPlatformContactListener")) {
+        CrackedPlatformContactListener crackedPlatformContactListener = (CrackedPlatformContactListener) contactListener;
+        bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
+        crackedPlatformContactListener.clearPlatformsToDestroy();
+      }
     }
 
-    public Array<Body> getBodiesToDestroy() {
-        Array<Body> bodiesToDestroy = new Array<>();
-        for (ContactListener contactListener : contactListeners) {
-            if (contactListener.getClass().getSimpleName().equals("CrackedPlatformContactListener")) {
-                CrackedPlatformContactListener crackedPlatformContactListener = (CrackedPlatformContactListener) contactListener;
-                bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
-                crackedPlatformContactListener.clearPlatformsToDestroy();
-            }
-        }
+    return bodiesToDestroy;
+  }
 
-        return bodiesToDestroy;
+  @Override
+  public void beginContact(Contact contact) {
+    for (ContactListener contactListener : contactListeners) {
+      contactListener.beginContact(contact);
     }
+  }
 
-    @Override
-    public void beginContact(Contact contact) {
-        for (ContactListener contactListener : contactListeners) {
-            contactListener.beginContact(contact);
-        }
-    }
+  @Override
+  public void endContact(Contact contact) {
+  }
 
+  @Override
+  public void preSolve(Contact contact, Manifold manifold) {
+  }
 
-    @Override
-    public void endContact(Contact contact) {
-    }
-
-    @Override
-    public void preSolve(Contact contact, Manifold manifold) {
-    }
-
-    @Override
-    public void postSolve(Contact contact, ContactImpulse contactImpulse) {
-    }
+  @Override
+  public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+  }
 
 }

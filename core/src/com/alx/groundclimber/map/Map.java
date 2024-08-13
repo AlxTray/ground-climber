@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 public class Map implements Json.Serializable {
 
   int PLAYER_INITIAL_RADIUS = 16;
@@ -66,7 +69,9 @@ public class Map implements Json.Serializable {
       platGenerator = new EndlessPlatformGenerator(world);
       platforms = platGenerator.generateInitialBatch();
       lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
-      Gdx.app.log("Map - INFO", "Successfully generated initial endless platforms");
+      Gdx.app.log(
+          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
+          "Successfully generated initial endless platforms");
     }
   }
 
@@ -76,7 +81,9 @@ public class Map implements Json.Serializable {
 
   public void spawnNewPlayer(int x, int y, int radius) {
     player = new Player(world, x, y, radius);
-    Gdx.app.log("Map - INFO", "New player spawned successfully");
+    Gdx.app.log(
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
+        "New player spawned successfully");
   }
 
   public void update(float delta) {
@@ -92,7 +99,9 @@ public class Map implements Json.Serializable {
 
     // Kill player if they leave map bounds
     if (player.body.getPosition().y < 0) {
-      Gdx.app.debug("Map - DEBUG", "Player has fell out of bounds");
+      Gdx.app.log(
+          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
+          "Player has fell out of bounds");
       Gdx.app.exit();
     }
 
@@ -100,7 +109,9 @@ public class Map implements Json.Serializable {
       if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
         platforms = platGenerator.generatePlatformBatch();
         lastPlatformInBatch = platforms.get(platforms.size - 1);
-        Gdx.app.log("Map - INFO", "Successfully generated new endless platform batch");
+        Gdx.app.log(
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
+            "Successfully generated new endless platform batch");
       }
     }
 
@@ -121,7 +132,7 @@ public class Map implements Json.Serializable {
 
       world.destroyBody(objectToDestroy);
       Gdx.app.debug(
-          "Map - DEBUG",
+          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " DEBUG Map",
           String.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName()));
     }
     objectsToDestroy.clear();
@@ -174,7 +185,9 @@ public class Map implements Json.Serializable {
 
   @Override
   public void read(Json json, JsonValue jsonData) {
-    Gdx.app.log("Map - INFO", "Loading level data...");
+    Gdx.app.log(
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
+        "Loading level data...");
     JsonValue bounds = jsonData.get("data").get("bounds");
     for (JsonValue boundsData = bounds.child; boundsData != null; boundsData = boundsData.next) {
       this.bounds.add(boundsData.asInt());
@@ -202,7 +215,7 @@ public class Map implements Json.Serializable {
           platformData.get("width").asFloat()));
     }
     Gdx.app.log(
-        "Map - INFO",
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
         String.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString()));
   }
 
