@@ -56,7 +56,20 @@ public class MapRenderer {
       batch.draw(
           playerImage,
           map.player.body.getPosition().x - (playerImage.getWidth() / 2f),
-          map.player.body.getPosition().y - (playerImage.getHeight() / 2f));
+          map.player.body.getPosition().y - (playerImage.getHeight() / 2f),
+          playerImage.getWidth() / 2,
+          playerImage.getWidth() / 2,
+          playerImage.getWidth(),
+          playerImage.getHeight(),
+          1f,
+          1f,
+          (float) Math.toDegrees(map.player.body.getAngle()),
+          0,
+          0,
+          playerImage.getWidth(),
+          playerImage.getHeight(),
+          false,
+          false);
 
       if (debugInfo) {
         // 10 added as each line will be 10 pixels away from left anyway
