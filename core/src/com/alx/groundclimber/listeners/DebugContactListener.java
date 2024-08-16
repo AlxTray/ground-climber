@@ -19,8 +19,8 @@ public class DebugContactListener implements ContactListener {
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " DEBUG Contact",
         String.format(
             "Object %s collided with %s",
-            bodyAUserData.getClass().getSimpleName(),
-            bodyBUserData.getClass().getSimpleName()));
+            bodyBUserData.getClass().getSimpleName(),
+            bodyAUserData.getClass().getSimpleName()));
   }
 
   @Override
