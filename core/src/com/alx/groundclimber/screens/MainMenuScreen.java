@@ -46,35 +46,35 @@ public class MainMenuScreen implements Screen {
         "F1 will reset the above options", 100, 100);
     batch.end();
 
-    if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
+    if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
       Gdx.app.debug(
           LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
               + " DEBUG MainScreen",
           "Changing to LevelScreen");
       game.setScreen(new LevelSelectScreen(game, debugMode));
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+    if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
       Gdx.app.debug(
           LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
               + " DEBUG MainScreen",
           "Changing to GameScreen");
       game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.F1)) {
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
       debugMode = DebugRenderMode.NORMAL;
       Gdx.app.log(
           LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
               + " INFO MainScreen",
           "Updated render debug mode to: NORMAL");
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.F2)) {
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
       debugMode = DebugRenderMode.OVERLAY;
       Gdx.app.log(
           LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
               + " INFO MainScreen",
           "Updated render debug mode to: OVERLAY");
     }
-    if (Gdx.input.isKeyPressed(Input.Keys.F3)) {
+    if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
       debugMode = DebugRenderMode.ONLY;
       Gdx.app.log(
           LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
