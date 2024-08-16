@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.*;
 public class Player {
 
   final int MAX_VELOCITY = 240;
+  final float DEFAULT_FORCE = 1500000;
 
   public Body body;
   World world;
@@ -26,8 +27,8 @@ public class Player {
 
     FixtureDef fixtureDef = new FixtureDef();
     fixtureDef.shape = playerShape;
-    fixtureDef.density = 0.25f;
-    fixtureDef.friction = 0f;
+    fixtureDef.density = 0.1f;
+    fixtureDef.friction = 0.3f;
     fixtureDef.restitution = 1f;
     body.createFixture(fixtureDef);
 
@@ -35,18 +36,16 @@ public class Player {
   }
 
   public void update(float delta) {
-    handleKeyPresses();
+    handleKeyPresses(delta);
   }
 
-  public void handleKeyPresses() {
+  public void handleKeyPresses(float delta) {
     Vector2 velocity = this.body.getLinearVelocity();
-    Vector2 position = this.body.getPosition();
-
     if (Gdx.input.isKeyPressed(Input.Keys.A) && velocity.x > -MAX_VELOCITY) {
-      this.body.applyLinearImpulse((velocity.x < 0) ? -115f : -150f, 0, position.x, position.y, true);
+      body.applyForceToCenter(-DEFAULT_FORCE * delta, 0, true);
     }
     if (Gdx.input.isKeyPressed(Input.Keys.D) && velocity.x < MAX_VELOCITY) {
-      this.body.applyLinearImpulse((velocity.x > 0) ? 115f : 150f, 0, position.x, position.y, true);
+      body.applyForceToCenter(DEFAULT_FORCE * delta, 0, true);
     }
   }
 

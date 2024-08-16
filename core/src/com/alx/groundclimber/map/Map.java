@@ -27,6 +27,7 @@ public class Map implements Json.Serializable {
   int PLAYER_INITIAL_Y = 500;
   int PLAYER_INITIAL_X = 50;
   int CAMERA_MOVEMENT_THRESHOLD = 300;
+  float TIME_STEP = 1f / 120f;
 
   EndlessPlatformGenerator platGenerator;
   ContactListenerImpl contactListener;
@@ -36,6 +37,7 @@ public class Map implements Json.Serializable {
   public Player player;
   OrthographicCamera camera;
   GameMode gameMode;
+  float deltaAccumulator;
   Array<Body> objectsToDestroy = new Array<>();
 
   public Array<Platform> platforms = new Array<>();
@@ -44,7 +46,7 @@ public class Map implements Json.Serializable {
   Platform lastPlatformInBatch;
 
   public Map() {
-    world = new World(new Vector2(0, -75), true);
+    world = new World(new Vector2(0, -425), true);
     spawnNewPlayer(
         PLAYER_INITIAL_X,
         PLAYER_INITIAL_Y,
@@ -59,6 +61,7 @@ public class Map implements Json.Serializable {
       contactListener.addContactListener(new DebugContactListener());
     }
     world.setContactListener(contactListener);
+    deltaAccumulator = 0;
   }
 
   public void setGameMode(GameMode gameMode) {
@@ -88,12 +91,13 @@ public class Map implements Json.Serializable {
   }
 
   public void update(float delta) {
+    doPhysicsStep(delta);
+
     player.update(delta);
 
     if (gameMode.equals(GameMode.ENDLESS) && player.body.getPosition().x > 100) {
       camera.translate(0.6f, 0);
-    }
-    if (gameMode.equals(GameMode.NORMAL)) {
+    } else {
       repositionCamera();
     }
     camera.update();
@@ -121,7 +125,6 @@ public class Map implements Json.Serializable {
     }
 
     destroyQueuedObjects();
-    world.step(1 / 60f, 6, 2);
 
     mapRenderer.render(camera);
   }
@@ -141,6 +144,14 @@ public class Map implements Json.Serializable {
           String.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName()));
     }
     objectsToDestroy.clear();
+  }
+
+  public void doPhysicsStep(float delta) {
+    deltaAccumulator += delta;
+    while (deltaAccumulator >= TIME_STEP) {
+      world.step(TIME_STEP, 6, 2);
+      deltaAccumulator -= TIME_STEP;
+    }
   }
 
   private void repositionCamera() {
