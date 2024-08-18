@@ -24,8 +24,6 @@ import java.time.format.DateTimeFormatter;
 public class Map implements Json.Serializable {
 
   int PLAYER_INITIAL_RADIUS = 16;
-  int PLAYER_INITIAL_Y = 500;
-  int PLAYER_INITIAL_X = 50;
   int CAMERA_MOVEMENT_THRESHOLD = 300;
   float TIME_STEP = 1f / 120f;
   float CAMERA_TRANSLATION_STEP = 170f;
@@ -44,15 +42,12 @@ public class Map implements Json.Serializable {
 
   public Array<Platform> platforms = new Array<>();
   Array<Integer> bounds = new Array<>();
+  Array<Integer> playerSpawn = new Array<>();
 
   Platform lastPlatformInBatch;
 
   public Map() {
     world = new World(new Vector2(0, -425), true);
-    spawnNewPlayer(
-        PLAYER_INITIAL_X,
-        PLAYER_INITIAL_Y,
-        PLAYER_INITIAL_RADIUS);
 
     camera = new OrthographicCamera();
     camera.setToOrtho(false, 800, 480);
@@ -85,8 +80,10 @@ public class Map implements Json.Serializable {
     this.mapRenderer = mapRenderer;
   }
 
-  public void spawnNewPlayer(int x, int y, int radius) {
-    player = new Player(world, x, y, radius);
+  public void spawnNewPlayer(int radius) {
+    player = new Player(world, playerSpawn.get(0), playerSpawn.get(1), radius);
+    // Make sure that player starts bouncing at spawn
+    player.body.setLinearVelocity(0, -150);
     Gdx.app.log(
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
         "New player spawned successfully");
@@ -209,10 +206,16 @@ public class Map implements Json.Serializable {
     Gdx.app.log(
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
         "Loading level data...");
-    JsonValue bounds = jsonData.get("data").get("bounds");
-    for (JsonValue boundsData = bounds.child; boundsData != null; boundsData = boundsData.next) {
+    JsonValue boundsValue = jsonData.get("data").get("bounds");
+    for (JsonValue boundsData = boundsValue.child; boundsData != null; boundsData = boundsData.next) {
       this.bounds.add(boundsData.asInt());
     }
+
+    JsonValue playerSpawnValue = jsonData.get("data").get("player_start_pos");
+    for (JsonValue playerSpawnData = playerSpawnValue.child; playerSpawnData != null; playerSpawnData = playerSpawnData.next) {
+      this.playerSpawn.add(playerSpawnData.asInt());
+    }
+    spawnNewPlayer(PLAYER_INITIAL_RADIUS);
 
     JsonValue cameraPos = jsonData.get("data").get("camera_start_pos");
     float[] _cameraStartPos = cameraPos.asFloatArray();
