@@ -28,6 +28,8 @@ public class Map implements Json.Serializable {
   int PLAYER_INITIAL_X = 50;
   int CAMERA_MOVEMENT_THRESHOLD = 300;
   float TIME_STEP = 1f / 120f;
+  float CAMERA_TRANSLATION_STEP = 170f;
+  float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
 
   EndlessPlatformGenerator platGenerator;
   ContactListenerImpl contactListener;
@@ -96,9 +98,9 @@ public class Map implements Json.Serializable {
     player.update(delta);
 
     if (gameMode.equals(GameMode.ENDLESS) && player.body.getPosition().x > 100) {
-      camera.translate(0.6f, 0);
+      camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
     } else {
-      repositionCamera();
+      repositionCamera(delta);
     }
     camera.update();
 
@@ -154,7 +156,7 @@ public class Map implements Json.Serializable {
     }
   }
 
-  private void repositionCamera() {
+  private void repositionCamera(float delta) {
     float cameraLeft = camera.position.x - camera.viewportWidth / 2;
     float cameraRight = camera.position.x + camera.viewportWidth / 2;
     float cameraBottom = camera.position.y - camera.viewportHeight / 2;
@@ -164,16 +166,16 @@ public class Map implements Json.Serializable {
     // Have to add/subtract threshold back so the camera stop bound is absolute to
     // the position defined
     if (playerPos.x < (cameraLeft + CAMERA_MOVEMENT_THRESHOLD) && cameraLeft > bounds.get(0)) {
-      camera.translate(-1.3f, 0);
+      camera.translate(-CAMERA_TRANSLATION_STEP * delta, 0);
     }
     if (playerPos.x > (cameraRight - CAMERA_MOVEMENT_THRESHOLD) && cameraRight < bounds.get(3)) {
-      camera.translate(1.3f, 0);
+      camera.translate(CAMERA_TRANSLATION_STEP * delta, 0);
     }
     if (playerPos.y < (cameraBottom + CAMERA_MOVEMENT_THRESHOLD) && cameraBottom > bounds.get(1)) {
-      camera.translate(0, -1.3f);
+      camera.translate(0, -CAMERA_TRANSLATION_STEP * delta);
     }
     if (playerPos.y > (cameraTop - CAMERA_MOVEMENT_THRESHOLD) && cameraTop < bounds.get(2)) {
-      camera.translate(0, 1.3f);
+      camera.translate(0, CAMERA_TRANSLATION_STEP * delta);
     }
 
     // Move camera back within bounds if it has left
