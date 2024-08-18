@@ -109,7 +109,10 @@ public class Map implements Json.Serializable {
     }
 
     // Kill player if they leave map bounds
-    if (player.body.getPosition().y < 0) {
+    if (player.body.getPosition().x < bounds.get(0)
+        || player.body.getPosition().x > bounds.get(3)
+        || player.body.getPosition().y < bounds.get(1)
+        || player.body.getPosition().y > bounds.get(2)) {
       Gdx.app.log(
           LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
           "Player has fell out of bounds");
