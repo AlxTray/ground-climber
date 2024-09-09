@@ -36,7 +36,7 @@ public class MapRenderer {
     batch = new SpriteBatch();
     font = new BitmapFont();
     playerImage = new Texture(Gdx.files.internal("player.png"));
-    playerImage = new Texture(Gdx.files.internal("player_face.png"));
+    playerFaceImage = new Texture(Gdx.files.internal("player_face.png"));
     backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
     debugRenderer = new Box2DDebugRenderer();
@@ -55,7 +55,10 @@ public class MapRenderer {
           camera.viewportHeight);
       batch.enableBlending();
       batch.setProjectionMatrix(camera.combined);
-      batch.draw(playerImage, map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f));
+      batch.draw(
+              playerImage,
+              map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),
+              map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f));
       batch.draw(
               playerFaceImage,
               map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),
