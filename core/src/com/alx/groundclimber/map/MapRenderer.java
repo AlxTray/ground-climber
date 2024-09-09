@@ -20,6 +20,7 @@ public class MapRenderer {
   SpriteBatch batch;
   BitmapFont font;
   Texture playerImage;
+  Texture playerFaceImage;
   Texture backgroundImage;
 
   // Debug rendering
@@ -34,7 +35,8 @@ public class MapRenderer {
 
     batch = new SpriteBatch();
     font = new BitmapFont();
-    playerImage = new Texture(Gdx.files.internal("ball.png"));
+    playerImage = new Texture(Gdx.files.internal("player.png"));
+    playerImage = new Texture(Gdx.files.internal("player_face.png"));
     backgroundImage = new Texture(Gdx.files.internal("background.png"));
 
     debugRenderer = new Box2DDebugRenderer();
@@ -53,23 +55,24 @@ public class MapRenderer {
           camera.viewportHeight);
       batch.enableBlending();
       batch.setProjectionMatrix(camera.combined);
+      batch.draw(playerImage, map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f));
       batch.draw(
-          playerImage,
-          map.player.body.getPosition().x - (playerImage.getWidth() / 2f),
-          map.player.body.getPosition().y - (playerImage.getHeight() / 2f),
-          playerImage.getWidth() / 2,
-          playerImage.getWidth() / 2,
-          playerImage.getWidth(),
-          playerImage.getHeight(),
-          1f,
-          1f,
-          (float) Math.toDegrees(map.player.body.getAngle()),
-          0,
-          0,
-          playerImage.getWidth(),
-          playerImage.getHeight(),
-          false,
-          false);
+              playerFaceImage,
+              map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),
+              map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f),
+              playerFaceImage.getWidth() / 2,
+              playerFaceImage.getWidth() / 2,
+              playerFaceImage.getWidth(),
+              playerFaceImage.getHeight(),
+              1f,
+              1f,
+              (float) Math.toDegrees(map.player.body.getAngle()),
+              0,
+              0,
+              playerFaceImage.getWidth(),
+              playerFaceImage.getHeight(),
+              false,
+              false);
 
       if (debugInfo) {
         // 10 added as each line will be 10 pixels away from left anyway
