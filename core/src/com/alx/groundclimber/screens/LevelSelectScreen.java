@@ -3,8 +3,11 @@ package com.alx.groundclimber.screens;
 import com.alx.groundclimber.GroundClimber;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
+import com.alx.groundclimber.utilities.AssetLibrary;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -47,8 +50,8 @@ public class LevelSelectScreen implements Screen {
 
     stage = new Stage();
     Gdx.input.setInputProcessor(stage);
-
-    skin = new Skin(Gdx.files.internal("skin/uiskin.json"));
+    
+    skin = AssetLibrary.getInstance().getAssetManager().get("skin/uiskin.json");
 
     levelFiles = Gdx.files.internal("levels").list();
     Gdx.app.debug(
