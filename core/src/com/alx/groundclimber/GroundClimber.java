@@ -22,7 +22,7 @@ public class GroundClimber extends Game {
     while (!assetManager.isFinished()) {
       assetManager.update();
     }
-    Gdx.app.log(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " DEBUG Game", "Finished loading initial assets");
+    Gdx.app.log(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Game", "Finished loading initial assets");
     
     this.setScreen(new MainMenuScreen(this));
   }

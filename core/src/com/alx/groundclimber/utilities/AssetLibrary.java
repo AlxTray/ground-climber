@@ -16,6 +16,7 @@ public class AssetLibrary {
     private String skinJsonPath = "skin/uiskin.json";
     private String playerImagePath = "player.png";
     private String playerFaceImagePath = "player_face.png";
+    
     private String backgroundImagePath = "background.png";
 
     private AssetLibrary() {
@@ -47,7 +48,8 @@ public class AssetLibrary {
         filePathAliases.put("playerFace", playerFaceImagePath);
     }
     
-    private void loadGeneralLevelAssets() {
+    
+    public void loadGeneralLevelAssets() {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
         assetManager.load(backgroundImagePath, Texture.class, textureParameter);
         filePathAliases.put("background", backgroundImagePath);
