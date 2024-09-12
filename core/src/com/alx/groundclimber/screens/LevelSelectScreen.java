@@ -51,7 +51,7 @@ public class LevelSelectScreen implements Screen {
     stage = new Stage();
     Gdx.input.setInputProcessor(stage);
     
-    skin = AssetLibrary.getInstance().getAssetManager().get("skin/uiskin.json");
+    skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
 
     levelFiles = Gdx.files.internal("levels").list();
     Gdx.app.debug(

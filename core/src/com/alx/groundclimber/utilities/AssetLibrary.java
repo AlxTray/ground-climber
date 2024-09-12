@@ -55,6 +55,15 @@ public class AssetLibrary {
         filePathAliases.put("background", backgroundImagePath);
     }
     
+    
+    public <T> T getAsset(String assetAlias, Class<T> type) {
+        String assetPath = filePathAliases.get(assetAlias);
+        if (assetPath == null) {
+            throw new IllegalArgumentException("Asset '" + assetAlias + "' not found");
+        }
+        return assetManager.get(assetPath, type);
+    }
+    
     public AssetManager getAssetManager() {
         return assetManager;
     }

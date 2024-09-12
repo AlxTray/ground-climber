@@ -37,9 +37,11 @@ public class MapRenderer {
 
     batch = new SpriteBatch();
     font = new BitmapFont();
-    playerImage = new Texture(Gdx.files.internal("player.png"));
-    playerFaceImage = new Texture(Gdx.files.internal("player_face.png"));
-    backgroundImage = new Texture(Gdx.files.internal("background.png"));
+    
+    AssetLibrary assetLibrary = AssetLibrary.getInstance();
+    playerImage = assetLibrary.getAsset("player", Texture.class);
+    playerFaceImage = assetLibrary.getAsset("playerFace", Texture.class);
+    backgroundImage = assetLibrary.getAsset("background", Texture.class);
 
     debugRenderer = new Box2DDebugRenderer();
     debugInfo = false;
