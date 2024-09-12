@@ -22,8 +22,8 @@ public class CrackedPlatform extends Platform {
             + " DEBUG CrackedPlatform",
         String.format(
             "Cracked level for platform at (%s, %s) is now %s",
-            this.getX(),
-            this.getY(),
+            this.body.getPosition().x,
+            this.body.getPosition().y,
             this.crackLevel));
   }
 

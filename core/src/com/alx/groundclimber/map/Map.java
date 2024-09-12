@@ -117,7 +117,7 @@ public class Map implements Json.Serializable {
     }
 
     if (gameMode.equals(GameMode.ENDLESS)) {
-      if (lastPlatformInBatch.getX() < player.body.getPosition().x) {
+      if (lastPlatformInBatch.body.getPosition().x < player.body.getPosition().x) {
         platforms = platGenerator.generatePlatformBatch();
         lastPlatformInBatch = platforms.get(platforms.size - 1);
         Gdx.app.log(

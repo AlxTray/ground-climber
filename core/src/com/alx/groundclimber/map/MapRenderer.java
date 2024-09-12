@@ -95,9 +95,9 @@ public class MapRenderer {
             cornerY - 70);
       }
 
-      for (Platform platform : map.platforms) {
-        platform.draw(batch, 1);
-      }
+      //for (Platform platform : map.platforms) {
+      //  platform.draw(batch, 1);
+      //}
       batch.end();
     }
     if (!debugMode.equals(DebugRenderMode.NORMAL)) {
