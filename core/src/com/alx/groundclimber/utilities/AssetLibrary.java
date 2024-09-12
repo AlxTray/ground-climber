@@ -17,6 +17,7 @@ public class AssetLibrary {
     private String playerImagePath = "player.png";
     private String playerFaceImagePath = "player_face.png";
     
+    private String platformTilePath = "platform.png";
     private String backgroundImagePath = "background.png";
 
     private AssetLibrary() {
@@ -53,6 +54,8 @@ public class AssetLibrary {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
         assetManager.load(backgroundImagePath, Texture.class, textureParameter);
         filePathAliases.put("background", backgroundImagePath);
+        assetManager.load(platformTilePath, Texture.class, textureParameter);
+        filePathAliases.put("platformTile", platformTilePath);
     }
     
     
