@@ -53,7 +53,7 @@ public class EndlessPlatformGenerator {
           currentPlatformWidth);
       platformBatch.add(newPlatform);
       lastPlatformCoords = new double[] {
-          newPlatform.getX() + currentPlatformWidth,
+          newPlatform.body.getPosition().x + currentPlatformWidth,
           currentPlatformHeight
       };
     }

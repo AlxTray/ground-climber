@@ -3,17 +3,22 @@ package com.alx.groundclimber.map;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
+import com.alx.groundclimber.utilities.AssetLibrary;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class MapRenderer {
+  
+  int TILE_SIZE = 18;
 
   Map map;
   GameMode gameMode;
@@ -22,6 +27,7 @@ public class MapRenderer {
   Texture playerImage;
   Texture playerFaceImage;
   Texture backgroundImage;
+  Texture platformTileImage;
 
   // Debug rendering
   Box2DDebugRenderer debugRenderer;
@@ -35,9 +41,12 @@ public class MapRenderer {
 
     batch = new SpriteBatch();
     font = new BitmapFont();
-    playerImage = new Texture(Gdx.files.internal("player.png"));
-    playerFaceImage = new Texture(Gdx.files.internal("player_face.png"));
-    backgroundImage = new Texture(Gdx.files.internal("background.png"));
+    
+    AssetLibrary assetLibrary = AssetLibrary.getInstance();
+    playerImage = assetLibrary.getAsset("player", Texture.class);
+    playerFaceImage = assetLibrary.getAsset("playerFace", Texture.class);
+    backgroundImage = assetLibrary.getAsset("background", Texture.class);
+    platformTileImage = assetLibrary.getAsset("platformTile", Texture.class);
 
     debugRenderer = new Box2DDebugRenderer();
     debugInfo = false;
@@ -90,9 +99,15 @@ public class MapRenderer {
         font.draw(batch, String.format("Player Ang Vec: %.2f", map.player.body.getAngularVelocity()), cornerX,
             cornerY - 70);
       }
-
+      
       for (Platform platform : map.platforms) {
-        platform.draw(batch, 1);
+        Vector2 platformPos = platform.body.getPosition();
+        for (float placementX = platformPos.x; placementX < platform.width + platformPos.x; placementX += TILE_SIZE) {
+          for (float placementY = platformPos.y; placementY < platform.height + platformPos.y; placementY += TILE_SIZE) {
+            // Minus half width and height as x and y used here is the adjusted version for Box2D
+            batch.draw(platformTileImage, placementX - (platform.width / 2), placementY - (platform.height / 2));
+          }
+        }
       }
       batch.end();
     }

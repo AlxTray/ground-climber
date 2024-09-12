@@ -11,29 +11,29 @@
         "type": "normal",
         "x": 0,
         "y": 0,
-        "height": 40,
-        "width": 200
+        "height": 54,
+        "width": 216
       },
       {
         "type": "normal",
         "x": 230,
         "y": 0,
-        "height": 20,
-        "width": 250
+        "height": 36,
+        "width": 252
       },
       {
         "type": "normal",
         "x": 550,
         "y": 0,
-        "height": 25,
-        "width": 200
+        "height": 18,
+        "width": 198
       },
       {
         "type": "normal",
         "x": 800,
         "y": 0,
-        "height": 15,
-        "width": 1000
+        "height": 18,
+        "width": 900
       }
     ]
   }
