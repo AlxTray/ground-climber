@@ -15,20 +15,20 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 
 public class MapRenderer {
   
-  static final int TILE_SIZE = 18;
+  private static final int TILE_SIZE = 18;
 
-  final Map map;
-  final SpriteBatch batch;
-  final BitmapFont font;
-  final Texture playerImage;
-  final Texture playerFaceImage;
-  final Texture backgroundImage;
-  final Texture platformTileImage;
+  private final Map map;
+  private final SpriteBatch batch;
+  private final BitmapFont font;
+  private final Texture playerImage;
+  private final Texture playerFaceImage;
+  private final Texture backgroundImage;
+  private final Texture platformTileImage;
 
   // Debug rendering
-  final Box2DDebugRenderer debugRenderer;
-  final DebugRenderMode debugMode;
-  boolean debugInfo;
+  private final Box2DDebugRenderer debugRenderer;
+  private final DebugRenderMode debugMode;
+  private boolean debugInfo;
 
   public MapRenderer(Map map, DebugRenderMode debugMode) {
     this.map = map;
@@ -96,11 +96,11 @@ public class MapRenderer {
       }
       
       for (Platform platform : map.getPlatforms()) {
-        Vector2 platformPos = platform.body.getPosition();
-        for (float placementX = platformPos.x; placementX < platform.width + platformPos.x; placementX += TILE_SIZE) {
-          for (float placementY = platformPos.y; placementY < platform.height + platformPos.y; placementY += TILE_SIZE) {
+        Vector2 platformPos = platform.getPosition();
+        for (float placementX = platformPos.x; placementX < platform.getWidth() + platformPos.x; placementX += TILE_SIZE) {
+          for (float placementY = platformPos.y; placementY < platform.getHeight() + platformPos.y; placementY += TILE_SIZE) {
             // Minus half width and height as x and y used here is the adjusted version for Box2D
-            batch.draw(platformTileImage, placementX - (platform.width / 2), placementY - (platform.height / 2));
+            batch.draw(platformTileImage, placementX - (platform.getWidth() / 2), placementY - (platform.getHeight() / 2));
           }
         }
       }

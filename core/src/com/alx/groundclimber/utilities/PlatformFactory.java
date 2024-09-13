@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class PlatformFactory {
 
-  final World world;
+  private final World world;
 
   public PlatformFactory(World world) {
     this.world = world;

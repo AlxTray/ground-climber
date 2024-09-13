@@ -22,20 +22,20 @@ import com.badlogic.gdx.utils.JsonValue;
 
 public class Map implements Json.Serializable {
 
-  static final int PLAYER_INITIAL_RADIUS = 16;
-  static final int CAMERA_MOVEMENT_THRESHOLD = 300;
-  static final float TIME_STEP = 1f / 120f;
-  static final float CAMERA_TRANSLATION_STEP = 170f;
-  static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
+  private static final int PLAYER_INITIAL_RADIUS = 16;
+  private static final int CAMERA_MOVEMENT_THRESHOLD = 300;
+  private static final float TIME_STEP = 1f / 120f;
+  private static final float CAMERA_TRANSLATION_STEP = 170f;
+  private static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
 
-  EndlessPlatformGenerator platGenerator;
-  final ContactListenerImpl contactListener;
-  MapRenderer mapRenderer;
+  private EndlessPlatformGenerator platGenerator;
+  private final ContactListenerImpl contactListener;
+  protected MapRenderer mapRenderer;
 
   public final World world;
   private Player player;
   final OrthographicCamera camera;
-  GameMode gameMode;
+  private GameMode gameMode;
   float deltaAccumulator;
   final Array<Body> objectsToDestroy = new Array<>();
 
@@ -43,7 +43,7 @@ public class Map implements Json.Serializable {
   final Array<Integer> bounds = new Array<>();
   final Array<Integer> playerSpawn = new Array<>();
 
-  Platform lastPlatformInBatch;
+  private Platform lastPlatformInBatch;
 
   public Map() {
     world = new World(new Vector2(0, -425), true);
@@ -66,7 +66,7 @@ public class Map implements Json.Serializable {
   }
   
   public Body getPlayerBody() {
-    return player.body;
+    return player.getBody();
   }
   
 
@@ -93,7 +93,7 @@ public class Map implements Json.Serializable {
   public void spawnNewPlayer(int radius) {
     player = new Player(world, playerSpawn.get(0), playerSpawn.get(1), radius);
     // Make sure that player starts bouncing at spawn
-    player.body.setLinearVelocity(0, -150);
+    player.getBody().setLinearVelocity(0, -150);
     Logger.log(
         "Map",
         "New player spawned successfully",
@@ -106,7 +106,7 @@ public class Map implements Json.Serializable {
 
     player.update(delta);
 
-    if (gameMode.equals(GameMode.ENDLESS) && player.body.getPosition().x > 100) {
+    if (gameMode.equals(GameMode.ENDLESS) && player.getBody().getPosition().x > 100) {
       camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
     } else {
       repositionCamera(delta);
@@ -118,10 +118,10 @@ public class Map implements Json.Serializable {
     }
 
     // Kill player if they leave map bounds
-    if (player.body.getPosition().x < bounds.get(0)
-        || player.body.getPosition().x > bounds.get(3)
-        || player.body.getPosition().y < bounds.get(1)
-        || player.body.getPosition().y > bounds.get(2)) {
+    if (player.getBody().getPosition().x < bounds.get(0)
+        || player.getPosition().x > bounds.get(3)
+        || player.getPosition().y < bounds.get(1)
+        || player.getPosition().y > bounds.get(2)) {
       Logger.log(
           "Map",
           "Player has fell out of bounds",
@@ -129,7 +129,7 @@ public class Map implements Json.Serializable {
       Gdx.app.exit();
     }
 
-    if (gameMode.equals(GameMode.ENDLESS) && lastPlatformInBatch.body.getPosition().x < player.body.getPosition().x) {
+    if (gameMode.equals(GameMode.ENDLESS) && lastPlatformInBatch.getPosition().x < player.getPosition().x) {
         platforms = platGenerator.generatePlatformBatch();
         lastPlatformInBatch = platforms.get(platforms.size - 1);
         Logger.log(
@@ -175,7 +175,7 @@ public class Map implements Json.Serializable {
     float cameraRight = camera.position.x + camera.viewportWidth / 2;
     float cameraBottom = camera.position.y - camera.viewportHeight / 2;
     float cameraTop = camera.position.y + camera.viewportHeight / 2;
-    Vector2 playerPos = player.body.getPosition();
+    Vector2 playerPos = player.getPosition();
 
     // Have to add/subtract threshold back so the camera stop bound is absolute to
     // the position defined

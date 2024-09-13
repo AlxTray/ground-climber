@@ -8,14 +8,14 @@ import com.badlogic.gdx.utils.Array;
 
 public class EndlessPlatformGenerator {
 
-  final PlatformFactory platformFactory;
+  private final PlatformFactory platformFactory;
   
   private static final String ENDLESS_PLATFORM_TYPE = "normal";
 
   // Values set to values from last platform in the initial batch
-  float lastPlatformX = 520f;
-  float currentPlatformWidth = 60f;
-  float currentPlatformHeight = 20f;
+  private float lastPlatformX = 520f;
+  private float currentPlatformWidth = 60f;
+  private float currentPlatformHeight = 20f;
 
   public EndlessPlatformGenerator(World world) {
     platformFactory = new PlatformFactory(world);
@@ -52,7 +52,7 @@ public class EndlessPlatformGenerator {
           currentPlatformWidth);
       platformBatch.add(newPlatform);
       lastPlatformCoords = new double[] {
-          newPlatform.body.getPosition().x + currentPlatformWidth,
+          newPlatform.getPosition().x + currentPlatformWidth,
           currentPlatformHeight
       };
     }

@@ -1,12 +1,13 @@
 package com.alx.groundclimber.bodies;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Platform {
 
-  public final Body body;
-  public final float height;
-  public final float width;
+  protected final Body body;
+  private final float height;
+  private final float width;
 
   public Platform(World world, float x, float y, float height, float width) {
     this.height = height;
@@ -26,6 +27,22 @@ public class Platform {
     body.createFixture(fixtureDef);
 
     shape.dispose();
+  }
+  
+  public Body getBody() {
+    return body;
+  }
+  
+  public Vector2 getPosition() {
+    return body.getPosition();
+  }
+  
+  public float getHeight() {
+    return height;
+  }
+  
+  public float getWidth() {
+    return width;
   }
 
 }

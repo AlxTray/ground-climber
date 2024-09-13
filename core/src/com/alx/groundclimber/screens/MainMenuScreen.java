@@ -15,12 +15,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class MainMenuScreen implements Screen {
 
-  final GroundClimber game;
+  private final GroundClimber game;
 
-  final SpriteBatch batch;
-  final BitmapFont font;
-  DebugRenderMode debugMode = DebugRenderMode.NORMAL;
-  final OrthographicCamera camera;
+  private final SpriteBatch batch;
+  private final BitmapFont font;
+  private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
+  private final OrthographicCamera camera;
 
   public MainMenuScreen(final GroundClimber game) {
     this.game = game;

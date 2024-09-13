@@ -15,11 +15,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
 
+import java.util.Arrays;
+
 public class GameScreen implements Screen {
 
-  final Array<FileHandle> selectedLevelFiles = new Array<>();
-  Map map;
-  final MapRenderer mapRenderer;
+  private Map map;
+  private final MapRenderer mapRenderer;
 
   public GameScreen(GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
 
@@ -43,6 +44,7 @@ public class GameScreen implements Screen {
         String.format("The current game mode is: %s", gameMode.name()),
         LogLevel.INFO);
     if (gameMode == GameMode.NORMAL) {
+      Array<FileHandle> selectedLevelFiles = new Array<>();
       for (String levelName : selectedLevelNames) {
         selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
       }

@@ -27,12 +27,10 @@ import java.util.Arrays;
 
 public class LevelSelectScreen implements Screen {
 
-  final SpriteBatch batch;
-  final BitmapFont font;
-  final OrthographicCamera camera;
-  final Stage stage;
-  final Skin skin;
-  final FileHandle[] levelFiles;
+  private final SpriteBatch batch;
+  private final BitmapFont font;
+  private final OrthographicCamera camera;
+  private final Stage stage;
 
   public LevelSelectScreen(final GroundClimber game, final DebugRenderMode debugMode) {
 
@@ -43,14 +41,13 @@ public class LevelSelectScreen implements Screen {
 
     stage = new Stage();
     Gdx.input.setInputProcessor(stage);
-    
-    skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
 
-    levelFiles = Gdx.files.internal("levels").list();
+    FileHandle[] levelFiles = Gdx.files.internal("levels").list();
     Logger.log(
         "LevelScreen",
         String.format("Found the following level files: %s", Arrays.toString(levelFiles)),
         LogLevel.DEBUG);
+    Skin skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
     float buttonXIncrement = 0;
     for (FileHandle levelFile : levelFiles) {
       JsonReader jsonReader = new JsonReader();
