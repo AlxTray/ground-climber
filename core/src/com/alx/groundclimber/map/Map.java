@@ -28,6 +28,10 @@ public class Map implements Json.Serializable {
     private static final float TIME_STEP = 1f / 120f;
     private static final float CAMERA_TRANSLATION_STEP = 170f;
     private static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
+    private static final int BOUNDS_LEFT_INDEX = 0;
+    private static final int BOUNDS_RIGHT_INDEX = 3;
+    private static final int BOUNDS_BOTTOM_INDEX = 1;
+    private static final int BOUNDS_TOP_INDEX = 2;
     public final World world;
     final OrthographicCamera camera;
     final Array<Body> objectsToDestroy = new Array<>();
@@ -115,10 +119,10 @@ public class Map implements Json.Serializable {
         }
 
         // Kill player if they leave map bounds
-        if (player.getBody().getPosition().x < bounds.get(0)
-                || player.getPosition().x > bounds.get(3)
-                || player.getPosition().y < bounds.get(1)
-                || player.getPosition().y > bounds.get(2)) {
+        if (player.getBody().getPosition().x < bounds.get(BOUNDS_LEFT_INDEX)
+                || player.getPosition().x > bounds.get(BOUNDS_RIGHT_INDEX)
+                || player.getPosition().y < bounds.get(BOUNDS_BOTTOM_INDEX)
+                || player.getPosition().y > bounds.get(BOUNDS_TOP_INDEX)) {
             Logger.log(
                     "Map",
                     "Player has fell out of bounds",
@@ -176,31 +180,31 @@ public class Map implements Json.Serializable {
 
         // Have to add/subtract threshold back so the camera stop bound is absolute to
         // the position defined
-        if (playerPos.x < (cameraLeft + CAMERA_MOVEMENT_THRESHOLD) && cameraLeft > bounds.get(0)) {
+        if (playerPos.x < (cameraLeft + CAMERA_MOVEMENT_THRESHOLD) && cameraLeft > bounds.get(BOUNDS_LEFT_INDEX)) {
             camera.translate(-CAMERA_TRANSLATION_STEP * delta, 0);
         }
-        if (playerPos.x > (cameraRight - CAMERA_MOVEMENT_THRESHOLD) && cameraRight < bounds.get(3)) {
+        if (playerPos.x > (cameraRight - CAMERA_MOVEMENT_THRESHOLD) && cameraRight < bounds.get(BOUNDS_RIGHT_INDEX)) {
             camera.translate(CAMERA_TRANSLATION_STEP * delta, 0);
         }
-        if (playerPos.y < (cameraBottom + CAMERA_MOVEMENT_THRESHOLD) && cameraBottom > bounds.get(1)) {
+        if (playerPos.y < (cameraBottom + CAMERA_MOVEMENT_THRESHOLD) && cameraBottom > bounds.get(BOUNDS_BOTTOM_INDEX)) {
             camera.translate(0, -CAMERA_TRANSLATION_STEP * delta);
         }
-        if (playerPos.y > (cameraTop - CAMERA_MOVEMENT_THRESHOLD) && cameraTop < bounds.get(2)) {
+        if (playerPos.y > (cameraTop - CAMERA_MOVEMENT_THRESHOLD) && cameraTop < bounds.get(BOUNDS_TOP_INDEX)) {
             camera.translate(0, CAMERA_TRANSLATION_STEP * delta);
         }
 
         // Move camera back within bounds if it has left
-        if (cameraLeft < bounds.get(0)) {
-            camera.position.set(bounds.get(0) + camera.viewportWidth / 2, camera.position.y, camera.position.z);
+        if (cameraLeft < bounds.get(BOUNDS_LEFT_INDEX)) {
+            camera.position.set(bounds.get(BOUNDS_LEFT_INDEX) + camera.viewportWidth / 2, camera.position.y, camera.position.z);
         }
-        if (cameraRight > bounds.get(3)) {
-            camera.position.set(bounds.get(3) - camera.viewportWidth / 2, camera.position.y, camera.position.z);
+        if (cameraRight > bounds.get(BOUNDS_RIGHT_INDEX)) {
+            camera.position.set(bounds.get(BOUNDS_RIGHT_INDEX) - camera.viewportWidth / 2, camera.position.y, camera.position.z);
         }
-        if (cameraBottom < bounds.get(1)) {
-            camera.position.set(camera.position.x, bounds.get(1) + camera.viewportHeight / 2, camera.position.z);
+        if (cameraBottom < bounds.get(BOUNDS_BOTTOM_INDEX)) {
+            camera.position.set(camera.position.x, bounds.get(BOUNDS_BOTTOM_INDEX) + camera.viewportHeight / 2, camera.position.z);
         }
-        if (cameraLeft > bounds.get(2)) {
-            camera.position.set(camera.position.x, bounds.get(2) - camera.viewportHeight / 2, camera.position.z);
+        if (cameraTop > bounds.get(BOUNDS_TOP_INDEX)) {
+            camera.position.set(camera.position.x, bounds.get(BOUNDS_TOP_INDEX) - camera.viewportHeight / 2, camera.position.z);
         }
     }
 
