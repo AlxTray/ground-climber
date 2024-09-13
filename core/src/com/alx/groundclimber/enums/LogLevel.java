@@ -1,5 +1,5 @@
 package com.alx.groundclimber.enums;
 
 public enum LogLevel {
-  DEBUG, INFO, ERROR
+    DEBUG, INFO, ERROR
 }

@@ -6,27 +6,27 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class CrackedPlatform extends Platform {
 
-  private int crackLevel = 0;
+    private int crackLevel = 0;
 
-  public CrackedPlatform(World world, float x, float y, float height, float width) {
-    super(world, x, y, height, width);
-    this.body.setUserData(this);
-  }
+    public CrackedPlatform(World world, float x, float y, float height, float width) {
+        super(world, x, y, height, width);
+        this.body.setUserData(this);
+    }
 
-  public void incrementCrackLevel() {
-    crackLevel++;
-    Logger.log(
-        "CrackedPlatform",
-        String.format(
-            "Cracked level for platform at (%s, %s) is now %s",
-            this.body.getPosition().x,
-            this.body.getPosition().y,
-            this.crackLevel),
-        LogLevel.DEBUG);
-  }
+    public void incrementCrackLevel() {
+        crackLevel++;
+        Logger.log(
+                "CrackedPlatform",
+                String.format(
+                        "Cracked level for platform at (%s, %s) is now %s",
+                        this.body.getPosition().x,
+                        this.body.getPosition().y,
+                        this.crackLevel),
+                LogLevel.DEBUG);
+    }
 
-  public int getCrackLevel() {
-    return crackLevel;
-  }
+    public int getCrackLevel() {
+        return crackLevel;
+    }
 
 }

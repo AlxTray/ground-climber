@@ -11,25 +11,25 @@ import com.badlogic.gdx.assets.AssetManager;
 
 public class GroundClimber extends Game {
 
-  public void create() {
-    Gdx.app.setLogLevel(Application.LOG_DEBUG);
-    
-    // Initialise AssetLibrary singleton class
-    AssetLibrary.getInstance().init();
-    Logger.log(
-        "Game",
-        "Begun loading initial assets",
-        LogLevel.INFO);
-    AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
-    while (!assetManager.isFinished()) {
-      assetManager.update();
+    public void create() {
+        Gdx.app.setLogLevel(Application.LOG_DEBUG);
+
+        // Initialise AssetLibrary singleton class
+        AssetLibrary.getInstance().init();
+        Logger.log(
+                "Game",
+                "Begun loading initial assets",
+                LogLevel.INFO);
+        AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
+        while (!assetManager.isFinished()) {
+            assetManager.update();
+        }
+        Logger.log(
+                "Game",
+                "Finished loading initial assets",
+                LogLevel.INFO);
+
+        this.setScreen(new MainMenuScreen(this));
     }
-    Logger.log(
-        "Game",
-        "Finished loading initial assets",
-        LogLevel.INFO);
-    
-    this.setScreen(new MainMenuScreen(this));
-  }
 
 }
