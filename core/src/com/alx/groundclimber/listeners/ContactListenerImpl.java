@@ -5,42 +5,43 @@ import com.badlogic.gdx.utils.Array;
 
 public class ContactListenerImpl implements ContactListener {
 
-  Array<ContactListener> contactListeners = new Array<>();
+    private final Array<ContactListener> contactListeners = new Array<>();
 
-  public void addContactListener(ContactListener contactListener) {
-    contactListeners.add(contactListener);
-  }
-
-  public Array<Body> getBodiesToDestroy() {
-    Array<Body> bodiesToDestroy = new Array<>();
-    for (ContactListener contactListener : contactListeners) {
-      if (contactListener.getClass().getSimpleName().equals("CrackedPlatformContactListener")) {
-        CrackedPlatformContactListener crackedPlatformContactListener = (CrackedPlatformContactListener) contactListener;
-        bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
-        crackedPlatformContactListener.clearPlatformsToDestroy();
-      }
+    public void addContactListener(ContactListener contactListener) {
+        contactListeners.add(contactListener);
     }
 
-    return bodiesToDestroy;
-  }
+    public Array<Body> getBodiesToDestroy() {
+        Array<Body> bodiesToDestroy = new Array<>();
+        for (ContactListener contactListener : contactListeners) {
+            if (!(contactListener instanceof CrackedPlatformContactListener)) {
+                continue;
+            }
+            CrackedPlatformContactListener crackedPlatformContactListener = (CrackedPlatformContactListener) contactListener;
+            bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
+            crackedPlatformContactListener.clearPlatformsToDestroy();
+        }
 
-  @Override
-  public void beginContact(Contact contact) {
-    for (ContactListener contactListener : contactListeners) {
-      contactListener.beginContact(contact);
+        return bodiesToDestroy;
     }
-  }
 
-  @Override
-  public void endContact(Contact contact) {
-  }
+    @Override
+    public void beginContact(Contact contact) {
+        for (ContactListener contactListener : contactListeners) {
+            contactListener.beginContact(contact);
+        }
+    }
 
-  @Override
-  public void preSolve(Contact contact, Manifold manifold) {
-  }
+    @Override
+    public void endContact(Contact contact) { // Nothing to do once contact has ended
+    }
 
-  @Override
-  public void postSolve(Contact contact, ContactImpulse contactImpulse) {
-  }
+    @Override
+    public void preSolve(Contact contact, Manifold manifold) { // No logic needed here
+    }
+
+    @Override
+    public void postSolve(Contact contact, ContactImpulse contactImpulse) { // No logic needed here
+    }
 
 }
