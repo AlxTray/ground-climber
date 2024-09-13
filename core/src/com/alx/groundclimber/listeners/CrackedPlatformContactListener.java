@@ -40,15 +40,15 @@ public class CrackedPlatformContactListener implements ContactListener {
   }
 
   @Override
-  public void endContact(Contact contact) {
+  public void endContact(Contact contact) { // Nothing to do once contact has ended
   }
 
   @Override
-  public void preSolve(Contact contact, Manifold manifold) {
+  public void preSolve(Contact contact, Manifold manifold) { // No logic needed here
   }
 
   @Override
-  public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+  public void postSolve(Contact contact, ContactImpulse contactImpulse) { // No logic needed here
   }
 
 }

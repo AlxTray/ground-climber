@@ -84,23 +84,23 @@ public class MainMenuScreen implements Screen {
   }
 
   @Override
-  public void show() {
+  public void show() { // No logic needed
   }
 
   @Override
-  public void resize(int i, int i1) {
+  public void resize(int i, int i1) { // No logic needed for resize currently
   }
 
   @Override
-  public void pause() {
+  public void pause() { // No logic needed
   }
 
   @Override
-  public void resume() {
+  public void resume() { // No logic needed
   }
 
   @Override
-  public void hide() {
+  public void hide() { // No logic needed
   }
 
   @Override

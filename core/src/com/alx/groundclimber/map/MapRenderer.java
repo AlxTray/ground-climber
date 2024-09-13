@@ -5,7 +5,6 @@ import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
 import com.alx.groundclimber.utilities.AssetLibrary;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,7 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 public class MapRenderer {
   
-  final int TILE_SIZE = 18;
+  static final int TILE_SIZE = 18;
 
   final Map map;
   final GameMode gameMode;
@@ -72,8 +71,8 @@ public class MapRenderer {
               playerFaceImage,
               map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),
               map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f),
-              playerFaceImage.getWidth() / 2,
-              playerFaceImage.getWidth() / 2,
+              playerFaceImage.getWidth() / 2f,
+              playerFaceImage.getWidth() / 2f,
               playerFaceImage.getWidth(),
               playerFaceImage.getHeight(),
               1f,

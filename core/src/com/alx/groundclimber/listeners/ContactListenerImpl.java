@@ -14,11 +14,12 @@ public class ContactListenerImpl implements ContactListener {
   public Array<Body> getBodiesToDestroy() {
     Array<Body> bodiesToDestroy = new Array<>();
     for (ContactListener contactListener : contactListeners) {
-      if (contactListener.getClass().getSimpleName().equals("CrackedPlatformContactListener")) {
-        CrackedPlatformContactListener crackedPlatformContactListener = (CrackedPlatformContactListener) contactListener;
-        bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
-        crackedPlatformContactListener.clearPlatformsToDestroy();
+      if (!(contactListener instanceof CrackedPlatformContactListener)) {
+        continue;
       }
+      CrackedPlatformContactListener crackedPlatformContactListener = (CrackedPlatformContactListener) contactListener;
+      bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
+      crackedPlatformContactListener.clearPlatformsToDestroy();
     }
 
     return bodiesToDestroy;
@@ -32,15 +33,15 @@ public class ContactListenerImpl implements ContactListener {
   }
 
   @Override
-  public void endContact(Contact contact) {
+  public void endContact(Contact contact) { // Nothing to do once contact has ended
   }
 
   @Override
-  public void preSolve(Contact contact, Manifold manifold) {
+  public void preSolve(Contact contact, Manifold manifold) { // No logic needed here
   }
 
   @Override
-  public void postSolve(Contact contact, ContactImpulse contactImpulse) {
+  public void postSolve(Contact contact, ContactImpulse contactImpulse) { // No logic needed here
   }
 
 }

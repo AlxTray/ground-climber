@@ -12,6 +12,8 @@ import java.time.format.DateTimeFormatter;
 public class EndlessPlatformGenerator {
 
   final PlatformFactory platformFactory;
+  
+  private static final String ENDLESS_PLATFORM_TYPE = "normal";
 
   // Values set to values from last platform in the initial batch
   float lastPlatformX = 520f;
@@ -24,9 +26,9 @@ public class EndlessPlatformGenerator {
 
   public Array<Platform> generateInitialBatch() {
     Array<Platform> initialPlatforms = new Array<>();
-    initialPlatforms.add(platformFactory.createPlatform("normal", 0, 0, 40f, 200f));
-    initialPlatforms.add(platformFactory.createPlatform("normal", 260f, 0, 70f, 120f));
-    initialPlatforms.add(platformFactory.createPlatform("normal", 520f, 0, 20f, 60f));
+    initialPlatforms.add(platformFactory.createPlatform(ENDLESS_PLATFORM_TYPE, 0, 0, 40f, 200f));
+    initialPlatforms.add(platformFactory.createPlatform(ENDLESS_PLATFORM_TYPE, 260f, 0, 70f, 120f));
+    initialPlatforms.add(platformFactory.createPlatform(ENDLESS_PLATFORM_TYPE, 520f, 0, 20f, 60f));
 
     return initialPlatforms;
   }
@@ -43,10 +45,10 @@ public class EndlessPlatformGenerator {
         currentPlatformHeight + randomSeed
     };
     for (int i = 0; i < 10; i++) {
-      currentPlatformWidth = MathUtils.random(55, 250) - randomSeed;
-      currentPlatformHeight = MathUtils.random(55, (int) currentPlatformHeight + 55) - randomSeed;
+      currentPlatformWidth = (float) MathUtils.random(55, 250) - randomSeed;
+      currentPlatformHeight = (float) MathUtils.random(55, (int) currentPlatformHeight + 55) - randomSeed;
       Platform newPlatform = platformFactory.createPlatform(
-          "normal",
+          ENDLESS_PLATFORM_TYPE,
           (float) lastPlatformCoords[0] + MathUtils.random(15, 175),
           0,
           currentPlatformHeight,

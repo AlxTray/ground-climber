@@ -6,8 +6,6 @@ import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.utilities.AssetLibrary;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -112,23 +110,23 @@ public class LevelSelectScreen implements Screen {
   }
 
   @Override
-  public void show() {
+  public void show() { // No logic needed
   }
 
   @Override
-  public void resize(int i, int i1) {
+  public void resize(int i, int i1) { // No logic needed for resize currently
   }
 
   @Override
-  public void pause() {
+  public void pause() { // No logic needed
   }
 
   @Override
-  public void resume() {
+  public void resume() { // No logic needed
   }
 
   @Override
-  public void hide() {
+  public void hide() { // No logic needed
   }
 
   @Override

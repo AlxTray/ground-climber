@@ -23,11 +23,11 @@ import java.time.format.DateTimeFormatter;
 
 public class Map implements Json.Serializable {
 
-  final int PLAYER_INITIAL_RADIUS = 16;
-  final int CAMERA_MOVEMENT_THRESHOLD = 300;
-  final float TIME_STEP = 1f / 120f;
-  final float CAMERA_TRANSLATION_STEP = 170f;
-  final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
+  static final int PLAYER_INITIAL_RADIUS = 16;
+  static final int CAMERA_MOVEMENT_THRESHOLD = 300;
+  static final float TIME_STEP = 1f / 120f;
+  static final float CAMERA_TRANSLATION_STEP = 170f;
+  static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
 
   EndlessPlatformGenerator platGenerator;
   final ContactListenerImpl contactListener;
@@ -116,15 +116,14 @@ public class Map implements Json.Serializable {
       Gdx.app.exit();
     }
 
-    if (gameMode.equals(GameMode.ENDLESS)) {
-      if (lastPlatformInBatch.body.getPosition().x < player.body.getPosition().x) {
+    if (gameMode.equals(GameMode.ENDLESS) && lastPlatformInBatch.body.getPosition().x < player.body.getPosition().x) {
         platforms = platGenerator.generatePlatformBatch();
         lastPlatformInBatch = platforms.get(platforms.size - 1);
         Gdx.app.log(
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO Map",
             "Successfully generated new endless platform batch");
       }
-    }
+
 
     destroyQueuedObjects();
 
@@ -193,12 +192,12 @@ public class Map implements Json.Serializable {
     }
   }
 
-  public void dispose() {
+  public void dispose() { // Nothing to dispose currently
   }
+  
 
   @Override
-  public void write(Json json) {
-    // No need to be used at the moment. (Useful if level editor is made)
+  public void write(Json json) { // No need to be used at the moment. (Useful if level editor is made)
   }
 
   @Override
@@ -218,19 +217,19 @@ public class Map implements Json.Serializable {
     spawnNewPlayer(PLAYER_INITIAL_RADIUS);
 
     JsonValue cameraPos = jsonData.get("data").get("camera_start_pos");
-    float[] _cameraStartPos = cameraPos.asFloatArray();
+    float[] oldCameraStartPos = cameraPos.asFloatArray();
     // This is getting a float[] of length two [x, y] but camera requires a float[]
     // of [x, y, z]
     // this is 2D so did not want to have needless 0 in every level JSON camera
     // position attribute
     float[] cameraStartPos = new float[3];
-    System.arraycopy(_cameraStartPos, 0, cameraStartPos, 0, 2);
+    System.arraycopy(oldCameraStartPos, 0, cameraStartPos, 0, 2);
     cameraStartPos[2] = 0;
     camera.position.set(cameraStartPos);
 
     PlatformFactory platformFactory = new PlatformFactory(world);
-    JsonValue platforms = jsonData.get("objects").get("platforms");
-    for (JsonValue platformData = platforms.child; platformData != null; platformData = platformData.next) {
+    JsonValue platformsJson = jsonData.get("objects").get("platforms");
+    for (JsonValue platformData = platformsJson.child; platformData != null; platformData = platformData.next) {
       this.platforms.add(platformFactory.createPlatform(
           platformData.get("type").asString(),
           platformData.get("x").asFloat(),

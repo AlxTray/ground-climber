@@ -12,13 +12,12 @@ public class AssetLibrary {
     private AssetManager assetManager;
     private ObjectMap<String, String> filePathAliases;
     
-    private final String skinAtlasPath = "skin/uiskin.atlas";
-    private final String skinJsonPath = "skin/uiskin.json";
-    private final String playerImagePath = "player.png";
-    private final String playerFaceImagePath = "player_face.png";
-    
-    private final String platformTilePath = "platform.png";
-    private final String backgroundImagePath = "background.png";
+    private static final String SKIN_ATLAS_PATH = "skin/uiskin.atlas";
+    private static final String SKIN_JSON_PATH = "skin/uiskin.json";
+    private static final String PLAYER_IMAGE_PATH = "player.png";
+    private static final String PLAYER_FACE_IMAGE_PATH = "player_face.png";
+    private static final String PLATFORM_TILE_PATH = "platform.png";
+    private static final String BACKGROUND_IMAGE_PATH = "background.png";
 
     private AssetLibrary() {
     }
@@ -38,24 +37,24 @@ public class AssetLibrary {
     }
     
     private void loadInitialAssets() {
-        SkinLoader.SkinParameter parameter = new SkinLoader.SkinParameter(skinAtlasPath);
-        assetManager.load(skinJsonPath, Skin.class, parameter);
-        filePathAliases.put("skin", skinJsonPath);
+        SkinLoader.SkinParameter parameter = new SkinLoader.SkinParameter(SKIN_ATLAS_PATH);
+        assetManager.load(SKIN_JSON_PATH, Skin.class, parameter);
+        filePathAliases.put("skin", SKIN_JSON_PATH);
         
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
-        assetManager.load(playerImagePath, Texture.class, textureParameter);
-        filePathAliases.put("player", playerImagePath);
-        assetManager.load(playerFaceImagePath, Texture.class, textureParameter);
-        filePathAliases.put("playerFace", playerFaceImagePath);
+        assetManager.load(PLAYER_IMAGE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("player", PLAYER_IMAGE_PATH);
+        assetManager.load(PLAYER_FACE_IMAGE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("playerFace", PLAYER_FACE_IMAGE_PATH);
     }
     
     
     public void loadGeneralLevelAssets() {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
-        assetManager.load(backgroundImagePath, Texture.class, textureParameter);
-        filePathAliases.put("background", backgroundImagePath);
-        assetManager.load(platformTilePath, Texture.class, textureParameter);
-        filePathAliases.put("platformTile", platformTilePath);
+        assetManager.load(BACKGROUND_IMAGE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("background", BACKGROUND_IMAGE_PATH);
+        assetManager.load(PLATFORM_TILE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("platformTile", PLATFORM_TILE_PATH);
     }
     
     

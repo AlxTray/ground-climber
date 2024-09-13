@@ -27,11 +27,4 @@ public class GroundClimber extends Game {
     this.setScreen(new MainMenuScreen(this));
   }
 
-  public void render() {
-    super.render();
-  }
-  
-  public void dispose() {
-  }
-
 }

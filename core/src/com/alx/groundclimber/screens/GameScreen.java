@@ -40,31 +40,23 @@ public class GameScreen implements Screen {
     Gdx.app.log(
         LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO GameScreen",
         String.format("The current game mode is: %s", gameMode.name()));
-    switch (gameMode) {
-      case NORMAL:
-        for (String levelName : selectedLevelNames) {
-          selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
-        }
-
-        Json json = new Json();
-        map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
-        break;
-      case ENDLESS:
-        map = new Map();
-        Gdx.app.log(
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-                + " INFO GameScreen",
-            "Empty map successfully created for ENDLESS mode");
-        break;
+    if (gameMode == GameMode.NORMAL) {
+      for (String levelName : selectedLevelNames) {
+        selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
+      }
+      Json json = new Json();
+      map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
+    } else if (gameMode == GameMode.ENDLESS) {
+      map = new Map();
+      Gdx.app.log(
+          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
+              + " INFO GameScreen",
+          "Empty map successfully created for ENDLESS mode");
     }
     map.setGameMode(gameMode);
 
     mapRenderer = new MapRenderer(map, gameMode, debugMode);
     map.attachRenderer(mapRenderer);
-  }
-
-  @Override
-  public void show() {
   }
 
   @Override
@@ -74,19 +66,23 @@ public class GameScreen implements Screen {
   }
 
   @Override
-  public void resize(int i, int i1) {
+  public void show() { // No logic needed
   }
 
   @Override
-  public void pause() {
+  public void resize(int i, int i1) { // No logic needed for resize currently
   }
 
   @Override
-  public void resume() {
+  public void pause() { // No logic needed
   }
 
   @Override
-  public void hide() {
+  public void resume() { // No logic needed
+  }
+
+  @Override
+  public void hide() { // No logic needed
   }
 
   @Override

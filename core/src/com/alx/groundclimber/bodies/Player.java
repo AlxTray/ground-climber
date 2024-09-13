@@ -7,8 +7,8 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class Player {
 
-  final int MAX_VELOCITY = 240;
-  final float DEFAULT_FORCE = 1500000;
+  static final int MAX_VELOCITY = 240;
+  static final float DEFAULT_FORCE = 1500000;
 
   public final Body body;
   final World world;
