@@ -5,7 +5,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class ContactListenerImpl implements ContactListener {
 
-  Array<ContactListener> contactListeners = new Array<>();
+  final Array<ContactListener> contactListeners = new Array<>();
 
   public void addContactListener(ContactListener contactListener) {
     contactListeners.add(contactListener);

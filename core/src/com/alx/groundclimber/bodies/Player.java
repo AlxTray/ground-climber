@@ -10,8 +10,8 @@ public class Player {
   final int MAX_VELOCITY = 240;
   final float DEFAULT_FORCE = 1500000;
 
-  public Body body;
-  World world;
+  public final Body body;
+  final World world;
 
   public Player(World world, int x, int y, int radius) {
     this.world = world;

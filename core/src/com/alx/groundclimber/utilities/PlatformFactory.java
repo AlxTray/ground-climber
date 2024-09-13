@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 public class PlatformFactory {
 
-  World world;
+  final World world;
 
   public PlatformFactory(World world) {
     this.world = world;

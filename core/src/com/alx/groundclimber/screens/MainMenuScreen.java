@@ -18,10 +18,10 @@ public class MainMenuScreen implements Screen {
 
   final GroundClimber game;
 
-  SpriteBatch batch;
-  BitmapFont font;
+  final SpriteBatch batch;
+  final BitmapFont font;
   DebugRenderMode debugMode = DebugRenderMode.NORMAL;
-  OrthographicCamera camera;
+  final OrthographicCamera camera;
 
   public MainMenuScreen(final GroundClimber game) {
     this.game = game;

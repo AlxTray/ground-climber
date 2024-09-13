@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Array;
 
 public class CrackedPlatformContactListener implements ContactListener {
 
-  Array<Body> platformsToDestroy = new Array<>();
+  final Array<Body> platformsToDestroy = new Array<>();
 
   public Array<Body> getPlatformsToDestroy() {
     return platformsToDestroy;

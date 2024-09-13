@@ -12,13 +12,13 @@ public class AssetLibrary {
     private AssetManager assetManager;
     private ObjectMap<String, String> filePathAliases;
     
-    private String skinAtlasPath = "skin/uiskin.atlas";
-    private String skinJsonPath = "skin/uiskin.json";
-    private String playerImagePath = "player.png";
-    private String playerFaceImagePath = "player_face.png";
+    private final String skinAtlasPath = "skin/uiskin.atlas";
+    private final String skinJsonPath = "skin/uiskin.json";
+    private final String playerImagePath = "player.png";
+    private final String playerFaceImagePath = "player_face.png";
     
-    private String platformTilePath = "platform.png";
-    private String backgroundImagePath = "background.png";
+    private final String platformTilePath = "platform.png";
+    private final String backgroundImagePath = "background.png";
 
     private AssetLibrary() {
     }

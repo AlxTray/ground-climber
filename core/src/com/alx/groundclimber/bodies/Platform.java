@@ -4,10 +4,10 @@ import com.badlogic.gdx.physics.box2d.*;
 
 public class Platform {
 
-  public Body body;
-  public float height;
-  public float width;
-  World world;
+  public final Body body;
+  public final float height;
+  public final float width;
+  final World world;
 
   public Platform(World world, float x, float y, float height, float width) {
     this.world = world;

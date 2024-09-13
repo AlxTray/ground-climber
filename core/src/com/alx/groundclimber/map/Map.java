@@ -23,26 +23,26 @@ import java.time.format.DateTimeFormatter;
 
 public class Map implements Json.Serializable {
 
-  int PLAYER_INITIAL_RADIUS = 16;
-  int CAMERA_MOVEMENT_THRESHOLD = 300;
-  float TIME_STEP = 1f / 120f;
-  float CAMERA_TRANSLATION_STEP = 170f;
-  float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
+  final int PLAYER_INITIAL_RADIUS = 16;
+  final int CAMERA_MOVEMENT_THRESHOLD = 300;
+  final float TIME_STEP = 1f / 120f;
+  final float CAMERA_TRANSLATION_STEP = 170f;
+  final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
 
   EndlessPlatformGenerator platGenerator;
-  ContactListenerImpl contactListener;
+  final ContactListenerImpl contactListener;
   MapRenderer mapRenderer;
 
-  public World world;
+  public final World world;
   public Player player;
-  OrthographicCamera camera;
+  final OrthographicCamera camera;
   GameMode gameMode;
   float deltaAccumulator;
-  Array<Body> objectsToDestroy = new Array<>();
+  final Array<Body> objectsToDestroy = new Array<>();
 
   public Array<Platform> platforms = new Array<>();
-  Array<Integer> bounds = new Array<>();
-  Array<Integer> playerSpawn = new Array<>();
+  final Array<Integer> bounds = new Array<>();
+  final Array<Integer> playerSpawn = new Array<>();
 
   Platform lastPlatformInBatch;
 

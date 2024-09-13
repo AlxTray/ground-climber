@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 
 public class EndlessPlatformGenerator {
 
-  PlatformFactory platformFactory;
+  final PlatformFactory platformFactory;
 
   // Values set to values from last platform in the initial batch
   float lastPlatformX = 520f;

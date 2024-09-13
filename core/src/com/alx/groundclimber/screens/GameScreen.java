@@ -21,9 +21,9 @@ public class GameScreen implements Screen {
 
   final GroundClimber game;
 
-  Array<FileHandle> selectedLevelFiles = new Array<>();
+  final Array<FileHandle> selectedLevelFiles = new Array<>();
   Map map;
-  MapRenderer mapRenderer;
+  final MapRenderer mapRenderer;
 
   public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
     this.game = game;

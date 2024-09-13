@@ -32,12 +32,12 @@ public class LevelSelectScreen implements Screen {
   final GroundClimber game;
   final DebugRenderMode debugMode;
 
-  SpriteBatch batch;
-  BitmapFont font;
-  OrthographicCamera camera;
-  Stage stage;
-  Skin skin;
-  FileHandle[] levelFiles;
+  final SpriteBatch batch;
+  final BitmapFont font;
+  final OrthographicCamera camera;
+  final Stage stage;
+  final Skin skin;
+  final FileHandle[] levelFiles;
 
   public LevelSelectScreen(final GroundClimber game, final DebugRenderMode debugMode) {
     this.game = game;

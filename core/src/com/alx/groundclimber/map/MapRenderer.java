@@ -18,20 +18,20 @@ import java.time.format.DateTimeFormatter;
 
 public class MapRenderer {
   
-  int TILE_SIZE = 18;
+  final int TILE_SIZE = 18;
 
-  Map map;
-  GameMode gameMode;
-  SpriteBatch batch;
-  BitmapFont font;
-  Texture playerImage;
-  Texture playerFaceImage;
-  Texture backgroundImage;
-  Texture platformTileImage;
+  final Map map;
+  final GameMode gameMode;
+  final SpriteBatch batch;
+  final BitmapFont font;
+  final Texture playerImage;
+  final Texture playerFaceImage;
+  final Texture backgroundImage;
+  final Texture platformTileImage;
 
   // Debug rendering
-  Box2DDebugRenderer debugRenderer;
-  DebugRenderMode debugMode;
+  final Box2DDebugRenderer debugRenderer;
+  final DebugRenderMode debugMode;
   boolean debugInfo;
 
   public MapRenderer(Map map, GameMode gameMode, DebugRenderMode debugMode) {
