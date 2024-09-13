@@ -14,7 +14,7 @@ public class Logger {
   }
   
   public static void log(String locationTag, String message, LogLevel level) {
-    String tag = LocalDateTime.now().format(DateTimeFormatter.ofPattern(LOG_TIME_FORMAT)) + locationTag;
+    String tag = LocalDateTime.now().format(DateTimeFormatter.ofPattern(LOG_TIME_FORMAT)) + " " + locationTag;
     switch (level) {
       case DEBUG:
         Gdx.app.debug(tag + " DEBUG", message);

@@ -3,6 +3,8 @@ package com.alx.groundclimber.screens;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.GroundClimber;
+import com.alx.groundclimber.enums.LogLevel;
+import com.alx.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -10,9 +12,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MainMenuScreen implements Screen {
 
@@ -47,39 +46,39 @@ public class MainMenuScreen implements Screen {
     batch.end();
 
     if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-      Gdx.app.debug(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " DEBUG MainScreen",
-          "Changing to LevelScreen");
+      Logger.log(
+          "MainScreen",
+          "Changing to LevelScreen",
+          LogLevel.DEBUG);
       game.setScreen(new LevelSelectScreen(game, debugMode));
     }
     if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
-      Gdx.app.debug(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " DEBUG MainScreen",
-          "Changing to GameScreen");
+      Logger.log(
+          "MainScreen",
+          "Changing to GameScreen",
+          LogLevel.DEBUG);
       game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
     }
     if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
       debugMode = DebugRenderMode.NORMAL;
-      Gdx.app.log(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " INFO MainScreen",
-          "Updated render debug mode to: NORMAL");
+      Logger.log(
+          "MainScreen",
+          "Updated render debug mode to: NORMAL",
+          LogLevel.INFO);
     }
     if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
       debugMode = DebugRenderMode.OVERLAY;
-      Gdx.app.log(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " INFO MainScreen",
-          "Updated render debug mode to: OVERLAY");
+      Logger.log(
+          "MainScreen",
+          "Updated render debug mode to: OVERLAY",
+          LogLevel.INFO);
     }
     if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
       debugMode = DebugRenderMode.ONLY;
-      Gdx.app.log(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " INFO MainScreen",
-          "Updated render debug mode to: ONLY");
+      Logger.log(
+          "MainScreen",
+          "Updated render debug mode to: ONLY",
+          LogLevel.INFO);
     }
   }
 
@@ -107,9 +106,10 @@ public class MainMenuScreen implements Screen {
   public void dispose() {
     batch.dispose();
     font.dispose();
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " DEBUG MainScreen",
-        "Disposed objects");
+    Logger.log(
+        "MainScreen",
+        "Disposed objects",
+        LogLevel.DEBUG);
   }
 
 }

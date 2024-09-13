@@ -1,10 +1,8 @@
 package com.alx.groundclimber.bodies;
 
-import com.badlogic.gdx.Gdx;
+import com.alx.groundclimber.enums.LogLevel;
+import com.alx.groundclimber.utilities.Logger;
 import com.badlogic.gdx.physics.box2d.World;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class CrackedPlatform extends Platform {
 
@@ -17,14 +15,14 @@ public class CrackedPlatform extends Platform {
 
   public void incrementCrackLevel() {
     crackLevel++;
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-            + " DEBUG CrackedPlatform",
+    Logger.log(
+        "CrackedPlatform",
         String.format(
             "Cracked level for platform at (%s, %s) is now %s",
             this.body.getPosition().x,
             this.body.getPosition().y,
-            this.crackLevel));
+            this.crackLevel),
+        LogLevel.DEBUG);
   }
 
   public int getCrackLevel() {

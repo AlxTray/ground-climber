@@ -1,10 +1,8 @@
 package com.alx.groundclimber.listeners;
 
-import com.badlogic.gdx.Gdx;
+import com.alx.groundclimber.enums.LogLevel;
+import com.alx.groundclimber.utilities.Logger;
 import com.badlogic.gdx.physics.box2d.*;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class DebugContactListener implements ContactListener {
 
@@ -15,12 +13,13 @@ public class DebugContactListener implements ContactListener {
     Object bodyAUserData = bodyA.getUserData();
     Object bodyBUserData = bodyB.getUserData();
 
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " DEBUG Contact",
+    Logger.log(
+        "Contact",
         String.format(
             "Object %s collided with %s",
             bodyBUserData.getClass().getSimpleName(),
-            bodyAUserData.getClass().getSimpleName()));
+            bodyAUserData.getClass().getSimpleName()),
+        LogLevel.DEBUG);
   }
 
   @Override

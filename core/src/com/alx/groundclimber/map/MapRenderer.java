@@ -3,7 +3,9 @@ package com.alx.groundclimber.map;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
+import com.alx.groundclimber.enums.LogLevel;
 import com.alx.groundclimber.utilities.AssetLibrary;
+import com.alx.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -11,9 +13,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class MapRenderer {
   
@@ -122,10 +121,10 @@ public class MapRenderer {
   public void dispose() {
     playerImage.dispose();
     batch.dispose();
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-            + " DEBUG MapRenderer",
-        "Disposed objects");
+    Logger.log(
+        "MapRenderer",
+        "Disposed objects",
+        LogLevel.DEBUG);
   }
 
 }

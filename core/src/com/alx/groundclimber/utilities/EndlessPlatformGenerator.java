@@ -1,13 +1,10 @@
 package com.alx.groundclimber.utilities;
 
 import com.alx.groundclimber.bodies.Platform;
-import com.badlogic.gdx.Gdx;
+import com.alx.groundclimber.enums.LogLevel;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class EndlessPlatformGenerator {
 
@@ -35,10 +32,10 @@ public class EndlessPlatformGenerator {
 
   public Array<Platform> generatePlatformBatch() {
     int randomSeed = MathUtils.random(1, 50);
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-            + " DEBUG PlatformGenerator",
-        String.format("Batch seed: %s", randomSeed));
+    Logger.log(
+        "PlatformGenerator",
+        String.format("Batch seed: %s", randomSeed),
+        LogLevel.DEBUG);
     Array<Platform> platformBatch = new Array<>();
     double[] lastPlatformCoords = new double[] {
         MathUtils.random((int) (lastPlatformX + 50), (int) lastPlatformX + 150),

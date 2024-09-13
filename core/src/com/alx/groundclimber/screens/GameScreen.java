@@ -3,9 +3,11 @@ package com.alx.groundclimber.screens;
 import com.alx.groundclimber.*;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
+import com.alx.groundclimber.enums.LogLevel;
 import com.alx.groundclimber.map.Map;
 import com.alx.groundclimber.map.MapRenderer;
 import com.alx.groundclimber.utilities.AssetLibrary;
+import com.alx.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
@@ -13,9 +15,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class GameScreen implements Screen {
 
@@ -30,16 +29,23 @@ public class GameScreen implements Screen {
     
     // Loads all assets that are required for all levels
     AssetLibrary.getInstance().loadGeneralLevelAssets();
-    Gdx.app.log(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO GameScreen", "Begun loading general level assets");
+    Logger.log(
+        "GameScreen",
+        "Begun loading general level assets",
+        LogLevel.INFO);
     AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
     while (!assetManager.isFinished()) {
       assetManager.update();
     }
-    Gdx.app.log(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO GameScreen", "Finished loading general level assets");
+    Logger.log(
+        "GameScreen",
+        "Finished loading general level assets",
+        LogLevel.INFO);
     
-    Gdx.app.log(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " INFO GameScreen",
-        String.format("The current game mode is: %s", gameMode.name()));
+    Logger.log(
+        "GameScreen",
+        String.format("The current game mode is: %s", gameMode.name()),
+        LogLevel.INFO);
     if (gameMode == GameMode.NORMAL) {
       for (String levelName : selectedLevelNames) {
         selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
@@ -48,10 +54,10 @@ public class GameScreen implements Screen {
       map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
     } else if (gameMode == GameMode.ENDLESS) {
       map = new Map();
-      Gdx.app.log(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " INFO GameScreen",
-          "Empty map successfully created for ENDLESS mode");
+      Logger.log(
+          "GameScreen",
+          "Empty map successfully created for ENDLESS mode",
+          LogLevel.INFO);
     }
     map.setGameMode(gameMode);
 
@@ -89,9 +95,10 @@ public class GameScreen implements Screen {
   public void dispose() {
     map.dispose();
     mapRenderer.dispose();
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString() + " DEBUG GameScreen",
-        "Disposed objects");
+    Logger.log(
+        "GameScreen",
+        "Disposed objects",
+        LogLevel.DEBUG);
   }
 
 }

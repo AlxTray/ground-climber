@@ -3,7 +3,9 @@ package com.alx.groundclimber.screens;
 import com.alx.groundclimber.GroundClimber;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
+import com.alx.groundclimber.enums.LogLevel;
 import com.alx.groundclimber.utilities.AssetLibrary;
+import com.alx.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.files.FileHandle;
@@ -22,8 +24,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 
 import java.util.Arrays;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class LevelSelectScreen implements Screen {
 
@@ -52,10 +52,10 @@ public class LevelSelectScreen implements Screen {
     skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
 
     levelFiles = Gdx.files.internal("levels").list();
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-            + " DEBUG LevelScreen",
-        String.format("Found the following level files: %s", Arrays.toString(levelFiles)));
+    Logger.log(
+        "LevelScreen",
+        String.format("Found the following level files: %s", Arrays.toString(levelFiles)),
+        LogLevel.DEBUG);
     float buttonXIncrement = 0;
     for (FileHandle levelFile : levelFiles) {
       JsonReader jsonReader = new JsonReader();
@@ -64,10 +64,10 @@ public class LevelSelectScreen implements Screen {
       TextButton levelButton = new TextButton(jsonData.get("data").get("name").asString(), skin);
       levelButton.setPosition(100 + buttonXIncrement, 110);
       levelButton.setName(levelFile.name());
-      Gdx.app.debug(
-          LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-              + " DEBUG LevelScreen",
-          String.format("Successfully created button for level: %s", levelFile.name()));
+      Logger.log(
+          "LevelScreen",
+          String.format("Successfully created button for level: %s", levelFile.name()),
+          LogLevel.DEBUG);
 
       levelButton.addListener(new ClickListener() {
         @Override
@@ -77,10 +77,10 @@ public class LevelSelectScreen implements Screen {
           // TextButton
           // So, if the event is Label the TextButton is the parent Actor
           String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
-          Gdx.app.log(
-              LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-                  + " INFO LevelScreenButton",
-              String.format("Selected level: %s", levelName));
+          Logger.log(
+              "LevelSelectButton",
+              String.format("Selected level: %s", levelName),
+              LogLevel.INFO);
           game.setScreen(new GameScreen(
               game,
               GameMode.NORMAL,
@@ -133,10 +133,10 @@ public class LevelSelectScreen implements Screen {
   public void dispose() {
     batch.dispose();
     font.dispose();
-    Gdx.app.debug(
-        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")).toString()
-            + " DEBUG LevelScreen",
-        "Disposed objects");
+    Logger.log(
+        "LevelScreen",
+        "Disposed objects",
+        LogLevel.DEBUG);
   }
 
 }
