@@ -27,9 +27,6 @@ import java.util.Arrays;
 
 public class LevelSelectScreen implements Screen {
 
-  final GroundClimber game;
-  final DebugRenderMode debugMode;
-
   final SpriteBatch batch;
   final BitmapFont font;
   final OrthographicCamera camera;
@@ -38,8 +35,6 @@ public class LevelSelectScreen implements Screen {
   final FileHandle[] levelFiles;
 
   public LevelSelectScreen(final GroundClimber game, final DebugRenderMode debugMode) {
-    this.game = game;
-    this.debugMode = debugMode;
 
     batch = new SpriteBatch();
     font = new BitmapFont();
@@ -82,7 +77,6 @@ public class LevelSelectScreen implements Screen {
               String.format("Selected level: %s", levelName),
               LogLevel.INFO);
           game.setScreen(new GameScreen(
-              game,
               GameMode.NORMAL,
               debugMode,
               levelName));

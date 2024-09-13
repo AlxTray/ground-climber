@@ -11,10 +11,8 @@ public class Player {
   static final float DEFAULT_FORCE = 1500000;
 
   public final Body body;
-  final World world;
 
   public Player(World world, int x, int y, int radius) {
-    this.world = world;
 
     BodyDef bodyDef = new BodyDef();
     bodyDef.type = BodyDef.BodyType.DynamicBody;

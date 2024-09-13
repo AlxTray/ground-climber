@@ -7,10 +7,8 @@ public class Platform {
   public final Body body;
   public final float height;
   public final float width;
-  final World world;
 
   public Platform(World world, float x, float y, float height, float width) {
-    this.world = world;
     this.height = height;
     this.width = width;
 

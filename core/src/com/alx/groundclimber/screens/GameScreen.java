@@ -1,6 +1,5 @@
 package com.alx.groundclimber.screens;
 
-import com.alx.groundclimber.*;
 import com.alx.groundclimber.enums.DebugRenderMode;
 import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.enums.LogLevel;
@@ -18,15 +17,12 @@ import com.badlogic.gdx.utils.ScreenUtils;
 
 public class GameScreen implements Screen {
 
-  final GroundClimber game;
-
   final Array<FileHandle> selectedLevelFiles = new Array<>();
   Map map;
   final MapRenderer mapRenderer;
 
-  public GameScreen(GroundClimber game, GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
-    this.game = game;
-    
+  public GameScreen(GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
+
     // Loads all assets that are required for all levels
     AssetLibrary.getInstance().loadGeneralLevelAssets();
     Logger.log(
@@ -61,7 +57,7 @@ public class GameScreen implements Screen {
     }
     map.setGameMode(gameMode);
 
-    mapRenderer = new MapRenderer(map, gameMode, debugMode);
+    mapRenderer = new MapRenderer(map, debugMode);
     map.attachRenderer(mapRenderer);
   }
 

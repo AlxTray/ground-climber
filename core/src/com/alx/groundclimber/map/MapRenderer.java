@@ -1,7 +1,6 @@
 package com.alx.groundclimber.map;
 
 import com.alx.groundclimber.enums.DebugRenderMode;
-import com.alx.groundclimber.enums.GameMode;
 import com.alx.groundclimber.bodies.Platform;
 import com.alx.groundclimber.enums.LogLevel;
 import com.alx.groundclimber.utilities.AssetLibrary;
@@ -19,7 +18,6 @@ public class MapRenderer {
   static final int TILE_SIZE = 18;
 
   final Map map;
-  final GameMode gameMode;
   final SpriteBatch batch;
   final BitmapFont font;
   final Texture playerImage;
@@ -32,9 +30,8 @@ public class MapRenderer {
   final DebugRenderMode debugMode;
   boolean debugInfo;
 
-  public MapRenderer(Map map, GameMode gameMode, DebugRenderMode debugMode) {
+  public MapRenderer(Map map, DebugRenderMode debugMode) {
     this.map = map;
-    this.gameMode = gameMode;
     this.debugMode = debugMode;
 
     batch = new SpriteBatch();

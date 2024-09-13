@@ -57,7 +57,7 @@ public class MainMenuScreen implements Screen {
           "MainScreen",
           "Changing to GameScreen",
           LogLevel.DEBUG);
-      game.setScreen(new GameScreen(game, GameMode.ENDLESS, debugMode));
+      game.setScreen(new GameScreen(GameMode.ENDLESS, debugMode));
     }
     if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
       debugMode = DebugRenderMode.NORMAL;
