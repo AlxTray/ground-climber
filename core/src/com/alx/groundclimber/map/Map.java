@@ -33,13 +33,13 @@ public class Map implements Json.Serializable {
   MapRenderer mapRenderer;
 
   public final World world;
-  public Player player;
+  private Player player;
   final OrthographicCamera camera;
   GameMode gameMode;
   float deltaAccumulator;
   final Array<Body> objectsToDestroy = new Array<>();
 
-  public Array<Platform> platforms = new Array<>();
+  private Array<Platform> platforms = new Array<>();
   final Array<Integer> bounds = new Array<>();
   final Array<Integer> playerSpawn = new Array<>();
 
@@ -59,6 +59,16 @@ public class Map implements Json.Serializable {
     world.setContactListener(contactListener);
     deltaAccumulator = 0;
   }
+  
+  
+  public Array<Platform> getPlatforms() {
+    return platforms;
+  }
+  
+  public Body getPlayerBody() {
+    return player.body;
+  }
+  
 
   public void setGameMode(GameMode gameMode) {
     this.gameMode = gameMode;
@@ -89,6 +99,7 @@ public class Map implements Json.Serializable {
         "New player spawned successfully",
         LogLevel.INFO);
   }
+  
 
   public void update(float delta) {
     doPhysicsStep(delta);
@@ -133,7 +144,7 @@ public class Map implements Json.Serializable {
     mapRenderer.render(camera);
   }
 
-  public void destroyQueuedObjects() {
+  private void destroyQueuedObjects() {
     // Grab all queued objects to destroy from listeners
     // So that all objects can be destroyed at once and will not be locked
     objectsToDestroy.addAll(contactListener.getBodiesToDestroy());
@@ -151,7 +162,7 @@ public class Map implements Json.Serializable {
     objectsToDestroy.clear();
   }
 
-  public void doPhysicsStep(float delta) {
+  private void doPhysicsStep(float delta) {
     deltaAccumulator += delta;
     while (deltaAccumulator >= TIME_STEP) {
       world.step(TIME_STEP, 6, 2);

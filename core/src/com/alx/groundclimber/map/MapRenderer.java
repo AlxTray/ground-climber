@@ -61,19 +61,19 @@ public class MapRenderer {
       batch.setProjectionMatrix(camera.combined);
       batch.draw(
               playerImage,
-              map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),
-              map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f));
+              map.getPlayerBody().getPosition().x - (playerFaceImage.getWidth() / 2f),
+              map.getPlayerBody().getPosition().y - (playerFaceImage.getHeight() / 2f));
       batch.draw(
               playerFaceImage,
-              map.player.body.getPosition().x - (playerFaceImage.getWidth() / 2f),
-              map.player.body.getPosition().y - (playerFaceImage.getHeight() / 2f),
+              map.getPlayerBody().getPosition().x - (playerFaceImage.getWidth() / 2f),
+              map.getPlayerBody().getPosition().y - (playerFaceImage.getHeight() / 2f),
               playerFaceImage.getWidth() / 2f,
               playerFaceImage.getWidth() / 2f,
               playerFaceImage.getWidth(),
               playerFaceImage.getHeight(),
               1f,
               1f,
-              (float) Math.toDegrees(map.player.body.getAngle()),
+              (float) Math.toDegrees(map.getPlayerBody().getAngle()),
               0,
               0,
               playerFaceImage.getWidth(),
@@ -87,15 +87,15 @@ public class MapRenderer {
         float cornerY = camera.position.y + camera.viewportHeight / 2;
         font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), cornerX, cornerY - 10);
         font.draw(batch,
-            String.format("Player Pos: (%.2f, %.2f)", map.player.body.getPosition().x, map.player.body.getPosition().y),
+            String.format("Player Pos: (%.2f, %.2f)", map.getPlayerBody().getPosition().x, map.getPlayerBody().getPosition().y),
             cornerX, cornerY - 30);
-        font.draw(batch, String.format("Player Lin Vec: (%.2f, %.2f)", map.player.body.getLinearVelocity().x,
-            map.player.body.getLinearVelocity().y), cornerX, cornerY - 50);
-        font.draw(batch, String.format("Player Ang Vec: %.2f", map.player.body.getAngularVelocity()), cornerX,
+        font.draw(batch, String.format("Player Lin Vec: (%.2f, %.2f)", map.getPlayerBody().getLinearVelocity().x,
+            map.getPlayerBody().getLinearVelocity().y), cornerX, cornerY - 50);
+        font.draw(batch, String.format("Player Ang Vec: %.2f", map.getPlayerBody().getAngularVelocity()), cornerX,
             cornerY - 70);
       }
       
-      for (Platform platform : map.platforms) {
+      for (Platform platform : map.getPlatforms()) {
         Vector2 platformPos = platform.body.getPosition();
         for (float placementX = platformPos.x; placementX < platform.width + platformPos.x; placementX += TILE_SIZE) {
           for (float placementY = platformPos.y; placementY < platform.height + platformPos.y; placementY += TILE_SIZE) {
