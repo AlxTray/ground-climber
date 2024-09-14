@@ -154,6 +154,7 @@ Thumbs.db
 *.*#
 *#*#
 /assets/assets.txt
+/.direnv/
 
 ## Special cases:
 

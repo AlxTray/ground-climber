@@ -14,9 +14,11 @@ public class ContactListenerImpl implements ContactListener {
     public Array<Body> getBodiesToDestroy() {
         Array<Body> bodiesToDestroy = new Array<>();
         for (ContactListener contactListener : contactListeners) {
-            if (!(contactListener instanceof CrackedPlatformContactListener crackedPlatformContactListener)) {
+            if (!(contactListener instanceof CrackedPlatformContactListener)) {
                 continue;
             }
+            CrackedPlatformContactListener crackedPlatformContactListener =
+                (CrackedPlatformContactListener) contactListener;
             bodiesToDestroy.addAll(crackedPlatformContactListener.getPlatformsToDestroy());
             crackedPlatformContactListener.clearPlatformsToDestroy();
         }

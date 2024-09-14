@@ -5,7 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      javaVersion = 21;
+      javaVersion = 11;
 
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
@@ -25,7 +25,7 @@
 
 	  shellHook = ''
 	    export LD_LIBRARY_PATH=$(nix build --print-out-paths --no-link nixpkgs#libGL)/lib
-	  '';  
+	  '';
         };
       });
     };
