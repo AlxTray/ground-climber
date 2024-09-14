@@ -5,7 +5,7 @@
 
   outputs = { self, nixpkgs }:
     let
-      javaVersion = 11;
+      javaVersion = 17;
 
       supportedSystems = [ "x86_64-linux" "aarch64-linux" "x86_64-darwin" "aarch64-darwin" ];
       forEachSupportedSystem = f: nixpkgs.lib.genAttrs supportedSystems (system: f {
@@ -21,11 +21,11 @@
 
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
-          packages = with pkgs; [ gradle jdk11 ];
+          packages = with pkgs; [ gradle jdk17 ];
 
 	  shellHook = ''
 	    export LD_LIBRARY_PATH=$(nix build --print-out-paths --no-link nixpkgs#libGL)/lib
-	    export JAVA_HOME=${pkgs.jdk11}/lib/openjdk
+	    export JAVA_HOME=${pkgs.jdk17}/lib/openjdk
 	  '';
         };
       });
