@@ -21,10 +21,11 @@
 
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
-          packages = with pkgs; [ gradle ];
+          packages = with pkgs; [ gradle jdk11 ];
 
 	  shellHook = ''
 	    export LD_LIBRARY_PATH=$(nix build --print-out-paths --no-link nixpkgs#libGL)/lib
+	    export JAVA_HOME=${pkgs.jdk11}/lib/openjdk
 	  '';
         };
       });

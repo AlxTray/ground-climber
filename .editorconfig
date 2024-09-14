@@ -11,7 +11,7 @@ insert_final_newline = true
 [*.{java,scala,groovy,kt,kts}]
 indent_size = 4
 
-[*.gradle]
+[*.{gradle,nix}]
 indent_size = 2
 
 [*.md]
