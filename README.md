@@ -9,7 +9,7 @@ You are required to move a bouncing ball across multiple levels to reach the goa
 - The static webapp version also uses the same control scheme as `desktop`, this can be hosted on a local server, or accessed via [ground-climber](https://calm-mushroom-09c0fc203.5.azurestaticapps.net/) where the main branch is automatically deployed to an Azure Static Webapp.
 - There also is an `android` version, the control scheme here relies on the accelerometer/touch so therefore `A` and `D` are then effectively mapped to the tilt of the device/touch zones on the left and right side of the screen.
 
-## Platforms
+## Modules
 
 - `core`: Main module with the application logic shared by all platforms.
 - `lwjgl3`: Primary desktop platform using LWJGL3.
