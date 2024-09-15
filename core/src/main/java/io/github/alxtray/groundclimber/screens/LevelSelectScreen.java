@@ -30,7 +30,6 @@ import java.util.Arrays;
 public class LevelSelectScreen implements Screen {
 
     private final SpriteBatch batch;
-    private final BitmapFont font;
     private final OrthographicCamera camera;
     private final Stage stage;
     private final Texture backgroundImage;
@@ -38,7 +37,6 @@ public class LevelSelectScreen implements Screen {
     public LevelSelectScreen(final Core game, final DebugRenderMode debugMode) {
 
         batch = new SpriteBatch();
-        font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -132,7 +130,6 @@ public class LevelSelectScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        font.dispose();
         Logger.log(
                 "LevelScreen",
                 "Disposed objects",

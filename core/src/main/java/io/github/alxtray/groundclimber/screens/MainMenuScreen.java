@@ -25,7 +25,6 @@ public class MainMenuScreen implements Screen {
     private final Core game;
 
     private final SpriteBatch batch;
-    private final BitmapFont font;
     private final Stage stage;
     private final OrthographicCamera camera;
     private final Texture backgroundImage;
@@ -35,7 +34,6 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         batch = new SpriteBatch();
-        font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -90,10 +88,6 @@ public class MainMenuScreen implements Screen {
             camera.position.y - (camera.viewportHeight / 2),
             camera.viewportWidth,
             camera.viewportHeight);
-        font.draw(batch, "Welcome to Ground Climber! ", 100, 150);
-        font.draw(batch, "Press Enter to begin, or Backspace for Endless mode!\n" +
-                "Press F2 to enable debug rendering, or F3 for only debug rendering\n" +
-                "F1 will reset the above options", 100, 100);
         batch.end();
 
         stage.act(delta);
@@ -152,7 +146,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        font.dispose();
         Logger.log(
                 "MainScreen",
                 "Disposed objects",
