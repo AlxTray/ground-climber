@@ -50,7 +50,8 @@ public class GameScreen implements Screen {
             Json json = new Json();
             map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
         } else if (gameMode == GameMode.ENDLESS) {
-            map = new Map();
+            Json json = new Json();
+            map = json.fromJson(Map.class, Gdx.files.internal("endless.json"));
             Logger.log(
                     "GameScreen",
                     "Empty map successfully created for ENDLESS mode",

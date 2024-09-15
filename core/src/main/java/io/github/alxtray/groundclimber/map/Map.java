@@ -1,5 +1,6 @@
 package io.github.alxtray.groundclimber.map;
 
+import com.badlogic.gdx.Game;
 import io.github.alxtray.groundclimber.bodies.Platform;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.GameMode;
@@ -56,7 +57,7 @@ public class Map implements Json.Serializable {
         contactListener = new ContactListenerImpl();
         contactListener.addContactListener(new CrackedPlatformContactListener());
         if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
-            contactListener.addContactListener(new DebugContactListener());
+            //contactListener.addContactListener(new DebugContactListener());
         }
         world.setContactListener(contactListener);
         deltaAccumulator = 0;
@@ -75,16 +76,11 @@ public class Map implements Json.Serializable {
     public void setGameMode(GameMode gameMode) {
         this.gameMode = gameMode;
 
-        // Generate initial endless platform batch here as when Map is instantiated the
+        // Start endless related stuff here as when Map is instantiated the
         // game mode is not known
         if (gameMode.equals(GameMode.ENDLESS)) {
             platGenerator = new EndlessPlatformGenerator(world);
-            platforms = platGenerator.generateInitialBatch();
-            lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
-            Logger.log(
-                    "Map",
-                    "Successfully generated initial endless platforms",
-                    LogLevel.INFO);
+            lastPlatformInBatch = new Platform(world, 550f, 0, 18f, 198f);
         }
     }
 
@@ -110,9 +106,10 @@ public class Map implements Json.Serializable {
 
         if (gameMode.equals(GameMode.ENDLESS) && player.getBody().getPosition().x > 100) {
             camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
-        } else {
+        } else if (gameMode.equals(GameMode.NORMAL)) {
             repositionCamera(delta);
         }
+        checkCameraInBounds();
         camera.update();
 
         if (Gdx.input.isKeyJustPressed(Keys.F3)) {
@@ -193,6 +190,13 @@ public class Map implements Json.Serializable {
         if (playerPos.y > (cameraTop - CAMERA_MOVEMENT_THRESHOLD) && cameraTop < bounds.get(BOUNDS_TOP_INDEX)) {
             camera.translate(0, CAMERA_TRANSLATION_STEP * delta);
         }
+    }
+
+    private void checkCameraInBounds() {
+        float cameraLeft = camera.position.x - camera.viewportWidth / 2;
+        float cameraRight = camera.position.x + camera.viewportWidth / 2;
+        float cameraBottom = camera.position.y - camera.viewportHeight / 2;
+        float cameraTop = camera.position.y + camera.viewportHeight / 2;
 
         // Move camera back within bounds if it has left
         if (cameraLeft < bounds.get(BOUNDS_LEFT_INDEX)) {

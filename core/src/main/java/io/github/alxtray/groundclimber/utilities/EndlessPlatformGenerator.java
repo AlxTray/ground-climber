@@ -20,15 +20,6 @@ public class EndlessPlatformGenerator {
         platformFactory = new PlatformFactory(world);
     }
 
-    public Array<Platform> generateInitialBatch() {
-        Array<Platform> initialPlatforms = new Array<>();
-        initialPlatforms.add(platformFactory.createPlatform(ENDLESS_PLATFORM_TYPE, 0, 0, 40f, 200f));
-        initialPlatforms.add(platformFactory.createPlatform(ENDLESS_PLATFORM_TYPE, 260f, 0, 70f, 120f));
-        initialPlatforms.add(platformFactory.createPlatform(ENDLESS_PLATFORM_TYPE, 520f, 0, 20f, 60f));
-
-        return initialPlatforms;
-    }
-
     public Array<Platform> generatePlatformBatch() {
         int randomSeed = MathUtils.random(1, 50);
         Logger.log(
