@@ -34,4 +34,5 @@ public class Core extends Game {
 
         this.setScreen(new MainMenuScreen(this));
     }
+
 }

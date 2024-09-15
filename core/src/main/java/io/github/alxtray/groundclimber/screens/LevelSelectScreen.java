@@ -22,6 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
+import text.formic.Stringf;
 
 import java.util.Arrays;
 
@@ -45,7 +46,7 @@ public class LevelSelectScreen implements Screen {
         FileHandle[] levelFiles = Gdx.files.internal("levels").list();
         Logger.log(
                 "LevelScreen",
-                String.format("Found the following level files: %s", Arrays.toString(levelFiles)),
+                Stringf.format("Found the following level files: %s", Arrays.toString(levelFiles)),
                 LogLevel.DEBUG);
         Skin skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
         float buttonXIncrement = 0;
@@ -58,7 +59,7 @@ public class LevelSelectScreen implements Screen {
             levelButton.setName(levelFile.name());
             Logger.log(
                     "LevelScreen",
-                    String.format("Successfully created button for level: %s", levelFile.name()),
+                    Stringf.format("Successfully created button for level: %s", levelFile.name()),
                     LogLevel.DEBUG);
 
             levelButton.addListener(new ClickListener() {
@@ -71,7 +72,7 @@ public class LevelSelectScreen implements Screen {
                     String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
                     Logger.log(
                             "LevelSelectButton",
-                            String.format("Selected level: %s", levelName),
+                            Stringf.format("Selected level: %s", levelName),
                             LogLevel.INFO);
                     game.setScreen(new GameScreen(
                             GameMode.NORMAL,

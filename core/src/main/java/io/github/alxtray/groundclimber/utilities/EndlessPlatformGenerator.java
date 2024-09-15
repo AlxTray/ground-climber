@@ -5,6 +5,7 @@ import io.github.alxtray.groundclimber.enums.LogLevel;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import text.formic.Stringf;
 
 public class EndlessPlatformGenerator {
 
@@ -32,7 +33,7 @@ public class EndlessPlatformGenerator {
         int randomSeed = MathUtils.random(1, 50);
         Logger.log(
                 "PlatformGenerator",
-                String.format("Batch seed: %s", randomSeed),
+                Stringf.format("Batch seed: %s", randomSeed),
                 LogLevel.DEBUG);
         Array<Platform> platformBatch = new Array<>();
         double[] lastPlatformCoords = new double[]{

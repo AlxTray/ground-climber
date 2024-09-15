@@ -20,6 +20,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import text.formic.Stringf;
 
 public class Map implements Json.Serializable {
 
@@ -157,7 +158,7 @@ public class Map implements Json.Serializable {
             world.destroyBody(objectToDestroy);
             Logger.log(
                     "Map",
-                    String.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName()),
+                    Stringf.format("The object %s has been destroyed from world", objectData.getClass().getSimpleName()),
                     LogLevel.DEBUG);
         }
         objectsToDestroy.clear();
@@ -256,7 +257,7 @@ public class Map implements Json.Serializable {
         }
         Logger.log(
                 "Map",
-                String.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString()),
+                Stringf.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString()),
                 LogLevel.INFO);
     }
 

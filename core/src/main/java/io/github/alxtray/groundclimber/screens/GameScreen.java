@@ -14,6 +14,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
+import text.formic.Stringf;
 
 public class GameScreen implements Screen {
 
@@ -39,7 +40,7 @@ public class GameScreen implements Screen {
 
         Logger.log(
                 "GameScreen",
-                String.format("The current game mode is: %s", gameMode.name()),
+                Stringf.format("The current game mode is: %s", gameMode.name()),
                 LogLevel.INFO);
         if (gameMode == GameMode.NORMAL) {
             Array<FileHandle> selectedLevelFiles = new Array<>();

@@ -3,6 +3,7 @@ package io.github.alxtray.groundclimber.listeners;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.physics.box2d.*;
+import text.formic.Stringf;
 
 public class DebugContactListener implements ContactListener {
 
@@ -15,7 +16,7 @@ public class DebugContactListener implements ContactListener {
 
         Logger.log(
                 "Contact",
-                String.format(
+                Stringf.format(
                         "Object %s collided with %s",
                         bodyBUserData.getClass().getSimpleName(),
                         bodyAUserData.getClass().getSimpleName()),

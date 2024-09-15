@@ -3,6 +3,7 @@ package io.github.alxtray.groundclimber.bodies;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.physics.box2d.World;
+import text.formic.Stringf;
 
 public class CrackedPlatform extends Platform {
 
@@ -17,7 +18,7 @@ public class CrackedPlatform extends Platform {
         crackLevel++;
         Logger.log(
                 "CrackedPlatform",
-                String.format(
+                Stringf.format(
                         "Cracked level for platform at (%s, %s) is now %s",
                         this.body.getPosition().x,
                         this.body.getPosition().y,

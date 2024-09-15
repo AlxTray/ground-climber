@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import text.formic.Stringf;
 
 public class MapRenderer {
 
@@ -87,11 +88,11 @@ public class MapRenderer {
                 float cornerY = camera.position.y + camera.viewportHeight / 2;
                 font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), cornerX, cornerY - 10);
                 font.draw(batch,
-                        String.format("Player Pos: (%.2f, %.2f)", map.getPlayerBody().getPosition().x, map.getPlayerBody().getPosition().y),
+                        Stringf.format("Player Pos: (%.2f, %.2f)", map.getPlayerBody().getPosition().x, map.getPlayerBody().getPosition().y),
                         cornerX, cornerY - 30);
-                font.draw(batch, String.format("Player Lin Vec: (%.2f, %.2f)", map.getPlayerBody().getLinearVelocity().x,
+                font.draw(batch, Stringf.format("Player Lin Vec: (%.2f, %.2f)", map.getPlayerBody().getLinearVelocity().x,
                         map.getPlayerBody().getLinearVelocity().y), cornerX, cornerY - 50);
-                font.draw(batch, String.format("Player Ang Vec: %.2f", map.getPlayerBody().getAngularVelocity()), cornerX,
+                font.draw(batch, Stringf.format("Player Ang Vec: %.2f", map.getPlayerBody().getAngularVelocity()), cornerX,
                         cornerY - 70);
             }
 
