@@ -3,9 +3,11 @@
 This is a 2-D platforming game based around the LibGDX framework and using Box2D for the physics engine.
 You are required to move a bouncing ball across multiple levels to reach the goal, however, you must maintain bounce as moving to a higher platform you will lose bounce and gain bounce moving to a lower platform.
 
-The game targets `desktop` using an OpenGL context and simply using `A` and `D` on the keyboard for movement.
-The static webapp version also uses the same control scheme as `desktop`, this can be hosted on a local server, or accessed via [ground-climber](https://calm-mushroom-09c0fc203.5.azurestaticapps.net/) where the main branch is automatically deployed to an Azure Static Webapp.
-There also an `android` version, the control scheme here relies on the accelerometer/touch so therefore `A` and `D` are then effectively mapped to the tilt of the device/touch zones on the left and right side of the screen.
+## Platform Targets and Control Schemes
+
+- The game targets `desktop` using an OpenGL context and simply using `A` and `D` on the keyboard for movement.
+- The static webapp version also uses the same control scheme as `desktop`, this can be hosted on a local server, or accessed via [ground-climber](https://calm-mushroom-09c0fc203.5.azurestaticapps.net/) where the main branch is automatically deployed to an Azure Static Webapp.
+- There also is an `android` version, the control scheme here relies on the accelerometer/touch so therefore `A` and `D` are then effectively mapped to the tilt of the device/touch zones on the left and right side of the screen.
 
 ## Platforms
 
