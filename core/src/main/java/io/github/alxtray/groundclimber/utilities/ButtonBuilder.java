@@ -1,5 +1,6 @@
 package io.github.alxtray.groundclimber.utilities;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -48,6 +49,8 @@ public class ButtonBuilder {
     public void build() {
         TextButton button = new TextButton(buttonText, skin);
         button.getLabel().setFontScale(stage.getWidth() / stage.getHeight());
+        button.setColor(Color.valueOf("636363"));
+        button.getLabel().setColor(Color.BLACK);
         button.setPosition(x, y);
         if (actorName != null) {
             button.setName(actorName);
