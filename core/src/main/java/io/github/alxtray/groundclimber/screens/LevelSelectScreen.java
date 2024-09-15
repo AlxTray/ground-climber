@@ -7,6 +7,7 @@ import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
+import io.github.alxtray.groundclimber.utilities.ButtonBuilder;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -26,10 +27,14 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 import text.formic.Stringf;
 
+import java.security.KeyStore;
 import java.util.Arrays;
 
 public class LevelSelectScreen implements Screen {
 
+    private static final float LEVEL_BUTTON_WIDTH = 100;
+    private static final float LEVEL_BUTTON_HEIGHT = 50;
+    private static final float LEVEL_BUTTON_Y = 170;
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final OrthographicCamera camera;
@@ -59,35 +64,31 @@ public class LevelSelectScreen implements Screen {
             JsonReader jsonReader = new JsonReader();
             JsonValue jsonData = jsonReader.parse(levelFile);
 
-            TextButton levelButton = new TextButton(jsonData.get("data").get("name").asString(), skin);
-            levelButton.setPosition(100 + buttonXIncrement, 110);
-            levelButton.setName(levelFile.name());
-            Logger.log(
-                    "LevelScreen",
-                    Stringf.format("Successfully created button for level: %s", levelFile.name()),
-                    LogLevel.DEBUG);
-
-            levelButton.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Actor target = event.getTarget();
-                    // If the text in the button is clicked the event is for the Label not
-                    // TextButton
-                    // So, if the event is Label the TextButton is the parent Actor
-                    String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
-                    Logger.log(
+            new ButtonBuilder(jsonData.get("data").get("name").asString(), skin, stage)
+                .setActorName(levelFile.name())
+                .setPosition(100 + buttonXIncrement, LEVEL_BUTTON_Y)
+                .setSize(LEVEL_BUTTON_WIDTH, LEVEL_BUTTON_HEIGHT)
+                .setClickListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Actor target = event.getTarget();
+                        // If the text in the button is clicked the event is for the Label not
+                        // TextButton
+                        // So, if the event is Label the TextButton is the parent Actor
+                        String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
+                        Logger.log(
                             "LevelSelectButton",
                             Stringf.format("Selected level: %s", levelName),
                             LogLevel.INFO);
-                    game.setScreen(new GameScreen(
+                        game.setScreen(new GameScreen(
                             GameMode.NORMAL,
                             debugMode,
                             levelName));
-                }
-            });
+                    }
+                })
+                .build();
 
-            stage.addActor(levelButton);
-            buttonXIncrement += levelButton.getWidth() + 10;
+            buttonXIncrement += LEVEL_BUTTON_WIDTH + 10;
         }
     }
 
