@@ -1,11 +1,16 @@
 package io.github.alxtray.groundclimber.screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
+import io.github.alxtray.groundclimber.utilities.ButtonBuilder;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -21,6 +26,7 @@ public class MainMenuScreen implements Screen {
 
     private final SpriteBatch batch;
     private final BitmapFont font;
+    private final Stage stage;
     private final OrthographicCamera camera;
     private final Texture backgroundImage;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
@@ -31,9 +37,43 @@ public class MainMenuScreen implements Screen {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        Skin skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
+        float viewportTop = camera.position.y + camera.viewportHeight / 2;
+        float mainButtonHeight = (float) Gdx.graphics.getHeight() / 5;
+        float mainButtonWidth = (float) Gdx.graphics.getWidth() / 5;
+        float levelsButtonTopMargin = Gdx.graphics.getHeight() / 1.5f;
+        float endlessButtonTopMargin = (levelsButtonTopMargin + mainButtonHeight) + (float) Gdx.graphics.getHeight() / 40;
+        new ButtonBuilder("Levels", skin, stage)
+            .setSize(mainButtonWidth, mainButtonHeight)
+            .setPosition(camera.position.x - (mainButtonWidth / 2), viewportTop - levelsButtonTopMargin)
+            .setClickListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new LevelSelectScreen(
+                        game,
+                        debugMode));
+                }
+            })
+            .build();
+        new ButtonBuilder("Endless", skin, stage)
+            .setSize(mainButtonWidth, mainButtonHeight)
+            .setPosition(camera.position.x - (mainButtonWidth / 2), viewportTop - endlessButtonTopMargin)
+            .setClickListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new GameScreen(
+                        GameMode.ENDLESS,
+                        debugMode));
+                }
+            })
+            .build();
     }
 
     @Override
@@ -56,13 +96,9 @@ public class MainMenuScreen implements Screen {
                 "F1 will reset the above options", 100, 100);
         batch.end();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            Logger.log(
-                    "MainScreen",
-                    "Changing to LevelScreen",
-                    LogLevel.DEBUG);
-            game.setScreen(new LevelSelectScreen(game, debugMode));
-        }
+        stage.act(delta);
+        stage.draw();
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
             Logger.log(
                     "MainScreen",

@@ -1,7 +1,6 @@
 package io.github.alxtray.groundclimber.screens;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.maps.ImageResolver;
 import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
@@ -20,21 +19,16 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.ScreenUtils;
 import text.formic.Stringf;
 
-import java.security.KeyStore;
 import java.util.Arrays;
 
 public class LevelSelectScreen implements Screen {
 
-    private static final float LEVEL_BUTTON_WIDTH = 100;
-    private static final float LEVEL_BUTTON_HEIGHT = 50;
-    private static final float LEVEL_BUTTON_Y = 170;
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final OrthographicCamera camera;
@@ -46,7 +40,7 @@ public class LevelSelectScreen implements Screen {
         batch = new SpriteBatch();
         font = new BitmapFont();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
 
@@ -59,15 +53,18 @@ public class LevelSelectScreen implements Screen {
                 Stringf.format("Found the following level files: %s", Arrays.toString(levelFiles)),
                 LogLevel.DEBUG);
         Skin skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
-        float buttonXIncrement = 0;
+        float viewportTop = camera.position.y + camera.viewportHeight / 2;
+        float buttonHeight = (float) Gdx.graphics.getHeight() / 10;
+        float buttonWidth = (float) Gdx.graphics.getWidth() / 5;
+        float buttonY = viewportTop - Gdx.graphics.getHeight() / 1.75f;
         for (FileHandle levelFile : levelFiles) {
             JsonReader jsonReader = new JsonReader();
             JsonValue jsonData = jsonReader.parse(levelFile);
 
             new ButtonBuilder(jsonData.get("data").get("name").asString(), skin, stage)
                 .setActorName(levelFile.name())
-                .setPosition(100 + buttonXIncrement, LEVEL_BUTTON_Y)
-                .setSize(LEVEL_BUTTON_WIDTH, LEVEL_BUTTON_HEIGHT)
+                .setPosition(camera.position.x - (buttonWidth / 2), buttonY)
+                .setSize(buttonWidth, buttonHeight)
                 .setClickListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
@@ -88,7 +85,7 @@ public class LevelSelectScreen implements Screen {
                 })
                 .build();
 
-            buttonXIncrement += LEVEL_BUTTON_WIDTH + 10;
+            buttonY -= buttonHeight + (float) Gdx.graphics.getHeight() / 50;
         }
     }
 
@@ -106,7 +103,6 @@ public class LevelSelectScreen implements Screen {
             camera.position.y - (camera.viewportHeight / 2),
             camera.viewportWidth,
             camera.viewportHeight);
-        font.draw(batch, "Select from the following levels.", 100, 150);
         batch.end();
 
         stage.act(delta);

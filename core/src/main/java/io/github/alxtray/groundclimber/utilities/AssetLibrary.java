@@ -9,8 +9,8 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class AssetLibrary {
 
-    private static final String SKIN_ATLAS_PATH = "ui/uiskin.atlas";
-    private static final String SKIN_JSON_PATH = "ui/uiskin.json";
+    private static final String SKIN_ATLAS_PATH = "ui/skin.atlas";
+    private static final String SKIN_JSON_PATH = "ui/skin.json";
     private static final String PLAYER_IMAGE_PATH = "player.png";
     private static final String PLAYER_FACE_IMAGE_PATH = "player_face.png";
     private static final String PLATFORM_TILE_PATH = "platform.png";
