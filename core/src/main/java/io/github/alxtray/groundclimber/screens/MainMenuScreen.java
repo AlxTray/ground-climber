@@ -1,9 +1,11 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.graphics.Texture;
 import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,6 +22,7 @@ public class MainMenuScreen implements Screen {
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final OrthographicCamera camera;
+    private final Texture backgroundImage;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
 
     public MainMenuScreen(final Core game) {
@@ -29,6 +32,8 @@ public class MainMenuScreen implements Screen {
         font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+
+        backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
     }
 
     @Override
@@ -39,6 +44,12 @@ public class MainMenuScreen implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
+        batch.draw(
+            backgroundImage,
+            camera.position.x - (camera.viewportWidth / 2),
+            camera.position.y - (camera.viewportHeight / 2),
+            camera.viewportWidth,
+            camera.viewportHeight);
         font.draw(batch, "Welcome to Ground Climber! ", 100, 150);
         font.draw(batch, "Press Enter to begin, or Backspace for Endless mode!\n" +
                 "Press F2 to enable debug rendering, or F3 for only debug rendering\n" +

@@ -1,5 +1,7 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.ImageResolver;
 import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
@@ -32,6 +34,7 @@ public class LevelSelectScreen implements Screen {
     private final BitmapFont font;
     private final OrthographicCamera camera;
     private final Stage stage;
+    private final Texture backgroundImage;
 
     public LevelSelectScreen(final Core game, final DebugRenderMode debugMode) {
 
@@ -39,6 +42,8 @@ public class LevelSelectScreen implements Screen {
         font = new BitmapFont();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
+
+        backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -93,12 +98,18 @@ public class LevelSelectScreen implements Screen {
         camera.update();
         batch.setProjectionMatrix(camera.combined);
 
-        stage.act(delta);
-        stage.draw();
-
         batch.begin();
+        batch.draw(
+            backgroundImage,
+            camera.position.x - (camera.viewportWidth / 2),
+            camera.position.y - (camera.viewportHeight / 2),
+            camera.viewportWidth,
+            camera.viewportHeight);
         font.draw(batch, "Select from the following levels.", 100, 150);
         batch.end();
+
+        stage.act(delta);
+        stage.draw();
     }
 
     @Override

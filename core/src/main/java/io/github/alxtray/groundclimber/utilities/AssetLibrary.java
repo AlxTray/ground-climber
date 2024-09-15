@@ -15,6 +15,7 @@ public class AssetLibrary {
     private static final String PLAYER_FACE_IMAGE_PATH = "player_face.png";
     private static final String PLATFORM_TILE_PATH = "platform.png";
     private static final String BACKGROUND_IMAGE_PATH = "background.png";
+    private static final String TITLE_BACKGROUND_IMAGE_PATH = "title_background.png";
     private AssetManager assetManager;
     private ObjectMap<String, String> filePathAliases;
 
@@ -37,6 +38,8 @@ public class AssetLibrary {
         filePathAliases.put("skin", SKIN_JSON_PATH);
 
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
+        assetManager.load(TITLE_BACKGROUND_IMAGE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("title_background", TITLE_BACKGROUND_IMAGE_PATH);
         assetManager.load(PLAYER_IMAGE_PATH, Texture.class, textureParameter);
         filePathAliases.put("player", PLAYER_IMAGE_PATH);
         assetManager.load(PLAYER_FACE_IMAGE_PATH, Texture.class, textureParameter);
