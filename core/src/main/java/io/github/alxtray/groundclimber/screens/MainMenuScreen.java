@@ -32,7 +32,7 @@ public class MainMenuScreen implements Screen {
     private final float titleHeight;
     private final float titleX;
     private float currentTitleY;
-    private float finalTitleY;
+    private final float finalTitleY;
     private final Texture backgroundImage;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
 
