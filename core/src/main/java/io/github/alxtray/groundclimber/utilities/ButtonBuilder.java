@@ -47,6 +47,7 @@ public class ButtonBuilder {
 
     public void build() {
         TextButton button = new TextButton(buttonText, skin);
+        button.getLabel().setFontScale(stage.getWidth() / stage.getHeight());
         button.setPosition(x, y);
         if (actorName != null) {
             button.setName(actorName);
