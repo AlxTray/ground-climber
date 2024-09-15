@@ -13,7 +13,18 @@ public class AssetLibrary {
     private static final String SKIN_JSON_PATH = "ui/skin.json";
     private static final String PLAYER_IMAGE_PATH = "player.png";
     private static final String PLAYER_FACE_IMAGE_PATH = "player_face.png";
-    private static final String PLATFORM_TILE_PATH = "platform.png";
+    private static final String GRASS_SINGLE_LEFT_PATH = "grass_single_left.png";
+    private static final String GRASS_SINGLE_MIDDLE_PATH = "grass_single_middle.png";
+    private static final String GRASS_SINGLE_RIGHT_PATH = "grass_single_right.png";
+    private static final String GRASS_TOP_LEFT_PATH = "grass_top_left.png";
+    private static final String GRASS_TOP_MIDDLE_PATH = "grass_top_middle.png";
+    private static final String GRASS_TOP_RIGHT_PATH = "grass_top_right.png";
+    private static final String GROUND_LEFT_BOTTOM_PATH = "ground_left_bottom.png";
+    private static final String GROUND_LEFT_MIDDLE_PATH = "ground_left_middle.png";
+    private static final String GROUND_MIDDLE_BOTTOM_PATH = "ground_middle_bottom.png";
+    private static final String GROUND_RIGHT_BOTTOM_PATH = "ground_right_bottom.png";
+    private static final String GROUND_RIGHT_MIDDLE_PATH = "ground_right_middle.png";
+    private static final String GROUND_NO_BORDER_PATH = "ground_no_border.png";
     private static final String BACKGROUND_IMAGE_PATH = "background.png";
     private static final String TITLE_TEXT_PATH = "title_text.png";
     private static final String TITLE_BACKGROUND_IMAGE_PATH = "title_background.png";
@@ -53,8 +64,30 @@ public class AssetLibrary {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
         assetManager.load(BACKGROUND_IMAGE_PATH, Texture.class, textureParameter);
         filePathAliases.put("background", BACKGROUND_IMAGE_PATH);
-        assetManager.load(PLATFORM_TILE_PATH, Texture.class, textureParameter);
-        filePathAliases.put("platformTile", PLATFORM_TILE_PATH);
+        assetManager.load(GRASS_SINGLE_LEFT_PATH, Texture.class, textureParameter);
+        filePathAliases.put("grass_single_left", GRASS_SINGLE_LEFT_PATH);
+        assetManager.load(GRASS_SINGLE_MIDDLE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("grass_single_middle", GRASS_SINGLE_MIDDLE_PATH);
+        assetManager.load(GRASS_SINGLE_RIGHT_PATH, Texture.class, textureParameter);
+        filePathAliases.put("grass_single_right", GRASS_SINGLE_RIGHT_PATH);
+        assetManager.load(GRASS_TOP_LEFT_PATH, Texture.class, textureParameter);
+        filePathAliases.put("grass_top_left", GRASS_TOP_LEFT_PATH);
+        assetManager.load(GRASS_TOP_MIDDLE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("grass_top_middle", GRASS_TOP_MIDDLE_PATH);
+        assetManager.load(GRASS_TOP_RIGHT_PATH, Texture.class, textureParameter);
+        filePathAliases.put("grass_top_right", GRASS_TOP_RIGHT_PATH);
+        assetManager.load(GROUND_LEFT_BOTTOM_PATH, Texture.class, textureParameter);
+        filePathAliases.put("ground_left_bottom", GROUND_LEFT_BOTTOM_PATH);
+        assetManager.load(GROUND_LEFT_MIDDLE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("ground_left_middle", GROUND_LEFT_MIDDLE_PATH);
+        assetManager.load(GROUND_MIDDLE_BOTTOM_PATH, Texture.class, textureParameter);
+        filePathAliases.put("ground_middle_bottom", GROUND_MIDDLE_BOTTOM_PATH);
+        assetManager.load(GROUND_NO_BORDER_PATH, Texture.class, textureParameter);
+        filePathAliases.put("ground_no_border", GROUND_NO_BORDER_PATH);
+        assetManager.load(GROUND_RIGHT_BOTTOM_PATH, Texture.class, textureParameter);
+        filePathAliases.put("ground_right_bottom", GROUND_RIGHT_BOTTOM_PATH);
+        assetManager.load(GROUND_RIGHT_MIDDLE_PATH, Texture.class, textureParameter);
+        filePathAliases.put("ground_right_middle", GROUND_RIGHT_MIDDLE_PATH);
     }
 
     public <T> T getAsset(String assetAlias, Class<T> type) {
