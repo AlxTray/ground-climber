@@ -16,7 +16,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -24,9 +23,16 @@ public class MainMenuScreen implements Screen {
 
     private final Core game;
 
+    private static final float TITLE_MOVE_AMOUNT = 1.4f;
     private final SpriteBatch batch;
     private final Stage stage;
     private final OrthographicCamera camera;
+    private final Texture title;
+    private final float titleWidth;
+    private final float titleHeight;
+    private final float titleX;
+    private float currentTitleY;
+    private float finalTitleY;
     private final Texture backgroundImage;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
 
@@ -37,6 +43,12 @@ public class MainMenuScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        title = AssetLibrary.getInstance().getAsset("title", Texture.class);
+        titleWidth = camera.viewportWidth * 0.5f;
+        titleHeight = camera.viewportHeight * 0.25f;
+        titleX = (camera.viewportWidth - titleWidth) / 2;
+        currentTitleY = camera.viewportHeight;
+        finalTitleY = (camera.viewportHeight - titleHeight) / 1.2f;
         backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
 
         stage = new Stage();
@@ -88,18 +100,20 @@ public class MainMenuScreen implements Screen {
             camera.position.y - (camera.viewportHeight / 2),
             camera.viewportWidth,
             camera.viewportHeight);
+        if (currentTitleY > finalTitleY) {
+            currentTitleY -= TITLE_MOVE_AMOUNT;
+        }
+        batch.draw(
+            title,
+            titleX,
+            currentTitleY,
+            titleWidth,
+            titleHeight);
         batch.end();
 
         stage.act(delta);
         stage.draw();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
-            Logger.log(
-                    "MainScreen",
-                    "Changing to GameScreen",
-                    LogLevel.DEBUG);
-            game.setScreen(new GameScreen(GameMode.ENDLESS, debugMode));
-        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             debugMode = DebugRenderMode.NORMAL;
             Logger.log(
