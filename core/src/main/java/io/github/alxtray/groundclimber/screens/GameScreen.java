@@ -18,7 +18,6 @@ import text.formic.Stringf;
 
 public class GameScreen implements Screen {
 
-    private final MapRenderer mapRenderer;
     private Map map;
 
     public GameScreen(GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
@@ -57,8 +56,7 @@ public class GameScreen implements Screen {
                     "Empty map successfully created for ENDLESS mode",
                     LogLevel.INFO);
         }
-        mapRenderer = new MapRenderer(map, debugMode);
-        map.attachRenderer(mapRenderer);
+        map.attachRenderer(new MapRenderer(map, debugMode));
     }
 
     @Override
@@ -90,7 +88,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
-        mapRenderer.dispose();
         Logger.log(
                 "GameScreen",
                 "Disposed objects",

@@ -23,6 +23,8 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import text.formic.Stringf;
 
+import java.util.Arrays;
+
 public class Map implements Json.Serializable {
 
     private static final int PLAYER_INITIAL_RADIUS = 16;
@@ -117,7 +119,12 @@ public class Map implements Json.Serializable {
         }
 
         if (gameMode.equals(GameMode.ENDLESS) && lastPlatformInBatch.getPosition().x < player.getPosition().x) {
-            platforms = platGenerator.generatePlatformBatch();
+            platforms.addAll(platGenerator.generatePlatformBatch());
+            if (platforms.size > 20) {
+                for (int i = 0; i < 10; i++) {
+                    objectsToDestroy.add(platforms.get(i).getBody());
+                }
+            }
             lastPlatformInBatch = platforms.get(platforms.size - 1);
             Logger.log(
                     "Map",
