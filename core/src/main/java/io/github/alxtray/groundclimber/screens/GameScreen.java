@@ -57,8 +57,6 @@ public class GameScreen implements Screen {
                     "Empty map successfully created for ENDLESS mode",
                     LogLevel.INFO);
         }
-        map.setGameMode(gameMode);
-
         mapRenderer = new MapRenderer(map, debugMode);
         map.attachRenderer(mapRenderer);
     }

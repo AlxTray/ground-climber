@@ -72,18 +72,6 @@ public class Map implements Json.Serializable {
         return player.getBody();
     }
 
-
-    public void setGameMode(GameMode gameMode) {
-        this.gameMode = gameMode;
-
-        // Start endless related stuff here as when Map is instantiated the
-        // game mode is not known
-        if (gameMode.equals(GameMode.ENDLESS)) {
-            platGenerator = new EndlessPlatformGenerator(world);
-            lastPlatformInBatch = new Platform(world, 550f, 0, 18f, 198f);
-        }
-    }
-
     public void attachRenderer(MapRenderer mapRenderer) {
         this.mapRenderer = mapRenderer;
     }
@@ -238,8 +226,15 @@ public class Map implements Json.Serializable {
         }
         spawnNewPlayer(PLAYER_INITIAL_RADIUS);
 
-        JsonValue cameraPos = jsonData.get("data").get("camera_start_pos");
-        float[] oldCameraStartPos = cameraPos.asFloatArray();
+        JsonValue gameModeValue = jsonData.get("data").get("mode");
+        gameMode = GameMode.valueOf(gameModeValue.asString());
+        if (gameMode.equals(GameMode.ENDLESS)) {
+            platGenerator = new EndlessPlatformGenerator(world);
+            lastPlatformInBatch = new Platform(world, 550f, 0, 18f, 198f);
+        }
+
+        JsonValue cameraStartPosValue = jsonData.get("data").get("camera_start_pos");
+        float[] oldCameraStartPos = cameraStartPosValue.asFloatArray();
         // This is getting a float[] of length two [x, y] but camera requires a float[]
         // of [x, y, z]
         // this is 2D so did not want to have needless 0 in every level JSON camera
@@ -250,8 +245,8 @@ public class Map implements Json.Serializable {
         camera.position.set(cameraStartPos);
 
         PlatformFactory platformFactory = new PlatformFactory(world);
-        JsonValue platformsJson = jsonData.get("objects").get("platforms");
-        for (JsonValue platformData = platformsJson.child; platformData != null; platformData = platformData.next) {
+        JsonValue platformsValue = jsonData.get("objects").get("platforms");
+        for (JsonValue platformData = platformsValue.child; platformData != null; platformData = platformData.next) {
             this.platforms.add(platformFactory.createPlatform(
                     platformData.get("type").asString(),
                     platformData.get("x").asFloat(),
