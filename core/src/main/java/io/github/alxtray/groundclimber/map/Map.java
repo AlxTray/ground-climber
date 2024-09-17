@@ -48,7 +48,6 @@ public class Map implements Json.Serializable {
     private Player player;
     private GameMode gameMode;
     private Array<Platform> platforms = new Array<>();
-    private Platform lastPlatformInBatch;
 
     public Map() {
         world = new World(new Vector2(0, -425), true);
@@ -59,7 +58,7 @@ public class Map implements Json.Serializable {
         contactListener = new ContactListenerImpl();
         contactListener.addContactListener(new CrackedPlatformContactListener());
         if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
-            //contactListener.addContactListener(new DebugContactListener());
+            contactListener.addContactListener(new DebugContactListener());
         }
         world.setContactListener(contactListener);
         deltaAccumulator = 0;
@@ -118,18 +117,23 @@ public class Map implements Json.Serializable {
             Gdx.app.exit();
         }
 
-        if (gameMode.equals(GameMode.ENDLESS) && lastPlatformInBatch.getPosition().x < player.getPosition().x) {
-            platforms.addAll(platGenerator.generatePlatformBatch());
-            if (platforms.size > 20) {
-                for (int i = 0; i < 10; i++) {
-                    objectsToDestroy.add(platforms.get(i).getBody());
+        // Try catch hack to see if the player has just started and the only platform is the initial one
+        try {
+            if (gameMode.equals(GameMode.ENDLESS) && platforms.get(platforms.size - 5).getPosition().x < player.getPosition().x) {
+                platforms.addAll(platGenerator.generatePlatformBatch());
+                // Check against 31 as this is three batches including the extra platform
+                if (platforms.size == 31) {
+                    for (int i = 0; i < 10; i++) {
+                        objectsToDestroy.add(platforms.get(i).getBody());
+                    }
                 }
-            }
-            lastPlatformInBatch = platforms.get(platforms.size - 1);
-            Logger.log(
+                Logger.log(
                     "Map",
                     "Successfully generated new endless platform batch",
                     LogLevel.INFO);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            platforms.addAll(platGenerator.generatePlatformBatch());
         }
 
 
@@ -237,7 +241,6 @@ public class Map implements Json.Serializable {
         gameMode = GameMode.valueOf(gameModeValue.asString());
         if (gameMode.equals(GameMode.ENDLESS)) {
             platGenerator = new EndlessPlatformGenerator(world);
-            lastPlatformInBatch = new Platform(world, 550f, 0, 18f, 198f);
         }
 
         JsonValue cameraStartPosValue = jsonData.get("data").get("camera_start_pos");
