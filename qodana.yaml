@@ -1,10 +1,11 @@
-version: "1.0"
-linter: jetbrains/qodana-jvm-community:2024.1
-profile:
-  name: ground-climber-all
+version: 1.0
+name: "ground-climber-all"
+
 groups:
   - groupId: IncludedInspections
     groups:
       - "ALL"
-include:
-  - name: CheckDependencyLicenses
+
+inspections:
+  - group: InspectionsToInclude
+    enabled: true
