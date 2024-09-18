@@ -1,11 +1,6 @@
-version: 1.0
-name: "ground-climber-all"
-
-groups:
-  - groupId: IncludedInspections
-    groups:
-      - "ALL"
-
-inspections:
-  - group: InspectionsToInclude
-    enabled: true
+version: "1.0"
+linter: jetbrains/qodana-jvm-community:2024.1
+profile:
+  name: empty
+include:
+  - name: All
