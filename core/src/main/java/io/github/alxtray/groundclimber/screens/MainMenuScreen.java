@@ -44,8 +44,8 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
         title = AssetLibrary.getInstance().getAsset("title", Texture.class);
-        titleWidth = camera.viewportWidth * 0.5f;
-        titleHeight = camera.viewportHeight * 0.25f;
+        titleWidth = camera.viewportWidth * 0.4f;
+        titleHeight = camera.viewportHeight * 0.2f;
         titleX = (camera.viewportWidth - titleWidth) / 2;
         currentTitleY = camera.viewportHeight;
         finalTitleY = (camera.viewportHeight - titleHeight) / 1.2f;

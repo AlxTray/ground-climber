@@ -28,9 +28,16 @@ import java.util.Arrays;
 
 public class LevelSelectScreen implements Screen {
 
+    private static final float TITLE_MOVE_AMOUNT = 1.4f;
     private final SpriteBatch batch;
     private final OrthographicCamera camera;
     private final Stage stage;
+    private final Texture title;
+    private final float titleWidth;
+    private final float titleHeight;
+    private final float titleX;
+    private float currentTitleY;
+    private final float finalTitleY;
     private final Texture backgroundImage;
 
     public LevelSelectScreen(final Core game, final DebugRenderMode debugMode) {
@@ -39,6 +46,12 @@ public class LevelSelectScreen implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        title = AssetLibrary.getInstance().getAsset("level_title", Texture.class);
+        titleWidth = camera.viewportWidth * 0.4f;
+        titleHeight = camera.viewportHeight * 0.2f;
+        titleX = (camera.viewportWidth - titleWidth) / 2;
+        currentTitleY = camera.viewportHeight;
+        finalTitleY = (camera.viewportHeight - titleHeight) / 1.2f;
         backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
 
         stage = new Stage();
@@ -100,6 +113,15 @@ public class LevelSelectScreen implements Screen {
             camera.position.y - (camera.viewportHeight / 2),
             camera.viewportWidth,
             camera.viewportHeight);
+        if (currentTitleY > finalTitleY) {
+            currentTitleY -= TITLE_MOVE_AMOUNT;
+        }
+        batch.draw(
+            title,
+            titleX,
+            currentTitleY,
+            titleWidth,
+            titleHeight);
         batch.end();
 
         stage.act(delta);

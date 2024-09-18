@@ -28,6 +28,7 @@ public class AssetLibrary {
     private static final String BACKGROUND_IMAGE_PATH = "background.png";
     private static final String TITLE_TEXT_PATH = "title_text.png";
     private static final String TITLE_BACKGROUND_IMAGE_PATH = "title_background.png";
+    private static final String LEVEL_TEXT_PATH = "select_level_title.png";
     private AssetManager assetManager;
     private ObjectMap<String, String> filePathAliases;
 
@@ -54,6 +55,8 @@ public class AssetLibrary {
         filePathAliases.put("title", TITLE_TEXT_PATH);
         assetManager.load(TITLE_BACKGROUND_IMAGE_PATH, Texture.class, textureParameter);
         filePathAliases.put("title_background", TITLE_BACKGROUND_IMAGE_PATH);
+        assetManager.load(LEVEL_TEXT_PATH, Texture.class, textureParameter);
+        filePathAliases.put("level_title", LEVEL_TEXT_PATH);
         assetManager.load(PLAYER_IMAGE_PATH, Texture.class, textureParameter);
         filePathAliases.put("player", PLAYER_IMAGE_PATH);
         assetManager.load(PLAYER_FACE_IMAGE_PATH, Texture.class, textureParameter);
