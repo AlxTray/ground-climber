@@ -18,7 +18,6 @@ import text.formic.Stringf;
 
 public class GameScreen implements Screen {
 
-    private final MapRenderer mapRenderer;
     private Map map;
 
     public GameScreen(GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
@@ -50,16 +49,14 @@ public class GameScreen implements Screen {
             Json json = new Json();
             map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
         } else if (gameMode == GameMode.ENDLESS) {
-            map = new Map();
+            Json json = new Json();
+            map = json.fromJson(Map.class, Gdx.files.internal("endless.json"));
             Logger.log(
                     "GameScreen",
                     "Empty map successfully created for ENDLESS mode",
                     LogLevel.INFO);
         }
-        map.setGameMode(gameMode);
-
-        mapRenderer = new MapRenderer(map, debugMode);
-        map.attachRenderer(mapRenderer);
+        map.attachRenderer(new MapRenderer(map, debugMode));
     }
 
     @Override
@@ -91,7 +88,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         map.dispose();
-        mapRenderer.dispose();
         Logger.log(
                 "GameScreen",
                 "Disposed objects",

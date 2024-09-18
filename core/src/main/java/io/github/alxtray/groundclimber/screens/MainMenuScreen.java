@@ -1,17 +1,21 @@
 package io.github.alxtray.groundclimber.screens;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
+import io.github.alxtray.groundclimber.utilities.ButtonBuilder;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 
@@ -19,9 +23,16 @@ public class MainMenuScreen implements Screen {
 
     private final Core game;
 
+    private static final float TITLE_MOVE_AMOUNT = 1.4f;
     private final SpriteBatch batch;
-    private final BitmapFont font;
+    private final Stage stage;
     private final OrthographicCamera camera;
+    private final Texture title;
+    private final float titleWidth;
+    private final float titleHeight;
+    private final float titleX;
+    private float currentTitleY;
+    private final float finalTitleY;
     private final Texture backgroundImage;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
 
@@ -29,11 +40,50 @@ public class MainMenuScreen implements Screen {
         this.game = game;
 
         batch = new SpriteBatch();
-        font = new BitmapFont();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        camera.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
+        title = AssetLibrary.getInstance().getAsset("title", Texture.class);
+        titleWidth = camera.viewportWidth * 0.4f;
+        titleHeight = camera.viewportHeight * 0.2f;
+        titleX = (camera.viewportWidth - titleWidth) / 2;
+        currentTitleY = camera.viewportHeight;
+        finalTitleY = (camera.viewportHeight - titleHeight) / 1.2f;
         backgroundImage = AssetLibrary.getInstance().getAsset("title_background", Texture.class);
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+
+        Skin skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
+        float viewportTop = camera.position.y + camera.viewportHeight / 2;
+        float mainButtonHeight = (float) Gdx.graphics.getHeight() / 5;
+        float mainButtonWidth = (float) Gdx.graphics.getWidth() / 5;
+        float levelsButtonTopMargin = Gdx.graphics.getHeight() / 1.5f;
+        float endlessButtonTopMargin = (levelsButtonTopMargin + mainButtonHeight) + (float) Gdx.graphics.getHeight() / 40;
+        new ButtonBuilder("Levels", skin, stage)
+            .setSize(mainButtonWidth, mainButtonHeight)
+            .setPosition(camera.position.x - (mainButtonWidth / 2), viewportTop - levelsButtonTopMargin)
+            .setClickListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new LevelSelectScreen(
+                        game,
+                        debugMode));
+                }
+            })
+            .build();
+        new ButtonBuilder("Endless", skin, stage)
+            .setSize(mainButtonWidth, mainButtonHeight)
+            .setPosition(camera.position.x - (mainButtonWidth / 2), viewportTop - endlessButtonTopMargin)
+            .setClickListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    game.setScreen(new GameScreen(
+                        GameMode.ENDLESS,
+                        debugMode));
+                }
+            })
+            .build();
     }
 
     @Override
@@ -50,26 +100,20 @@ public class MainMenuScreen implements Screen {
             camera.position.y - (camera.viewportHeight / 2),
             camera.viewportWidth,
             camera.viewportHeight);
-        font.draw(batch, "Welcome to Ground Climber! ", 100, 150);
-        font.draw(batch, "Press Enter to begin, or Backspace for Endless mode!\n" +
-                "Press F2 to enable debug rendering, or F3 for only debug rendering\n" +
-                "F1 will reset the above options", 100, 100);
+        if (currentTitleY > finalTitleY) {
+            currentTitleY -= TITLE_MOVE_AMOUNT;
+        }
+        batch.draw(
+            title,
+            titleX,
+            currentTitleY,
+            titleWidth,
+            titleHeight);
         batch.end();
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-            Logger.log(
-                    "MainScreen",
-                    "Changing to LevelScreen",
-                    LogLevel.DEBUG);
-            game.setScreen(new LevelSelectScreen(game, debugMode));
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.BACKSPACE)) {
-            Logger.log(
-                    "MainScreen",
-                    "Changing to GameScreen",
-                    LogLevel.DEBUG);
-            game.setScreen(new GameScreen(GameMode.ENDLESS, debugMode));
-        }
+        stage.act(delta);
+        stage.draw();
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             debugMode = DebugRenderMode.NORMAL;
             Logger.log(
@@ -116,7 +160,6 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        font.dispose();
         Logger.log(
                 "MainScreen",
                 "Disposed objects",

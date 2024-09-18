@@ -1,0 +1,20 @@
+{
+  "data": {
+    "name": "Endless",
+    "mode": "ENDLESS",
+    "bounds": [0, 0, 1000, 5000],
+    "camera_start_pos": [0, 0],
+    "player_start_pos": [50, 100]
+  },
+  "objects": {
+    "platforms": [
+      {
+        "type": "normal",
+        "x": 0,
+        "y": 0,
+        "height": 54,
+        "width": 216
+      }
+    ]
+  }
+}

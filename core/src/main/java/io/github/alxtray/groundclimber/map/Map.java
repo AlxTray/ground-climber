@@ -1,5 +1,6 @@
 package io.github.alxtray.groundclimber.map;
 
+import com.badlogic.gdx.Game;
 import io.github.alxtray.groundclimber.bodies.Platform;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.GameMode;
@@ -21,6 +22,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
 import text.formic.Stringf;
+
+import java.util.Arrays;
 
 public class Map implements Json.Serializable {
 
@@ -45,7 +48,6 @@ public class Map implements Json.Serializable {
     private Player player;
     private GameMode gameMode;
     private Array<Platform> platforms = new Array<>();
-    private Platform lastPlatformInBatch;
 
     public Map() {
         world = new World(new Vector2(0, -425), true);
@@ -71,23 +73,6 @@ public class Map implements Json.Serializable {
         return player.getBody();
     }
 
-
-    public void setGameMode(GameMode gameMode) {
-        this.gameMode = gameMode;
-
-        // Generate initial endless platform batch here as when Map is instantiated the
-        // game mode is not known
-        if (gameMode.equals(GameMode.ENDLESS)) {
-            platGenerator = new EndlessPlatformGenerator(world);
-            platforms = platGenerator.generateInitialBatch();
-            lastPlatformInBatch = new Platform(world, 520f, 0, 20f, 60f);
-            Logger.log(
-                    "Map",
-                    "Successfully generated initial endless platforms",
-                    LogLevel.INFO);
-        }
-    }
-
     public void attachRenderer(MapRenderer mapRenderer) {
         this.mapRenderer = mapRenderer;
     }
@@ -110,9 +95,10 @@ public class Map implements Json.Serializable {
 
         if (gameMode.equals(GameMode.ENDLESS) && player.getBody().getPosition().x > 100) {
             camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
-        } else {
+        } else if (gameMode.equals(GameMode.NORMAL)) {
             repositionCamera(delta);
         }
+        checkCameraInBounds();
         camera.update();
 
         if (Gdx.input.isKeyJustPressed(Keys.F3)) {
@@ -131,13 +117,23 @@ public class Map implements Json.Serializable {
             Gdx.app.exit();
         }
 
-        if (gameMode.equals(GameMode.ENDLESS) && lastPlatformInBatch.getPosition().x < player.getPosition().x) {
-            platforms = platGenerator.generatePlatformBatch();
-            lastPlatformInBatch = platforms.get(platforms.size - 1);
-            Logger.log(
+        // Try catch hack to see if the player has just started and the only platform is the initial one
+        try {
+            if (gameMode.equals(GameMode.ENDLESS) && platforms.get(platforms.size - 5).getPosition().x < player.getPosition().x) {
+                platforms.addAll(platGenerator.generatePlatformBatch());
+                // Check against 31 as this is three batches including the extra platform
+                if (platforms.size == 31) {
+                    for (int i = 0; i < 10; i++) {
+                        objectsToDestroy.add(platforms.get(i).getBody());
+                    }
+                }
+                Logger.log(
                     "Map",
                     "Successfully generated new endless platform batch",
                     LogLevel.INFO);
+            }
+        } catch (IndexOutOfBoundsException e) {
+            platforms.addAll(platGenerator.generatePlatformBatch());
         }
 
 
@@ -193,6 +189,13 @@ public class Map implements Json.Serializable {
         if (playerPos.y > (cameraTop - CAMERA_MOVEMENT_THRESHOLD) && cameraTop < bounds.get(BOUNDS_TOP_INDEX)) {
             camera.translate(0, CAMERA_TRANSLATION_STEP * delta);
         }
+    }
+
+    private void checkCameraInBounds() {
+        float cameraLeft = camera.position.x - camera.viewportWidth / 2;
+        float cameraRight = camera.position.x + camera.viewportWidth / 2;
+        float cameraBottom = camera.position.y - camera.viewportHeight / 2;
+        float cameraTop = camera.position.y + camera.viewportHeight / 2;
 
         // Move camera back within bounds if it has left
         if (cameraLeft < bounds.get(BOUNDS_LEFT_INDEX)) {
@@ -234,8 +237,14 @@ public class Map implements Json.Serializable {
         }
         spawnNewPlayer(PLAYER_INITIAL_RADIUS);
 
-        JsonValue cameraPos = jsonData.get("data").get("camera_start_pos");
-        float[] oldCameraStartPos = cameraPos.asFloatArray();
+        JsonValue gameModeValue = jsonData.get("data").get("mode");
+        gameMode = GameMode.valueOf(gameModeValue.asString());
+        if (gameMode.equals(GameMode.ENDLESS)) {
+            platGenerator = new EndlessPlatformGenerator(world);
+        }
+
+        JsonValue cameraStartPosValue = jsonData.get("data").get("camera_start_pos");
+        float[] oldCameraStartPos = cameraStartPosValue.asFloatArray();
         // This is getting a float[] of length two [x, y] but camera requires a float[]
         // of [x, y, z]
         // this is 2D so did not want to have needless 0 in every level JSON camera
@@ -246,8 +255,8 @@ public class Map implements Json.Serializable {
         camera.position.set(cameraStartPos);
 
         PlatformFactory platformFactory = new PlatformFactory(world);
-        JsonValue platformsJson = jsonData.get("objects").get("platforms");
-        for (JsonValue platformData = platformsJson.child; platformData != null; platformData = platformData.next) {
+        JsonValue platformsValue = jsonData.get("objects").get("platforms");
+        for (JsonValue platformData = platformsValue.child; platformData != null; platformData = platformData.next) {
             this.platforms.add(platformFactory.createPlatform(
                     platformData.get("type").asString(),
                     platformData.get("x").asFloat(),
