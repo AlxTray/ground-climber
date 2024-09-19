@@ -34,7 +34,6 @@ include:
   - name: EditorConfigUnusedDeclaration
   - name: EmptyDirectory
   - name: InconsistentLineSeparators
-  - name: IncorrectFormatting
   - name: QodanaJavaSanity
   - name: LongLine
   - name: ProblematicWhitespace
@@ -42,7 +41,6 @@ include:
   - name: RedundantSuppression
   - name: TodoComment
   - name: InstanceofThis
-  - name: PublicMethodNotExposedInInterface
   - name: BooleanParameter
   - name: InstanceofChain
   - name: ClassReferencesSubclass
@@ -53,7 +51,6 @@ include:
   - name: MethodOnlyUsedFromInnerClass
   - name: StaticMethodOnlyUsedInOneClass
   - name: TypeMayBeWeakened
-  - name: UseOfConcreteClass
   - name: AssignmentToNull
   - name: ReplaceAssignmentWithOperatorAssignment
   - name: AssignmentToForLoopParameter
@@ -72,7 +69,6 @@ include:
   - name: AnonymousClassComplexity
   - name: ClassComplexity
   - name: ClassCoupling
-  - name: PublicConstructor
   - name: StaticNonFinalField
   - name: ClassMayBeInterface
   - name: AnonymousInnerClass
@@ -108,7 +104,6 @@ include:
   - name: CallToStringConcatCanBeReplacedByOperator
   - name: BoundedWildcard
   - name: ChainedEquality
-  - name: ChainedMethodCall
   - name: SingleStatementInBlock
   - name: ConditionalCanBeOptional
   - name: ConfusingOctalEscape
@@ -126,14 +121,12 @@ include:
   - name: MultiCatchCanBeSplit
   - name: UnclearBinaryExpression
   - name: MultipleVariablesInDeclaration
-  - name: NestedMethodCall
   - name: SingleElementAnnotation
   - name: ReassignedVariable
   - name: RecordCanBeClass
   - name: UnnecessaryConstantArrayCreationExpression
   - name: RedundantFieldInitialization
   - name: UnnecessaryConstructor
-  - name: ReturnThis
   - name: FillPermitsList
   - name: SimplifiableAnnotation
   - name: LiteralAsArgToStringEquals
@@ -150,7 +143,6 @@ include:
   - name: UnnecessaryParentheses
   - name: UnnecessaryQualifierForThis
   - name: UnqualifiedInnerClassAccess
-  - name: UnqualifiedStaticUsage
   - name: PublicConstructorInNonPublicClass
   - name: AmbiguousFieldAccess
   - name: AnonymousClassVariableHidesContainingMethodVariable
@@ -160,7 +152,6 @@ include:
   - name: LocalVariableHidingMemberVariable
   - name: MethodOverridesInaccessibleMethodOfSuper
   - name: MethodOverridesStaticMethod
-  - name: ParameterHidingMemberVariable
   - name: MethodOverloadsParentMethod
   - name: FieldHidesSuperclassField
   - name: EmptyMethod
@@ -209,8 +200,6 @@ include:
   - name: SetReplaceableByEnumSet
   - name: StringBufferToStringInConcatenation
   - name: StringBufferMustHaveInitialCapacity
-  - name: AutoBoxing
-  - name: AutoUnboxing
   - name: BulkFileAttributesRead
   - name: CallToSimpleGetterInClass
   - name: CallToSimpleSetterInClass
@@ -254,17 +243,14 @@ include:
   - name: OverlyLongLambda
   - name: NonCommentSourceStatements
   - name: NestingDepth
-  - name: ThisEscapedInConstructor
   - name: AbstractMethodCallInConstructor
   - name: DoubleBraceInitialization
-  - name: InstanceVariableUninitializedUse
   - name: NonFinalStaticVariableUsedInClassInitialization
   - name: OverridableMethodCallDuringObjectConstruction
   - name: OverriddenMethodCallDuringObjectConstruction
   - name: StaticVariableInitialization
   - name: StaticVariableUninitializedUse
   - name: NonThreadSafeLazyInitialization
-  - name: InstanceVariableInitialization
   - name: PublicField
   - name: PublicInnerClass
   - name: UseOfAnotherObjectsPrivateField
@@ -330,7 +316,6 @@ include:
   - name: ConfusingFloatingPointLiteral
   - name: ConstantMathCall
   - name: FloatingPointEquality
-  - name: ImplicitNumericConversion
   - name: NonReproducibleMathCall
   - name: OctalAndDecimalIntegersMixed
   - name: OverlyComplexArithmeticExpression
