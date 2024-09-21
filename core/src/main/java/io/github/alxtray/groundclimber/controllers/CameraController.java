@@ -1,19 +1,16 @@
 package io.github.alxtray.groundclimber.controllers;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.FloatArray;
-import com.badlogic.gdx.utils.IntArray;
 import com.badlogic.gdx.utils.ObjectFloatMap;
 import com.badlogic.gdx.utils.ObjectIntMap;
 import io.github.alxtray.groundclimber.bodies.Player;
-
-import java.util.Locale;
+import io.github.alxtray.groundclimber.enums.GameMode;
 
 public class CameraController {
     private static final int CAMERA_MOVEMENT_THRESHOLD = 300;
     private static final float CAMERA_TRANSLATION_STEP = 170f;
+    private static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
     private final ObjectIntMap<String> bounds;
     private final OrthographicCamera camera;
 
@@ -27,8 +24,12 @@ public class CameraController {
             0);
     }
 
-    public void update(float delta, Player player) {
-        repositionCamera(delta, player);
+    public void update(float delta, Player player, GameMode gameMode) {
+        if (gameMode.equals(GameMode.ENDLESS) && player.getBody().getPosition().x > 100) {
+            camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
+        } else if (gameMode.equals(GameMode.NORMAL)) {
+            repositionCamera(delta, player);
+        }
         checkCameraInBounds();
         camera.update();
     }

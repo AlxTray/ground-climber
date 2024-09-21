@@ -2,6 +2,7 @@ package io.github.alxtray.groundclimber.controllers;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.glutils.VertexBufferObjectSubData;
 import com.badlogic.gdx.math.Vector2;
 import elemental2.dom.FilePropertyBag;
 import io.github.alxtray.groundclimber.bodies.Platform;
@@ -61,6 +62,10 @@ public class PhysicsController {
             world.step(TIME_STEP, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
             deltaAccumulator -= TIME_STEP;
         }
+    }
+
+    public void addObjectToDestroy(Body object) {
+        objectsToDestroy.add(object);
     }
 
     private void queueObjectsToDestroy() {
