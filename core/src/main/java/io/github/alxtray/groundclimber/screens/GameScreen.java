@@ -1,10 +1,15 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.utils.ObjectIntMap;
+import io.github.alxtray.groundclimber.bodies.Player;
+import io.github.alxtray.groundclimber.controllers.CameraController;
+import io.github.alxtray.groundclimber.controllers.PhysicsController;
+import io.github.alxtray.groundclimber.controllers.PlayerController;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
-import io.github.alxtray.groundclimber.map.Map;
-import io.github.alxtray.groundclimber.map.MapRenderer;
+import io.github.alxtray.groundclimber.level.LevelData;
+import io.github.alxtray.groundclimber.controllers.GameRenderController;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
@@ -14,21 +19,23 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.Input.Keys;
 import text.formic.Stringf;
 
 public class GameScreen implements Screen {
-
-    private Map map;
+    private final CameraController cameraController;
+    private final GameRenderController gameRenderController;
+    private final PhysicsController physicsController;
+    private final PlayerController playerController;
 
     public GameScreen(GameMode gameMode, DebugRenderMode debugMode, String... selectedLevelNames) {
-
         // Loads all assets that are required for all levels
         AssetLibrary.getInstance().loadGeneralLevelAssets();
         Logger.log(
                 "GameScreen",
                 "Begun loading general level assets",
                 LogLevel.INFO);
-        AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
+        final AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
         while (!assetManager.isFinished()) {
             assetManager.update();
         }
@@ -41,28 +48,57 @@ public class GameScreen implements Screen {
                 "GameScreen",
                 Stringf.format("The current game mode is: %s", gameMode.name()),
                 LogLevel.INFO);
+        Json json = new Json();
+        LevelData levelData = null;
         if (gameMode == GameMode.NORMAL) {
             Array<FileHandle> selectedLevelFiles = new Array<>();
             for (String levelName : selectedLevelNames) {
                 selectedLevelFiles.add(Gdx.files.internal("levels/" + levelName));
             }
-            Json json = new Json();
-            map = json.fromJson(Map.class, selectedLevelFiles.first().readString());
+            levelData = json.fromJson(LevelData.class, selectedLevelFiles.first().readString());
         } else if (gameMode == GameMode.ENDLESS) {
-            Json json = new Json();
-            map = json.fromJson(Map.class, Gdx.files.internal("endless.json"));
+            levelData = json.fromJson(LevelData.class, Gdx.files.internal("endless.json"));
             Logger.log(
                     "GameScreen",
-                    "Empty map successfully created for ENDLESS mode",
+                    "Empty levelData successfully created for ENDLESS mode",
                     LogLevel.INFO);
         }
-        map.attachRenderer(new MapRenderer(map, debugMode));
+        cameraController = new CameraController(levelData.getCameraStartPosition(), levelData.getBounds());
+        gameRenderController = new GameRenderController(debugMode);
+        physicsController = new PhysicsController(levelData.getPlatformsData());
+        playerController = new PlayerController(physicsController.getWorld(), levelData.getPlayerSpawn());
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0.3f, 0.3f, 0.46f, 1);
-        map.update(delta);
+
+        if (Gdx.input.isKeyJustPressed(Keys.F3)) {
+            gameRenderController.toggleDebugInfo();
+        }
+
+        playerController.update(delta);
+        Player player = playerController.getPlayer();
+        ObjectIntMap<String> bounds = cameraController.getBounds();
+        // Kill player if they leave map bounds
+        if (player.getBody().getPosition().x < bounds.get("left", 0)
+            || player.getPosition().x > bounds.get("right", 0)
+            || player.getPosition().y < bounds.get("bottom", 0)
+            || player.getPosition().y > bounds.get("top", 0)) {
+            Logger.log(
+                "GameScreen",
+                "Player has fell out of bounds",
+                LogLevel.INFO);
+            Gdx.app.exit();
+        }
+
+        cameraController.update(delta, playerController.getPlayer());
+        physicsController.step(delta);
+        gameRenderController.render(
+                cameraController.getCamera(),
+                playerController.getPlayer(),
+                physicsController.getWorld(),
+                physicsController.getPlatforms());
     }
 
     @Override
@@ -87,7 +123,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-        map.dispose();
         Logger.log(
                 "GameScreen",
                 "Disposed objects",

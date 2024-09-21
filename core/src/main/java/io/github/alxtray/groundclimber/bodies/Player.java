@@ -1,15 +1,9 @@
 package io.github.alxtray.groundclimber.bodies;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Player {
-
-    private static final int MAX_VELOCITY = 240;
-    private static final float DEFAULT_FORCE = 1500000;
-
     private final Body body;
 
     public Player(World world, int x, int y, int radius) {
@@ -39,21 +33,6 @@ public class Player {
 
     public Vector2 getPosition() {
         return body.getPosition();
-    }
-
-
-    public void update(float delta) {
-        handleKeyPresses(delta);
-    }
-
-    public void handleKeyPresses(float delta) {
-        Vector2 velocity = this.body.getLinearVelocity();
-        if (Gdx.input.isKeyPressed(Input.Keys.A) && velocity.x > -MAX_VELOCITY) {
-            body.applyForceToCenter(-DEFAULT_FORCE * delta, 0, true);
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.D) && velocity.x < MAX_VELOCITY) {
-            body.applyForceToCenter(DEFAULT_FORCE * delta, 0, true);
-        }
     }
 
 }

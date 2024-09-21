@@ -1,12 +1,15 @@
-package io.github.alxtray.groundclimber.map;
+package io.github.alxtray.groundclimber.controllers;
 
-import elemental2.dom.EventTarget;
+import com.badlogic.gdx.physics.box2d.World;
 import io.github.alxtray.groundclimber.bodies.Platform;
+import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.level.LevelData;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,11 +18,10 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import text.formic.Stringf;
 
-public class MapRenderer {
+public class GameRenderController {
 
     private static final int TILE_SIZE = 18;
 
-    private final Map map;
     private final SpriteBatch batch;
     private final BitmapFont font;
     private final Texture playerImage;
@@ -43,10 +45,8 @@ public class MapRenderer {
     private final DebugRenderMode debugMode;
     private boolean debugInfo;
 
-    public MapRenderer(Map map, DebugRenderMode debugMode) {
-        this.map = map;
+    public GameRenderController(DebugRenderMode debugMode) {
         this.debugMode = debugMode;
-
         batch = new SpriteBatch();
         font = new BitmapFont();
 
@@ -71,7 +71,7 @@ public class MapRenderer {
         debugInfo = false;
     }
 
-    public void render(OrthographicCamera camera) {
+    public void render(OrthographicCamera camera, Player player, World world, Array<Platform> platforms) {
         if (!debugMode.equals(DebugRenderMode.ONLY)) {
             batch.begin();
             batch.disableBlending();
@@ -85,19 +85,19 @@ public class MapRenderer {
             batch.setProjectionMatrix(camera.combined);
             batch.draw(
                     playerImage,
-                    map.getPlayerBody().getPosition().x - (playerFaceImage.getWidth() / 2f),
-                    map.getPlayerBody().getPosition().y - (playerFaceImage.getHeight() / 2f));
+                    player.getPosition().x - (playerFaceImage.getWidth() / 2f),
+                    player.getPosition().y - (playerFaceImage.getHeight() / 2f));
             batch.draw(
                     playerFaceImage,
-                    map.getPlayerBody().getPosition().x - (playerFaceImage.getWidth() / 2f),
-                    map.getPlayerBody().getPosition().y - (playerFaceImage.getHeight() / 2f),
+                    player.getPosition().x - (playerFaceImage.getWidth() / 2f),
+                    player.getPosition().y - (playerFaceImage.getHeight() / 2f),
                     playerFaceImage.getWidth() / 2f,
                     playerFaceImage.getWidth() / 2f,
                     playerFaceImage.getWidth(),
                     playerFaceImage.getHeight(),
                     1f,
                     1f,
-                    (float) Math.toDegrees(map.getPlayerBody().getAngle()),
+                    (float) Math.toDegrees(player.getBody().getAngle()),
                     0,
                     0,
                     playerFaceImage.getWidth(),
@@ -111,18 +111,18 @@ public class MapRenderer {
                 float cornerY = camera.position.y + camera.viewportHeight / 2;
                 font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), cornerX, cornerY - 10);
                 font.draw(batch,
-                        Stringf.format("Player Pos: (%.2f, %.2f)", map.getPlayerBody().getPosition().x, map.getPlayerBody().getPosition().y),
+                        Stringf.format("Player Pos: (%.2f, %.2f)", player.getPosition().x, player.getPosition().y),
                         cornerX, cornerY - 30);
-                font.draw(batch, Stringf.format("Player Lin Vec: (%.2f, %.2f)", map.getPlayerBody().getLinearVelocity().x,
-                        map.getPlayerBody().getLinearVelocity().y), cornerX, cornerY - 50);
-                font.draw(batch, Stringf.format("Player Ang Vec: %.2f", map.getPlayerBody().getAngularVelocity()), cornerX,
+                font.draw(batch, Stringf.format("Player Lin Vec: (%.2f, %.2f)", player.getBody().getLinearVelocity().x,
+                        player.getBody().getLinearVelocity().y), cornerX, cornerY - 50);
+                font.draw(batch, Stringf.format("Player Ang Vec: %.2f", player.getBody().getAngularVelocity()), cornerX,
                         cornerY - 70);
             }
 
             Texture platformTileTexture = groundNoBorderImage;
             int rowTileNumber = 0;
             int columnTileNumber = 0;
-            for (Platform platform : map.getPlatforms()) {
+            for (Platform platform : platforms) {
                 Vector2 platformPos = platform.getPosition();
                 int numberOfRows = (int) platform.getWidth() / TILE_SIZE;
                 int numberOfColumns = (int) platform.getHeight() / TILE_SIZE;
@@ -167,7 +167,7 @@ public class MapRenderer {
             batch.end();
         }
         if (!debugMode.equals(DebugRenderMode.NORMAL)) {
-            debugRenderer.render(map.world, camera.combined);
+            debugRenderer.render(world, camera.combined);
         }
     }
 
@@ -179,7 +179,7 @@ public class MapRenderer {
         playerImage.dispose();
         batch.dispose();
         Logger.log(
-                "MapRenderer",
+                "GameRenderController",
                 "Disposed objects",
                 LogLevel.DEBUG);
     }
