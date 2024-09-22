@@ -24,7 +24,7 @@ public class CrackedPlatformContactListener implements ContactListener {
         final Body bodyB = contact.getFixtureB().getBody();
         final Object bodyAUserData = bodyA.getUserData();
         final Object bodyBUserData = bodyB.getUserData();
-        if (bodyAUserData instanceof NormalPlatform || bodyBUserData instanceof NormalPlatform) {
+        if (!(bodyAUserData instanceof CrackedPlatform) && !(bodyBUserData instanceof CrackedPlatform)) {
             return;
         }
 
