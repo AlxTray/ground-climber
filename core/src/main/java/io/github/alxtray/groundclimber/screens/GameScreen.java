@@ -108,6 +108,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
+        handleInput();
 
         if (gameMode.equals(GameMode.ENDLESS)) {
             platformGenerator.checkAndGenerateBatch(
@@ -122,10 +123,6 @@ public class GameScreen implements Screen {
         Player player = playerController.getPlayer();
         cameraController.update(delta, player, gameMode);
         physicsController.step(delta);
-
-        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
-            displayDebugInfo = !displayDebugInfo;
-        }
 
         OrthographicCamera camera = cameraController.getCamera();
         if (!renderMode.equals(DebugRenderMode.ONLY)) {
@@ -143,6 +140,12 @@ public class GameScreen implements Screen {
         }
         if (renderMode.equals(DebugRenderMode.ONLY) || renderMode.equals(DebugRenderMode.OVERLAY)) {
             debugRenderer.render(physicsController.getWorld(), camera.combined);
+        }
+    }
+
+    private void handleInput() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            displayDebugInfo = !displayDebugInfo;
         }
     }
 
