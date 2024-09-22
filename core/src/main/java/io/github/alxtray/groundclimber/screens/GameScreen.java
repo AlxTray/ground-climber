@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ObjectIntMap;
+import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Platform;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.controllers.CameraController;
@@ -14,8 +15,9 @@ import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.level.LevelData;
-import io.github.alxtray.groundclimber.controllers.GameRenderController;
 import io.github.alxtray.groundclimber.renderers.BackgroundObjectRenderer;
+import io.github.alxtray.groundclimber.renderers.EnvironmentObjectRenderer;
+import io.github.alxtray.groundclimber.renderers.EnvironmentObjectVisitor;
 import io.github.alxtray.groundclimber.renderers.PlayerRenderer;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.EndlessPlatformGenerator;
@@ -27,7 +29,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.Input.Keys;
 import text.formic.Stringf;
 
 public class GameScreen implements Screen {
@@ -41,6 +42,7 @@ public class GameScreen implements Screen {
     private final PlayerController playerController;
     private final PlayerRenderer playerRenderer;
     private final BackgroundObjectRenderer backgroundObjectRenderer;
+    private final EnvironmentObjectVisitor environmentObjectRenderer;
 
     public GameScreen(GameMode gameMode, DebugRenderMode renderMode, String... selectedLevelNames) {
         this.gameMode = gameMode;
@@ -83,7 +85,7 @@ public class GameScreen implements Screen {
         cameraController = new CameraController(levelData.getCameraStartPosition(), levelData.getBounds());
         physicsController = new PhysicsController(levelData.getPlatformsData());
         if (gameMode.equals(GameMode.ENDLESS)) {
-            platformGenerator = new EndlessPlatformGenerator(physicsController.getWorld());
+            platformGenerator = new EndlessPlatformGenerator();
         } else {
             platformGenerator = null;
         }
@@ -95,30 +97,18 @@ public class GameScreen implements Screen {
         }
         playerRenderer = new PlayerRenderer();
         backgroundObjectRenderer = new BackgroundObjectRenderer();
+        environmentObjectRenderer = new EnvironmentObjectRenderer();
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(Color.BLACK);
 
-        Array<Platform> platforms = physicsController.getPlatforms();
-        // Try catch hack to see if the player has just started and the only platform is the initial one
-        try {
-            if (gameMode.equals(GameMode.ENDLESS) && platforms.get(physicsController.getPlatforms().size - 5).getPosition().x < playerController.getPlayer().getPosition().x) {
-                platforms.addAll(platformGenerator.generatePlatformBatch());
-                // Check against 31 as this is three batches including the extra platform
-                if (platforms.size == 31) {
-                    for (int i = 0; i < 10; i++) {
-                        physicsController.addObjectToDestroy(platforms.get(i).getBody());
-                    }
-                }
-                Logger.log(
-                    "Map",
-                    "Successfully generated new endless platform batch",
-                    LogLevel.INFO);
-            }
-        } catch (IndexOutOfBoundsException e) {
-            platforms.addAll(platformGenerator.generatePlatformBatch());
+        if (gameMode.equals(GameMode.ENDLESS)) {
+            platformGenerator.checkAndGenerateBatch(
+                physicsController.getWorld(),
+                playerController.getPlayer(),
+                physicsController.getEnvironmentObjects());
         }
 
         playerController.update(delta);
@@ -145,6 +135,9 @@ public class GameScreen implements Screen {
             batch.setProjectionMatrix(camera.combined);
             backgroundObjectRenderer.render(batch, camera);
             playerRenderer.render(batch, player);
+            for (EnvironmentObject environmentObject : physicsController.getEnvironmentObjects()) {
+                environmentObject.acceptRender(environmentObjectRenderer, batch);
+            }
             batch.end();
         }
         if (renderMode.equals(DebugRenderMode.ONLY) || renderMode.equals(DebugRenderMode.OVERLAY)) {

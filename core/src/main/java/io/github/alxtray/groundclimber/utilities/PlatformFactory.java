@@ -7,14 +7,9 @@ import io.github.alxtray.groundclimber.enums.LogLevel;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class PlatformFactory {
+    public PlatformFactory() {}
 
-    private final World world;
-
-    public PlatformFactory(World world) {
-        this.world = world;
-    }
-
-    public Platform createPlatform(String type, float x, float y, float height, float width) {
+    public Platform createPlatform(World world, String type, float x, float y, float height, float width) {
         switch (type) {
             case "normal":
                 Logger.log(

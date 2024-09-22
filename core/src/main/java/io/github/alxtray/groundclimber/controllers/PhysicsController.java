@@ -2,10 +2,8 @@ package io.github.alxtray.groundclimber.controllers;
 
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.glutils.VertexBufferObjectSubData;
 import com.badlogic.gdx.math.Vector2;
-import elemental2.dom.FilePropertyBag;
-import io.github.alxtray.groundclimber.bodies.Platform;
+import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.level.PlatformData;
 import io.github.alxtray.groundclimber.listeners.CrackedPlatformContactListener;
@@ -27,7 +25,7 @@ public class PhysicsController {
     private final ContactListenerImpl contactListener;
     private final World world;
     private float deltaAccumulator;
-    private Array<Platform> platforms = new Array<>();
+    private Array<EnvironmentObject> environmentObjects = new Array<>();
     private Array<Body> objectsToDestroy = new Array<>();
 
     public PhysicsController(Array<PlatformData> platformsData) {
@@ -39,9 +37,10 @@ public class PhysicsController {
             contactListener.addContactListener(new DebugContactListener());
         }
 
-        PlatformFactory platformFactory = new PlatformFactory(world);
+        PlatformFactory platformFactory = new PlatformFactory();
         for (PlatformData data : platformsData) {
-            platforms.add(platformFactory.createPlatform(
+            environmentObjects.add(platformFactory.createPlatform(
+                world,
                 data.getType(),
                 data.getX(),
                 data.getY(),
@@ -74,8 +73,8 @@ public class PhysicsController {
 
     private void destroyQueuedObjects() {
         for (Body objectToDestroy : objectsToDestroy) {
-            Object objectData = objectToDestroy.getUserData();
-            platforms.removeValue((Platform) objectData, false);
+            EnvironmentObject objectData = (EnvironmentObject) objectToDestroy.getUserData();
+            environmentObjects.removeValue(objectData, false);
             world.destroyBody(objectToDestroy);
             Logger.log(
                 "Map",
@@ -91,8 +90,8 @@ public class PhysicsController {
         return world;
     }
 
-    public Array<Platform> getPlatforms() {
-        return platforms;
+    public Array<EnvironmentObject> getEnvironmentObjects() {
+        return environmentObjects;
     }
 
 }

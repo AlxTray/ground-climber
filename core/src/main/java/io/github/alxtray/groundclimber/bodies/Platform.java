@@ -1,9 +1,11 @@
 package io.github.alxtray.groundclimber.bodies;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import io.github.alxtray.groundclimber.renderers.EnvironmentObjectVisitor;
 
-public class Platform {
+public class Platform extends EnvironmentObject {
 
     protected final Body body;
     private final float height;
@@ -27,6 +29,11 @@ public class Platform {
         body.createFixture(fixtureDef);
 
         shape.dispose();
+    }
+
+    @Override
+    public void acceptRender(EnvironmentObjectVisitor visitor, SpriteBatch batch) {
+        visitor.visitPlatform(this, batch);
     }
 
     public Body getBody() {
