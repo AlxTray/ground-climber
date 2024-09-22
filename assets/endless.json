@@ -2,7 +2,7 @@
   "data": {
     "name": "Endless",
     "mode": "ENDLESS",
-    "bounds": [0, 0, 1000, 5000],
+    "bounds": [0, 5000, 0, 1000],
     "camera_start_pos": [0, 0],
     "player_start_pos": [50, 100]
   },

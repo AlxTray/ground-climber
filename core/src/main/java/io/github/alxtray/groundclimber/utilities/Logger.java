@@ -1,14 +1,13 @@
 package io.github.alxtray.groundclimber.utilities;
 
-import io.github.alxtray.groundclimber.enums.LogLevel;
 import com.badlogic.gdx.Gdx;
+import io.github.alxtray.groundclimber.enums.LogLevel;
 
-public class Logger {
-
+public final class Logger {
     private Logger() {
     }
 
-    public static void log(String locationTag, String message, LogLevel level) {
+    public static void log(final String locationTag, final String message, final LogLevel level) {
         switch (level) {
             case DEBUG:
                 Gdx.app.debug(locationTag + " DEBUG", message);
