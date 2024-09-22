@@ -9,7 +9,7 @@ public class BackgroundObjectRenderer {
     private final Texture backgroundImage;
 
     public BackgroundObjectRenderer() {
-        backgroundImage = AssetLibrary.getInstance().getAsset("background", Texture.class);
+        backgroundImage = AssetLibrary.getInstance().getAsset("game_background", Texture.class);
     }
 
     public void render(SpriteBatch batch, OrthographicCamera camera) {

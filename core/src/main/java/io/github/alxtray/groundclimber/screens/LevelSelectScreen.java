@@ -1,5 +1,6 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
@@ -19,8 +20,8 @@ import text.formic.Stringf;
 import java.util.Arrays;
 
 public class LevelSelectScreen extends MenuScreen {
-    private static final String TITLE_IMAGE_NAME = "level_title";
-    private static final String BACKGROUND_IMAGE_NAME = "title_background";
+    private static final String TITLE_IMAGE_NAME = "level_title_text";
+    private static final String BACKGROUND_IMAGE_NAME = "menu_background";
     private static final int BUTTON_HEIGHT_FACTOR = 10;
     private static final int BUTTON_WIDTH_FACTOR = 5;
 
@@ -32,14 +33,18 @@ public class LevelSelectScreen extends MenuScreen {
             BUTTON_HEIGHT_FACTOR,
             BUTTON_WIDTH_FACTOR);
 
-        FileHandle[] levelFiles = Gdx.files.internal("levels").list();
+        Array<String> levelsFilePaths = new Array<>();
+        Gdx.files.internal("assets.txt").readString().lines()
+            .filter(line -> line.contains("levels"))
+            .forEach(levelsFilePaths::add);
         Logger.log(
                 "LevelScreen",
-                Stringf.format("Found the following level files: %s", Arrays.toString(levelFiles)),
+                Stringf.format("Found the following level files: %s", levelsFilePaths.toString(", ")),
                 LogLevel.DEBUG);
 
         float buttonY = viewportTop - Gdx.graphics.getHeight() / 1.75f;
-        for (FileHandle levelFile : levelFiles) {
+        for (String levelFilePath : levelsFilePaths) {
+            FileHandle levelFile = Gdx.files.internal(levelFilePath);
             JsonReader jsonReader = new JsonReader();
             JsonValue jsonData = jsonReader.parse(levelFile);
 

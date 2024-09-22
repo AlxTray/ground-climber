@@ -12,7 +12,7 @@ public class PlayerRenderer {
     public PlayerRenderer() {
         AssetLibrary assetLibrary = AssetLibrary.getInstance();
         playerImage = assetLibrary.getAsset("player", Texture.class);
-        playerFaceImage = assetLibrary.getAsset("playerFace", Texture.class);
+        playerFaceImage = assetLibrary.getAsset("player_face", Texture.class);
     }
 
     public void render(SpriteBatch batch, Player player) {

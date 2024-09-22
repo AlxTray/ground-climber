@@ -12,8 +12,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
 public class MainMenuScreen extends MenuScreen {
-    private static final String TITLE_IMAGE_NAME = "title";
-    private static final String BACKGROUND_IMAGE_NAME = "title_background";
+    private static final String TITLE_IMAGE_NAME = "title_text";
+    private static final String BACKGROUND_IMAGE_NAME = "menu_background";
     private static final int BUTTON_HEIGHT_FACTOR = 5;
     private static final int BUTTON_WIDTH_FACTOR = 5;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
