@@ -1,11 +1,16 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectIntMap;
+import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.controllers.ControllerManager;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
@@ -15,11 +20,6 @@ import io.github.alxtray.groundclimber.level.LevelData;
 import io.github.alxtray.groundclimber.renderers.RenderManager;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.ScreenUtils;
 import text.formic.Stringf;
 
 public class GameScreen implements Screen {
@@ -38,17 +38,17 @@ public class GameScreen implements Screen {
         // Loads all assets that are required for all levels
         AssetLibrary.getInstance().loadGeneralLevelAssets();
         Logger.log(
-                "GameScreen",
-                "Begun loading general level assets",
-                LogLevel.INFO);
+            "GameScreen",
+            "Begun loading general level assets",
+            LogLevel.INFO);
         final AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
         while (!assetManager.isFinished()) {
             assetManager.update();
         }
         Logger.log(
-                "GameScreen",
-                "Finished loading general level assets",
-                LogLevel.INFO);
+            "GameScreen",
+            "Finished loading general level assets",
+            LogLevel.INFO);
         Logger.log(
             "GameScreen",
             Stringf.format("The current game mode is: %s", gameMode.name()),
@@ -83,9 +83,14 @@ public class GameScreen implements Screen {
     private LevelData loadLevelData(GameMode gameMode, String... selectedLevelNames) {
         final Json json = new Json();
         if (gameMode.equals(GameMode.NORMAL)) {
-            return json.fromJson(LevelData.class, Gdx.files.internal("levels/" + selectedLevelNames[0]).readString());
+            return json.fromJson(
+                LevelData.class,
+                Gdx.files.internal("levels/" + selectedLevelNames[0]).readString());
         } else if (gameMode.equals(GameMode.ENDLESS)) {
-            Logger.log("GameScreen", "Empty levelData successfully created for ENDLESS mode", LogLevel.INFO);
+            Logger.log(
+                "GameScreen",
+                "Empty levelData successfully created for ENDLESS mode",
+                LogLevel.INFO);
             return json.fromJson(LevelData.class, Gdx.files.internal("endless.json").readString());
         }
         return null;
@@ -138,9 +143,9 @@ public class GameScreen implements Screen {
         batch.dispose();
         renderManager.dispose();
         Logger.log(
-                "GameScreen",
-                "Disposed objects",
-                LogLevel.DEBUG);
+            "GameScreen",
+            "Disposed objects",
+            LogLevel.DEBUG);
     }
 
 }

@@ -5,4 +5,5 @@ import io.github.alxtray.groundclimber.bodies.Platform;
 
 public interface EnvironmentObjectVisitor {
     void visitPlatform(Platform platform, SpriteBatch batch);
+
 }

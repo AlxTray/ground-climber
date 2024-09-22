@@ -10,10 +10,11 @@ public class LevelData implements Json.Serializable {
     private final ObjectIntMap<String> bounds = new ObjectIntMap<>();
     private final ObjectIntMap<String> playerSpawn = new ObjectIntMap<>();
     private final ObjectFloatMap<String> cameraStartPosition = new ObjectFloatMap<>();
-    private GameMode gameMode;
     private final Array<PlatformData> platformsData = new Array<>();
+    private GameMode gameMode;
 
-    public LevelData() {}
+    public LevelData() {
+    }
 
     @Override
     public void write(Json json) { // No need to be used at the moment. (Useful if level editor is made)
@@ -22,9 +23,9 @@ public class LevelData implements Json.Serializable {
     @Override
     public void read(Json json, JsonValue jsonData) {
         Logger.log(
-                "LevelData",
-                "Loading level data...",
-                LogLevel.INFO);
+            "LevelData",
+            "Loading level data...",
+            LogLevel.INFO);
         final JsonValue boundsValue = jsonData.get("data").get("bounds");
         final int[] boundsArray = boundsValue.asIntArray();
         bounds.put("left", boundsArray[0]);
@@ -48,16 +49,16 @@ public class LevelData implements Json.Serializable {
         JsonValue platformsValue = jsonData.get("objects").get("platforms");
         for (JsonValue platformData = platformsValue.child; platformData != null; platformData = platformData.next) {
             platformsData.add(new PlatformData(
-                    platformData.get("type").asString(),
-                    platformData.get("x").asFloat(),
-                    platformData.get("y").asFloat(),
-                    platformData.get("height").asFloat(),
-                    platformData.get("width").asFloat()));
+                platformData.get("type").asString(),
+                platformData.get("x").asFloat(),
+                platformData.get("y").asFloat(),
+                platformData.get("height").asFloat(),
+                platformData.get("width").asFloat()));
         }
         Logger.log(
-                "LevelData",
-                Stringf.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString()),
-                LogLevel.INFO);
+            "LevelData",
+            Stringf.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString()),
+            LogLevel.INFO);
     }
 
     public ObjectIntMap<String> getBounds() {

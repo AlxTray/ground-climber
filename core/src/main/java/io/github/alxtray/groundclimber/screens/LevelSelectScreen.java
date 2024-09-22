@@ -1,23 +1,21 @@
 package io.github.alxtray.groundclimber.screens;
 
-import com.badlogic.gdx.utils.Array;
-import io.github.alxtray.groundclimber.Core;
-import io.github.alxtray.groundclimber.enums.DebugRenderMode;
-import io.github.alxtray.groundclimber.enums.GameMode;
-import io.github.alxtray.groundclimber.enums.LogLevel;
-import io.github.alxtray.groundclimber.utilities.ButtonBuilder;
-import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
+import io.github.alxtray.groundclimber.Core;
+import io.github.alxtray.groundclimber.enums.DebugRenderMode;
+import io.github.alxtray.groundclimber.enums.GameMode;
+import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.utilities.ButtonBuilder;
+import io.github.alxtray.groundclimber.utilities.Logger;
 import text.formic.Stringf;
-
-import java.util.Arrays;
 
 public class LevelSelectScreen extends MenuScreen {
     private static final String TITLE_IMAGE_NAME = "level_title_text";
@@ -38,9 +36,9 @@ public class LevelSelectScreen extends MenuScreen {
             .filter(line -> line.contains("levels"))
             .forEach(levelsFilePaths::add);
         Logger.log(
-                "LevelScreen",
-                Stringf.format("Found the following level files: %s", levelsFilePaths.toString(", ")),
-                LogLevel.DEBUG);
+            "LevelScreen",
+            Stringf.format("Found the following level files: %s", levelsFilePaths.toString(", ")),
+            LogLevel.DEBUG);
 
         float buttonY = viewportTop - Gdx.graphics.getHeight() / 1.75f;
         for (String levelFilePath : levelsFilePaths) {

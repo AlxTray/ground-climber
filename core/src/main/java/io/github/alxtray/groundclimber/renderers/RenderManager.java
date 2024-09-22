@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Player;
-import io.github.alxtray.groundclimber.enums.DebugRenderMode;
-import io.github.alxtray.groundclimber.utilities.Logger;
 import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.utilities.Logger;
 import text.formic.Stringf;
 
 public class RenderManager {

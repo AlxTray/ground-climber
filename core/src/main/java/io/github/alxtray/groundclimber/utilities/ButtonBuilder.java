@@ -7,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class ButtonBuilder {
-
     private final String buttonText;
     private final Skin skin;
     private final Stage stage;

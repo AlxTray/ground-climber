@@ -1,7 +1,6 @@
 package io.github.alxtray.groundclimber.level;
 
 public class PlatformData {
-
     private final String type;
     private final float x;
     private final float y;

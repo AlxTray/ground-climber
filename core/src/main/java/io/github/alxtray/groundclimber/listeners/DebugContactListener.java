@@ -1,12 +1,11 @@
 package io.github.alxtray.groundclimber.listeners;
 
+import com.badlogic.gdx.physics.box2d.*;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.Logger;
-import com.badlogic.gdx.physics.box2d.*;
 import text.formic.Stringf;
 
 public class DebugContactListener implements ContactListener {
-
     @Override
     public void beginContact(Contact contact) {
         Body bodyA = contact.getFixtureA().getBody();
@@ -15,12 +14,12 @@ public class DebugContactListener implements ContactListener {
         Object bodyBUserData = bodyB.getUserData();
 
         Logger.log(
-                "Contact",
-                Stringf.format(
-                        "Object %s collided with %s",
-                        bodyBUserData.getClass().getSimpleName(),
-                        bodyAUserData.getClass().getSimpleName()),
-                LogLevel.DEBUG);
+            "Contact",
+            Stringf.format(
+                "Object %s collided with %s",
+                bodyBUserData.getClass().getSimpleName(),
+                bodyAUserData.getClass().getSimpleName()),
+            LogLevel.DEBUG);
     }
 
     @Override

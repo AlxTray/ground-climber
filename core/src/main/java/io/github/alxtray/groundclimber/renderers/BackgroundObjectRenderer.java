@@ -22,4 +22,5 @@ public class BackgroundObjectRenderer {
             camera.viewportHeight);
         batch.enableBlending();
     }
+
 }

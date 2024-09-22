@@ -6,7 +6,6 @@ import com.badlogic.gdx.physics.box2d.*;
 import io.github.alxtray.groundclimber.renderers.EnvironmentObjectVisitor;
 
 public class Platform extends EnvironmentObject {
-
     protected final Body body;
     private final float height;
     private final float width;

@@ -1,10 +1,9 @@
 package io.github.alxtray.groundclimber.utilities;
 
-import io.github.alxtray.groundclimber.enums.LogLevel;
 import com.badlogic.gdx.Gdx;
+import io.github.alxtray.groundclimber.enums.LogLevel;
 
 public class Logger {
-
     private Logger() {
     }
 

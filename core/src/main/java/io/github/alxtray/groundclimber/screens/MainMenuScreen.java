@@ -1,5 +1,7 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.alxtray.groundclimber.Core;
@@ -8,8 +10,6 @@ import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.ButtonBuilder;
 import io.github.alxtray.groundclimber.utilities.Logger;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 
 public class MainMenuScreen extends MenuScreen {
     private static final String TITLE_IMAGE_NAME = "title_text";
@@ -61,23 +61,23 @@ public class MainMenuScreen extends MenuScreen {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
             debugMode = DebugRenderMode.NORMAL;
             Logger.log(
-                    "MainScreen",
-                    "Updated render debug mode to: NORMAL",
-                    LogLevel.INFO);
+                "MainScreen",
+                "Updated render debug mode to: NORMAL",
+                LogLevel.INFO);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
             debugMode = DebugRenderMode.OVERLAY;
             Logger.log(
-                    "MainScreen",
-                    "Updated render debug mode to: OVERLAY",
-                    LogLevel.INFO);
+                "MainScreen",
+                "Updated render debug mode to: OVERLAY",
+                LogLevel.INFO);
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             debugMode = DebugRenderMode.ONLY;
             Logger.log(
-                    "MainScreen",
-                    "Updated render debug mode to: ONLY",
-                    LogLevel.INFO);
+                "MainScreen",
+                "Updated render debug mode to: ONLY",
+                LogLevel.INFO);
         }
     }
 

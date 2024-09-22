@@ -1,13 +1,11 @@
 package io.github.alxtray.groundclimber.listeners;
 
-import io.github.alxtray.groundclimber.bodies.CrackedPlatform;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import io.github.alxtray.groundclimber.bodies.NormalPlatform;
+import io.github.alxtray.groundclimber.bodies.CrackedPlatform;
 import io.github.alxtray.groundclimber.bodies.Player;
 
 public class CrackedPlatformContactListener implements ContactListener {
-
     private final Array<Body> platformsToDestroy = new Array<>();
 
     public Array<Body> getPlatformsToDestroy() {

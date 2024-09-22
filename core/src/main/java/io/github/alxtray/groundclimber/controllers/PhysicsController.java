@@ -3,16 +3,16 @@ package io.github.alxtray.groundclimber.controllers;
 import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
-import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
-import io.github.alxtray.groundclimber.enums.LogLevel;
-import io.github.alxtray.groundclimber.level.PlatformData;
-import io.github.alxtray.groundclimber.listeners.CrackedPlatformContactListener;
-import io.github.alxtray.groundclimber.listeners.DebugContactListener;
-import io.github.alxtray.groundclimber.utilities.Logger;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
+import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.level.PlatformData;
 import io.github.alxtray.groundclimber.listeners.ContactListenerImpl;
+import io.github.alxtray.groundclimber.listeners.CrackedPlatformContactListener;
+import io.github.alxtray.groundclimber.listeners.DebugContactListener;
+import io.github.alxtray.groundclimber.utilities.Logger;
 import io.github.alxtray.groundclimber.utilities.PlatformFactory;
 import text.formic.Stringf;
 
@@ -25,8 +25,8 @@ public class PhysicsController {
     private final ContactListenerImpl contactListener;
     private final World world;
     private float deltaAccumulator;
-    private Array<EnvironmentObject> environmentObjects = new Array<>();
-    private Array<Body> objectsToDestroy = new Array<>();
+    private final Array<EnvironmentObject> environmentObjects = new Array<>();
+    private final Array<Body> objectsToDestroy = new Array<>();
 
     public PhysicsController(Array<PlatformData> platformsData) {
         world = new World(new Vector2(X_GRAVITY, Y_GRAVITY), true);

@@ -28,9 +28,9 @@ public class MenuScreen implements Screen {
     private final float titleWidth;
     private final float titleHeight;
     private final float titleX;
-    private float currentTitleY;
     private final float finalTitleY;
     private final Texture backgroundImage;
+    private float currentTitleY;
 
     public MenuScreen(final Core game, String titleImageName, String backgroundImageName, int buttonHeightFactor, int buttonWidthFactor) {
         this.game = game;

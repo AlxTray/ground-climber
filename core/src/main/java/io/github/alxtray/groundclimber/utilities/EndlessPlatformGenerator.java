@@ -1,14 +1,13 @@
 package io.github.alxtray.groundclimber.utilities;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Platform;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.LogLevel;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.Array;
-import text.formic.Stringf;
 
 public class EndlessPlatformGenerator {
     private static final int PLATFORM_BATCH_SIZE = 10;
