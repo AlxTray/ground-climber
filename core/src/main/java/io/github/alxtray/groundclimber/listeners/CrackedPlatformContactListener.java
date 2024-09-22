@@ -3,6 +3,8 @@ package io.github.alxtray.groundclimber.listeners;
 import io.github.alxtray.groundclimber.bodies.CrackedPlatform;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import io.github.alxtray.groundclimber.bodies.NormalPlatform;
+import io.github.alxtray.groundclimber.bodies.Player;
 
 public class CrackedPlatformContactListener implements ContactListener {
 
@@ -17,25 +19,27 @@ public class CrackedPlatformContactListener implements ContactListener {
     }
 
     @Override
-    public void beginContact(Contact contact) {
-        Body bodyA = contact.getFixtureA().getBody();
-        Body bodyB = contact.getFixtureB().getBody();
-        Object bodyAUserData = bodyA.getUserData();
-        Object bodyBUserData = bodyB.getUserData();
+    public void beginContact(final Contact contact) {
+        final Body bodyA = contact.getFixtureA().getBody();
+        final Body bodyB = contact.getFixtureB().getBody();
+        final Object bodyAUserData = bodyA.getUserData();
+        final Object bodyBUserData = bodyB.getUserData();
+        if (bodyAUserData instanceof NormalPlatform || bodyBUserData instanceof NormalPlatform) {
+            return;
+        }
 
         CrackedPlatform crackedPlatform;
-        if (bodyAUserData instanceof CrackedPlatform) {
-            crackedPlatform = (CrackedPlatform) bodyAUserData;
-            crackedPlatform.incrementCrackLevel();
-            if (crackedPlatform.getCrackLevel() >= 3) {
-                platformsToDestroy.add(bodyA);
-            }
-        } else if (bodyBUserData instanceof CrackedPlatform) {
+        Body bodyToDestroy;
+        if (bodyAUserData instanceof Player) {
             crackedPlatform = (CrackedPlatform) bodyBUserData;
-            crackedPlatform.incrementCrackLevel();
-            if (crackedPlatform.getCrackLevel() >= 3) {
-                platformsToDestroy.add(bodyB);
-            }
+            bodyToDestroy = bodyB;
+        } else {
+            crackedPlatform = (CrackedPlatform) bodyAUserData;
+            bodyToDestroy = bodyA;
+        }
+        crackedPlatform.incrementCrackLevel();
+        if (crackedPlatform.getCrackLevel() >= 3) {
+            platformsToDestroy.add(bodyToDestroy);
         }
     }
 
