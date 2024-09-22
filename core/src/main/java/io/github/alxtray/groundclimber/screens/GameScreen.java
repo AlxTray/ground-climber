@@ -1,10 +1,13 @@
 package io.github.alxtray.groundclimber.screens;
 
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.utils.ObjectIntMap;
+import com.sun.jdi.InconsistentDebugInfoException;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Platform;
 import io.github.alxtray.groundclimber.bodies.Player;
@@ -34,7 +37,9 @@ import text.formic.Stringf;
 public class GameScreen implements Screen {
     private final GameMode gameMode;
     private final DebugRenderMode renderMode;
+    private boolean displayDebugInfo;
     private final SpriteBatch batch;
+    private final BitmapFont font;
     private final Box2DDebugRenderer debugRenderer;
     private final EndlessPlatformGenerator platformGenerator;
     private final CameraController cameraController;
@@ -47,7 +52,9 @@ public class GameScreen implements Screen {
     public GameScreen(GameMode gameMode, DebugRenderMode renderMode, String... selectedLevelNames) {
         this.gameMode = gameMode;
         this.renderMode = renderMode;
+        displayDebugInfo = false;
         batch = new SpriteBatch();
+        font = new BitmapFont();
         // Loads all assets that are required for all levels
         AssetLibrary.getInstance().loadGeneralLevelAssets();
         Logger.log(
@@ -129,6 +136,10 @@ public class GameScreen implements Screen {
         cameraController.update(delta, player, gameMode);
         physicsController.step(delta);
 
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            displayDebugInfo = !displayDebugInfo;
+        }
+
         OrthographicCamera camera = cameraController.getCamera();
         if (!renderMode.equals(DebugRenderMode.ONLY)) {
             batch.begin();
@@ -137,6 +148,19 @@ public class GameScreen implements Screen {
             playerRenderer.render(batch, player);
             for (EnvironmentObject environmentObject : physicsController.getEnvironmentObjects()) {
                 environmentObject.acceptRender(environmentObjectRenderer, batch);
+            }
+            if (displayDebugInfo) {
+                // 10 added as each line will be 10 pixels away from left anyway
+                float cornerX = (camera.position.x - camera.viewportWidth / 2) + 10;
+                float cornerY = camera.position.y + camera.viewportHeight / 2;
+                font.draw(batch, "FPS: " + Gdx.graphics.getFramesPerSecond(), cornerX, cornerY - 10);
+                font.draw(batch,
+                    Stringf.format("Player Pos: (%.2f, %.2f)", player.getBody().getPosition().x, player.getBody().getPosition().y),
+                    cornerX, cornerY - 30);
+                font.draw(batch, Stringf.format("Player Lin Vec: (%.2f, %.2f)", player.getBody().getLinearVelocity().x,
+                    player.getBody().getLinearVelocity().y), cornerX, cornerY - 50);
+                font.draw(batch, Stringf.format("Player Ang Vec: %.2f", player.getBody().getAngularVelocity()), cornerX,
+                    cornerY - 70);
             }
             batch.end();
         }
