@@ -64,7 +64,6 @@ public class AssetLibrary {
     private void loadTextureAssets(Array<String> assetPaths) {
         TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
         for (String assetPath : assetPaths) {
-            System.out.println("Loading asset: " + assetPath);
             assetManager.load(assetPath, Texture.class, textureParameter);
             filePathAliases.put(
                 assetPath.substring(assetPath.lastIndexOf("/") + 1, assetPath.lastIndexOf(".")),
