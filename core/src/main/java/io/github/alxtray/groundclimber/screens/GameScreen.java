@@ -29,7 +29,7 @@ public class GameScreen implements Screen {
     private final ControllerManager controllerManager;
     private final RenderManager renderManager;
 
-    public GameScreen(GameMode gameMode, DebugRenderMode renderMode, String... selectedLevelNames) {
+    public GameScreen(final GameMode gameMode, DebugRenderMode renderMode, final String... selectedLevelNames) {
         this.renderMode = renderMode;
         batch = new SpriteBatch();
         debugRenderer =

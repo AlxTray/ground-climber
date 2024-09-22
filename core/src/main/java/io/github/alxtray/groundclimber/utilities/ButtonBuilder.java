@@ -10,25 +10,25 @@ public class ButtonBuilder {
     private final String buttonText;
     private final Skin skin;
     private final Stage stage;
-    private String actorName = null;
-    private float x = 0;
-    private float y = 0;
-    private float width = 0;
-    private float height = 0;
-    private ClickListener clickListener = null;
+    private String actorName;
+    private float x;
+    private float y;
+    private float width;
+    private float height;
+    private ClickListener clickListener;
 
-    public ButtonBuilder(String buttonText, Skin skin, Stage stage) {
+    public ButtonBuilder(final String buttonText, final Skin skin, final Stage stage) {
         this.buttonText = buttonText;
         this.skin = skin;
         this.stage = stage;
     }
 
-    public ButtonBuilder setActorName(String actorName) {
+    public ButtonBuilder setActorName(final String actorName) {
         this.actorName = actorName;
         return this;
     }
 
-    public ButtonBuilder setPosition(float x, float y) {
+    public ButtonBuilder setPosition(final float x, final float y) {
         this.x = x;
         this.y = y;
         return this;
@@ -40,13 +40,13 @@ public class ButtonBuilder {
         return this;
     }
 
-    public ButtonBuilder setClickListener(ClickListener clickListener) {
+    public ButtonBuilder setClickListener(final ClickListener clickListener) {
         this.clickListener = clickListener;
         return this;
     }
 
     public void build() {
-        TextButton button = new TextButton(buttonText, skin);
+        final TextButton button = new TextButton(buttonText, skin);
         button.getLabel().setFontScale(stage.getWidth() / stage.getHeight());
         button.setColor(Color.valueOf("636363"));
         button.getLabel().setColor(Color.BLACK);

@@ -16,6 +16,10 @@ import io.github.alxtray.groundclimber.utilities.Logger;
 
 public class MenuScreen implements Screen {
     private static final float TITLE_MOVE_AMOUNT = 1.4f;
+    private static final float TITLE_WIDTH_FACTOR = 0.4f;
+    private static final float TITLE_HEIGHT_FACTOR = 0.2f;
+    private static final float TITLE_X_FACTOR = 2f;
+    private static final float TITLE_Y_FACTOR = 1.2f;
     protected final Core game;
     protected final SpriteBatch batch;
     protected final Stage stage;
@@ -42,11 +46,11 @@ public class MenuScreen implements Screen {
         skin = AssetLibrary.getInstance().getAsset("skin", Skin.class);
         backgroundImage = AssetLibrary.getInstance().getAsset(backgroundImageName, Texture.class);
         title = AssetLibrary.getInstance().getAsset(titleImageName, Texture.class);
-        titleWidth = camera.viewportWidth * 0.4f;
-        titleHeight = camera.viewportHeight * 0.2f;
-        titleX = (camera.viewportWidth - titleWidth) / 2;
+        titleWidth = camera.viewportWidth * TITLE_WIDTH_FACTOR;
+        titleHeight = camera.viewportHeight * TITLE_HEIGHT_FACTOR;
+        titleX = (camera.viewportWidth - titleWidth) / TITLE_X_FACTOR;
         currentTitleY = camera.viewportHeight;
-        finalTitleY = (camera.viewportHeight - titleHeight) / 1.2f;
+        finalTitleY = (camera.viewportHeight - titleHeight) / TITLE_Y_FACTOR;
 
         viewportTop = camera.position.y + camera.viewportHeight / 2;
         buttonHeight = (float) Gdx.graphics.getHeight() / buttonHeightFactor;

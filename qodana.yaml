@@ -108,7 +108,6 @@ include:
   - name: ConditionalCanBeOptional
   - name: ConfusingOctalEscape
   - name: ConstantExpression
-  - name: ConstantOnWrongSideOfComparison
   - name: ControlFlowStatementWithoutBraces
   - name: DiamondCanBeReplacedWithExplicitTypeArguments
   - name: MoveFieldAssignmentToInitializer
@@ -210,7 +209,6 @@ include:
   - name: KeySetIterationMayUseEntrySet
   - name: MethodMayBeStatic
   - name: StringReplaceableByStringBuffer
-  - name: ObjectAllocationInLoop
   - name: ObjectInstantiationInEqualsHashCode
   - name: LengthOneStringInIndexOf
   - name: LengthOneStringsInConcatenation
@@ -218,7 +216,6 @@ include:
   - name: RandomDoubleForRandomInteger
   - name: FieldNamingConvention
   - name: LambdaParameterNamingConvention
-  - name: LocalVariableNamingConvention
   - name: ParameterNamingConvention
   - name: UpperCaseFieldNameNotConstant
   - name: PackageNamingConvention
@@ -257,7 +254,6 @@ include:
   - name: AssignmentOrReturnOfFieldWithMutableType
   - name: PackageVisibleField
   - name: PackageVisibleInnerClass
-  - name: ProtectedField
   - name: ProtectedInnerClass
   - name: ErrorRethrown
   - name: InstanceofCatchParameter

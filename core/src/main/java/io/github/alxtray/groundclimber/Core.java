@@ -23,7 +23,7 @@ public class Core extends Game {
             "Game",
             "Begun loading initial assets",
             LogLevel.INFO);
-        AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
+        final AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
         while (!assetManager.isFinished()) {
             assetManager.update();
         }
@@ -32,7 +32,7 @@ public class Core extends Game {
             "Finished loading initial assets",
             LogLevel.INFO);
 
-        this.setScreen(new MainMenuScreen(this));
+        setScreen(new MainMenuScreen(this));
     }
 
 }

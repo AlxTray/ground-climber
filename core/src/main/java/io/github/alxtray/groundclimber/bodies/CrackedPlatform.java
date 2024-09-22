@@ -6,11 +6,12 @@ import io.github.alxtray.groundclimber.utilities.Logger;
 import text.formic.Stringf;
 
 public class CrackedPlatform extends Platform {
-    private int crackLevel = 0;
+    private int crackLevel;
 
-    public CrackedPlatform(World world, float x, float y, float height, float width) {
+    public CrackedPlatform(final World world, final float x, final float y, final float height, final float width) {
         super(world, x, y, height, width);
-        this.body.setUserData(this);
+        crackLevel = 0;
+        body.setUserData(this);
     }
 
     public void incrementCrackLevel() {
@@ -19,9 +20,9 @@ public class CrackedPlatform extends Platform {
             "CrackedPlatform",
             Stringf.format(
                 "Cracked level for platform at (%s, %s) is now %s",
-                this.body.getPosition().x,
-                this.body.getPosition().y,
-                this.crackLevel),
+                body.getPosition().x,
+                body.getPosition().y,
+                crackLevel),
             LogLevel.DEBUG);
     }
 

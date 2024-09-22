@@ -32,7 +32,7 @@ public class AssetLibrary {
     }
 
     private void loadInitialAssets() {
-        SkinLoader.SkinParameter parameter = new SkinLoader.SkinParameter(SKIN_ATLAS_PATH);
+        final SkinLoader.SkinParameter parameter = new SkinLoader.SkinParameter(SKIN_ATLAS_PATH);
         assetManager.load(SKIN_JSON_PATH, Skin.class, parameter);
         filePathAliases.put("skin", SKIN_JSON_PATH);
 
@@ -62,7 +62,7 @@ public class AssetLibrary {
     }
 
     private void loadTextureAssets(Array<String> assetPaths) {
-        TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
+        final TextureLoader.TextureParameter textureParameter = new TextureLoader.TextureParameter();
         for (String assetPath : assetPaths) {
             assetManager.load(assetPath, Texture.class, textureParameter);
             filePathAliases.put(

@@ -26,8 +26,8 @@ public class CrackedPlatformContactListener implements ContactListener {
             return;
         }
 
-        CrackedPlatform crackedPlatform;
-        Body bodyToDestroy;
+        final CrackedPlatform crackedPlatform;
+        final Body bodyToDestroy;
         if (bodyAUserData instanceof Player) {
             crackedPlatform = (CrackedPlatform) bodyBUserData;
             bodyToDestroy = bodyB;
@@ -42,15 +42,15 @@ public class CrackedPlatformContactListener implements ContactListener {
     }
 
     @Override
-    public void endContact(Contact contact) { // Nothing to do once contact has ended
+    public void endContact(final Contact contact) { // Nothing to do once contact has ended
     }
 
     @Override
-    public void preSolve(Contact contact, Manifold manifold) { // No logic needed here
+    public void preSolve(final Contact contact, final Manifold manifold) { // No logic needed here
     }
 
     @Override
-    public void postSolve(Contact contact, ContactImpulse contactImpulse) { // No logic needed here
+    public void postSolve(final Contact contact, final ContactImpulse contactImpulse) { // No logic needed here
     }
 
 }

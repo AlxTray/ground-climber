@@ -22,8 +22,10 @@ public class LevelSelectScreen extends MenuScreen {
     private static final String BACKGROUND_IMAGE_NAME = "menu_background";
     private static final int BUTTON_HEIGHT_FACTOR = 10;
     private static final int BUTTON_WIDTH_FACTOR = 5;
+    private static final float VIEWPORT_TOP_FACTOR = 1.75f;
+    private static final float BUTTON_PADDING_FACTOR = 50;
 
-    public LevelSelectScreen(final Core game, final DebugRenderMode debugMode) {
+    public LevelSelectScreen(Core game, DebugRenderMode debugMode) {
         super(
             game,
             TITLE_IMAGE_NAME,
@@ -40,11 +42,11 @@ public class LevelSelectScreen extends MenuScreen {
             Stringf.format("Found the following level files: %s", levelsFilePaths.toString(", ")),
             LogLevel.DEBUG);
 
-        float buttonY = viewportTop - Gdx.graphics.getHeight() / 1.75f;
+        float buttonY = viewportTop - Gdx.graphics.getHeight() / VIEWPORT_TOP_FACTOR;
         for (String levelFilePath : levelsFilePaths) {
-            FileHandle levelFile = Gdx.files.internal(levelFilePath);
-            JsonReader jsonReader = new JsonReader();
-            JsonValue jsonData = jsonReader.parse(levelFile);
+            final FileHandle levelFile = Gdx.files.internal(levelFilePath);
+            final JsonReader jsonReader = new JsonReader();
+            final JsonValue jsonData = jsonReader.parse(levelFile);
 
             new ButtonBuilder(jsonData.get("data").get("name").asString(), skin, stage)
                 .setActorName(levelFile.name())
@@ -53,11 +55,12 @@ public class LevelSelectScreen extends MenuScreen {
                 .setClickListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        Actor target = event.getTarget();
+                        final Actor target = event.getTarget();
                         // If the text in the button is clicked the event is for the Label not
                         // TextButton
                         // So, if the event is Label the TextButton is the parent Actor
-                        String levelName = (target instanceof Label) ? target.getParent().getName() : target.getName();
+                        final String levelName = (target instanceof Label)
+                            ? target.getParent().getName() : target.getName();
                         Logger.log(
                             "LevelSelectButton",
                             Stringf.format("Selected level: %s", levelName),
@@ -70,7 +73,7 @@ public class LevelSelectScreen extends MenuScreen {
                 })
                 .build();
 
-            buttonY -= buttonHeight + (float) Gdx.graphics.getHeight() / 50;
+            buttonY -= buttonHeight + (float) Gdx.graphics.getHeight() / BUTTON_PADDING_FACTOR;
         }
     }
 

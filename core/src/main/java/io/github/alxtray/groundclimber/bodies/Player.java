@@ -4,24 +4,27 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
 public class Player {
+    private static final float PLAYER_DENSITY = 0.1f;
+    private static final float PLAYER_FRICTION = 0.3f;
+    private static final float PLAYER_RESTITUTION = 1f;
     private final Body body;
 
-    public Player(World world, int x, int y, int radius) {
+    public Player(final World world, final int x, final int y, final int radius) {
 
-        BodyDef bodyDef = new BodyDef();
+        final BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         body.setUserData(this);
 
-        CircleShape playerShape = new CircleShape();
+        final CircleShape playerShape = new CircleShape();
         playerShape.setRadius(radius);
 
-        FixtureDef fixtureDef = new FixtureDef();
+        final FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = playerShape;
-        fixtureDef.density = 0.1f;
-        fixtureDef.friction = 0.3f;
-        fixtureDef.restitution = 1f;
+        fixtureDef.density = PLAYER_DENSITY;
+        fixtureDef.friction = PLAYER_FRICTION;
+        fixtureDef.restitution = PLAYER_RESTITUTION;
         body.createFixture(fixtureDef);
 
         playerShape.dispose();

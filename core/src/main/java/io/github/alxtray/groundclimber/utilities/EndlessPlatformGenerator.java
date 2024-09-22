@@ -10,12 +10,13 @@ import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 
 public class EndlessPlatformGenerator {
+    private static final int TILE_SIZE = 18;
     private static final int PLATFORM_BATCH_SIZE = 10;
     private static final String ENDLESS_PLATFORM_TYPE = "normal";
     private final int generationThreshold;
     private final PlatformFactory platformFactory;
     // Values set to values from last platform in the initial batch
-    private float lastPlatformX = 0f;
+    private float lastPlatformX;
     private float lastPlatformWidth = 216f;
     private float lastPlatformHeight = 54f;
 
@@ -36,12 +37,13 @@ public class EndlessPlatformGenerator {
     }
 
     private Array<Platform> generatePlatformBatch(World world) {
-        Array<Platform> platformBatch = new Array<>();
+        final Array<Platform> platformBatch = new Array<>();
         for (int i = 0; i < PLATFORM_BATCH_SIZE; i++) {
-            float currentPlatformWidth = (float) MathUtils.random(3, 10) * 18;
-            float currentPlatformHeight = MathUtils.random(1, 5 + ((int) -lastPlatformHeight / 18)) * 18f;
-            float currentPlatformX = (lastPlatformX + lastPlatformWidth) + MathUtils.random(15, 80);
-            Platform newPlatform = platformFactory.createPlatform(
+            final float currentPlatformWidth = (float) MathUtils.random(3, 10) * TILE_SIZE;
+            final float currentPlatformHeight =
+                MathUtils.random(1, 5 + ((int) -lastPlatformHeight / TILE_SIZE)) * TILE_SIZE;
+            final float currentPlatformX = (lastPlatformX + lastPlatformWidth) + MathUtils.random(15, 80);
+            final Platform newPlatform = platformFactory.createPlatform(
                 world,
                 ENDLESS_PLATFORM_TYPE,
                 currentPlatformX,

@@ -10,7 +10,7 @@ public class PlatformFactory {
     public PlatformFactory() {
     }
 
-    public Platform createPlatform(World world, String type, float x, float y, float height, float width) {
+    public Platform createPlatform(World world, final String type, final float x, final float y, final float height, final float width) {
         switch (type) {
             case "normal":
                 Logger.log(
