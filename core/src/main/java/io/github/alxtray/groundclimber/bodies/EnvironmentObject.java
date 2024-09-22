@@ -5,7 +5,4 @@ import io.github.alxtray.groundclimber.renderers.EnvironmentObjectVisitor;
 
 public abstract class EnvironmentObject {
     public abstract void acceptRender(EnvironmentObjectVisitor visitor, SpriteBatch batch);
-
-
-
 }
