@@ -69,6 +69,7 @@ public class GameScreen implements Screen {
 
         OrthographicCamera camera = controllerManager.getCamera();
         Player player = controllerManager.getPlayer();
+        batch.setProjectionMatrix(camera.combined);
         if (!renderMode.equals(DebugRenderMode.ONLY)) {
             batch.begin();
             renderManager.render(camera, player, controllerManager.getEnvironmentObjects(), batch);

@@ -28,7 +28,6 @@ public class RenderManager {
     }
 
     public void render(OrthographicCamera camera, Player player, Array<EnvironmentObject> environmentObjects, SpriteBatch batch) {
-        batch.setProjectionMatrix(camera.combined);
         backgroundObjectRenderer.render(batch, camera);
         playerRenderer.render(batch, player);
         for (EnvironmentObject environmentObject : environmentObjects) {
