@@ -19,12 +19,7 @@ public class BouncyPlatformContactListener implements ContactListener {
             return;
         }
 
-        Body playerBody;
-        if (bodyAUserData instanceof Player) {
-            playerBody = bodyA;
-        } else {
-            playerBody = bodyB;
-        }
+        Body playerBody = (bodyAUserData instanceof Player) ? bodyA : bodyB;
         playerBody.applyLinearImpulse(BOUNCE_LINEAR_IMPULSE, playerBody.getWorldCenter(), true);
     }
 
