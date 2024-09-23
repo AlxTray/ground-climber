@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.level.PlatformData;
+import io.github.alxtray.groundclimber.listeners.BouncyPlatformContactListener;
 import io.github.alxtray.groundclimber.listeners.ContactListenerImpl;
 import io.github.alxtray.groundclimber.listeners.CrackedPlatformContactListener;
 import io.github.alxtray.groundclimber.listeners.DebugContactListener;
@@ -33,6 +34,7 @@ public class PhysicsController {
         contactListener = new ContactListenerImpl();
         world.setContactListener(contactListener);
         contactListener.addContactListener(new CrackedPlatformContactListener());
+        contactListener.addContactListener(new BouncyPlatformContactListener());
         if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
             contactListener.addContactListener(new DebugContactListener());
         }

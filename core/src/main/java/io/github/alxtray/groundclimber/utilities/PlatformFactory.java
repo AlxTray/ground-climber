@@ -1,6 +1,7 @@
 package io.github.alxtray.groundclimber.utilities;
 
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.alxtray.groundclimber.bodies.BouncyPlatform;
 import io.github.alxtray.groundclimber.bodies.CrackedPlatform;
 import io.github.alxtray.groundclimber.bodies.NormalPlatform;
 import io.github.alxtray.groundclimber.bodies.Platform;
@@ -21,6 +22,12 @@ public class PlatformFactory {
                     "Generated cracked platform",
                     LogLevel.DEBUG);
                 return new CrackedPlatform(world, x, y, height, width);
+            case "bouncy":
+                Logger.log(
+                    "PlatformFactory",
+                    "Generated bouncy platform",
+                    LogLevel.DEBUG);
+                return new BouncyPlatform(world, x, y, height, width);
             default:
                 throw new IllegalArgumentException("Invalid platform type " + type);
         }
