@@ -6,17 +6,17 @@ import com.badlogic.gdx.utils.Array;
 public class ContactListenerImpl implements ContactListener {
     private final Array<ContactListener> contactListeners = new Array<>();
 
-    public void addContactListener(final ContactListener contactListener) {
+    public void addContactListener(ContactListener contactListener) {
         contactListeners.add(contactListener);
     }
 
     public Array<Body> getBodiesToDestroy() {
-        final Array<Body> bodiesToDestroy = new Array<>();
-        for (final ContactListener contactListener : contactListeners) {
+        Array<Body> bodiesToDestroy = new Array<>();
+        for (ContactListener contactListener : contactListeners) {
             if (!(contactListener instanceof CrackedPlatformContactListener)) {
                 continue;
             }
-            final CrackedPlatformContactListener crackedPlatformListener =
+            CrackedPlatformContactListener crackedPlatformListener =
                 (CrackedPlatformContactListener) contactListener;
             bodiesToDestroy.addAll(crackedPlatformListener.getPlatformsToDestroy());
             crackedPlatformListener.clearPlatformsToDestroy();
@@ -26,22 +26,22 @@ public class ContactListenerImpl implements ContactListener {
     }
 
     @Override
-    public void beginContact(final Contact contact) {
-        for (final ContactListener contactListener : contactListeners) {
+    public void beginContact(Contact contact) {
+        for (ContactListener contactListener : contactListeners) {
             contactListener.beginContact(contact);
         }
     }
 
     @Override
-    public void endContact(final Contact contact) { // Nothing to do once contact has ended
+    public void endContact(Contact contact) { // Nothing to do once contact has ended
     }
 
     @Override
-    public void preSolve(final Contact contact, final Manifold manifold) { // No logic needed here
+    public void preSolve(Contact contact, Manifold manifold) { // No logic needed here
     }
 
     @Override
-    public void postSolve(final Contact contact, final ContactImpulse contactImpulse) { // No logic needed here
+    public void postSolve(Contact contact, ContactImpulse contactImpulse) { // No logic needed here
     }
 
 }

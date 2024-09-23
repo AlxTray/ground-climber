@@ -20,7 +20,7 @@ public class MainMenuScreen extends MenuScreen {
     private static final float ENDLESS_MARGIN_FACTOR = 40f;
     private DebugRenderMode debugMode = DebugRenderMode.NORMAL;
 
-    public MainMenuScreen(final Core game) {
+    public MainMenuScreen(Core game) {
         super(
             game,
             TITLE_IMAGE_NAME,
@@ -28,8 +28,8 @@ public class MainMenuScreen extends MenuScreen {
             BUTTON_HEIGHT_FACTOR,
             BUTTON_WIDTH_FACTOR);
 
-        final float levelsButtonTopMargin = Gdx.graphics.getHeight() / LEVELS_MARGIN_FACTOR;
-        final float endlessButtonTopMargin =
+        float levelsButtonTopMargin = Gdx.graphics.getHeight() / LEVELS_MARGIN_FACTOR;
+        float endlessButtonTopMargin =
             (levelsButtonTopMargin + buttonHeight) + Gdx.graphics.getHeight() / ENDLESS_MARGIN_FACTOR;
         new ButtonBuilder("Levels", skin, stage)
             .setSize(buttonWidth, buttonHeight)
@@ -58,7 +58,7 @@ public class MainMenuScreen extends MenuScreen {
     }
 
     @Override
-    public void render(final float delta) {
+    public void render(float delta) {
         super.render(delta);
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {

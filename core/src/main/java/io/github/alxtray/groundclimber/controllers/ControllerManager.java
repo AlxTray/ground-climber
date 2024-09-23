@@ -19,15 +19,15 @@ public class ControllerManager {
 
     public ControllerManager(GameMode gameMode, LevelData levelData) {
         this.gameMode = gameMode;
-        this.cameraController = new CameraController(levelData.getCameraStartPosition(), levelData.getBounds());
-        this.physicsController = new PhysicsController(levelData.getPlatformsData());
-        this.playerController = new PlayerController(physicsController.getWorld(), levelData.getPlayerSpawn());
-        this.platformGenerator = gameMode.equals(GameMode.ENDLESS) ? new EndlessPlatformGenerator() : null;
+        cameraController = new CameraController(levelData.getCameraStartPosition(), levelData.getBounds());
+        physicsController = new PhysicsController(levelData.getPlatformsData());
+        playerController = new PlayerController(physicsController.getWorld(), levelData.getPlayerSpawn());
+        platformGenerator = (gameMode == GameMode.ENDLESS) ? new EndlessPlatformGenerator() : null;
     }
 
     public void update(float delta) {
         playerController.update(delta);
-        if (gameMode.equals(GameMode.ENDLESS)) {
+        if (gameMode == GameMode.ENDLESS) {
             platformGenerator.checkAndGenerateBatch(
                 physicsController.getWorld(),
                 playerController.getPlayer(),

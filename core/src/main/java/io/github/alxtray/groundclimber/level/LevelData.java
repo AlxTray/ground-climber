@@ -13,9 +13,6 @@ public class LevelData implements Json.Serializable {
     private final Array<PlatformData> platformsData = new Array<>();
     private GameMode gameMode;
 
-    public LevelData() {
-    }
-
     @Override
     public void write(Json json) { // No need to be used at the moment. (Useful if level editor is made)
     }
@@ -26,23 +23,23 @@ public class LevelData implements Json.Serializable {
             "LevelData",
             "Loading level data...",
             LogLevel.INFO);
-        final JsonValue boundsValue = jsonData.get("data").get("bounds");
-        final int[] boundsArray = boundsValue.asIntArray();
+        JsonValue boundsValue = jsonData.get("data").get("bounds");
+        int[] boundsArray = boundsValue.asIntArray();
         bounds.put("left", boundsArray[0]);
         bounds.put("right", boundsArray[1]);
         bounds.put("bottom", boundsArray[2]);
         bounds.put("top", boundsArray[3]);
 
-        final JsonValue playerSpawnValue = jsonData.get("data").get("player_start_pos");
-        final int[] playerSpawnArray = playerSpawnValue.asIntArray();
+        JsonValue playerSpawnValue = jsonData.get("data").get("player_start_pos");
+        int[] playerSpawnArray = playerSpawnValue.asIntArray();
         playerSpawn.put("x", playerSpawnArray[0]);
         playerSpawn.put("y", playerSpawnArray[1]);
 
-        final JsonValue gameModeValue = jsonData.get("data").get("mode");
+        JsonValue gameModeValue = jsonData.get("data").get("mode");
         gameMode = GameMode.valueOf(gameModeValue.asString());
 
-        final JsonValue cameraStartPosValue = jsonData.get("data").get("camera_start_pos");
-        final float[] cameraStartPositionArray = cameraStartPosValue.asFloatArray();
+        JsonValue cameraStartPosValue = jsonData.get("data").get("camera_start_pos");
+        float[] cameraStartPositionArray = cameraStartPosValue.asFloatArray();
         cameraStartPosition.put("x", cameraStartPositionArray[0]);
         cameraStartPosition.put("y", cameraStartPositionArray[1]);
 

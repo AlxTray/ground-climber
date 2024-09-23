@@ -8,7 +8,7 @@ import text.formic.Stringf;
 public class CrackedPlatform extends Platform {
     private int crackLevel;
 
-    public CrackedPlatform(final World world, final float x, final float y, final float height, final float width) {
+    public CrackedPlatform(World world, float x, float y, float height, float width) {
         super(world, x, y, height, width);
         crackLevel = 0;
         body.setUserData(this);

@@ -9,9 +9,6 @@ import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
     private static final int TILE_SIZE = 18;
 
-    public EnvironmentObjectRenderer() {
-    }
-
     @Override
     public void visitPlatform(Platform platform, SpriteBatch batch) {
         Vector2 platformPosition = platform.getPosition();
@@ -36,7 +33,7 @@ public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
         }
     }
 
-    private String selectTileTexture(int columnTileNumber, int numberOfColumns, int rowTileNumber, int numberOfRows) {
+    private static String selectTileTexture(int columnTileNumber, int numberOfColumns, int rowTileNumber, int numberOfRows) {
         if (columnTileNumber == numberOfColumns && rowTileNumber == 1) {
             return (numberOfColumns == 1) ? "grass_single_left" : "grass_top_left";
         }

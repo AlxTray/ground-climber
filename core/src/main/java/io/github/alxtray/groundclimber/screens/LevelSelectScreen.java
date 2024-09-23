@@ -48,9 +48,9 @@ public class LevelSelectScreen extends MenuScreen {
 
         float buttonY = viewportTop - Gdx.graphics.getHeight() / VIEWPORT_TOP_FACTOR;
         for (String levelFilePath : levelsFilePaths) {
-            final FileHandle levelFile = Gdx.files.internal(levelFilePath);
-            final JsonReader jsonReader = new JsonReader();
-            final JsonValue jsonData = jsonReader.parse(levelFile);
+            FileHandle levelFile = Gdx.files.internal(levelFilePath);
+            JsonReader jsonReader = new JsonReader();
+            JsonValue jsonData = jsonReader.parse(levelFile);
 
             new ButtonBuilder(jsonData.get("data").get("name").asString(), skin, stage)
                 .setActorName(levelFile.name())
@@ -59,11 +59,11 @@ public class LevelSelectScreen extends MenuScreen {
                 .setClickListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        final Actor target = event.getTarget();
+                        Actor target = event.getTarget();
                         // If the text in the button is clicked the event is for the Label not
                         // TextButton
                         // So, if the event is Label the TextButton is the parent Actor
-                        final String levelName = (target instanceof Label)
+                        String levelName = (target instanceof Label)
                             ? target.getParent().getName() : target.getName();
                         Logger.log(
                             "LevelSelectButton",

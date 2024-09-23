@@ -26,7 +26,7 @@ public class RenderManager {
         displayDebugInfo = false;
     }
 
-    public void render(OrthographicCamera camera, Player player, Array<EnvironmentObject> environmentObjects, SpriteBatch batch) {
+    public void render(OrthographicCamera camera, Player player, Array<? extends EnvironmentObject> environmentObjects, SpriteBatch batch) {
         backgroundObjectRenderer.render(batch, camera);
         playerRenderer.render(batch, player);
         for (EnvironmentObject environmentObject : environmentObjects) {

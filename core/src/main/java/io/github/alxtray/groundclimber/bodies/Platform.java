@@ -10,20 +10,20 @@ public class Platform extends EnvironmentObject {
     private final float height;
     private final float width;
 
-    public Platform(final World world, final float x, final float y, final float height, final float width) {
+    public Platform(World world, float x, float y, float height, float width) {
         this.height = height;
         this.width = width;
 
-        final BodyDef bodyDef = new BodyDef();
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         // Box2D places based on the centre so needs to be adjusted for LibGDX which places based on bottom-left corner
         bodyDef.position.set(x + (width / 2), y + (height / 2));
         body = world.createBody(bodyDef);
 
-        final PolygonShape shape = new PolygonShape();
+        PolygonShape shape = new PolygonShape();
         shape.setAsBox(width / 2, height / 2);
 
-        final FixtureDef fixtureDef = new FixtureDef();
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         body.createFixture(fixtureDef);
 

@@ -36,7 +36,7 @@ public class MenuScreen implements Screen {
     private final Texture backgroundImage;
     private float currentTitleY;
 
-    public MenuScreen(final Core game, String titleImageName, String backgroundImageName, int buttonHeightFactor, int buttonWidthFactor) {
+    public MenuScreen(Core game, String titleImageName, String backgroundImageName, int buttonHeightFactor, int buttonWidthFactor) {
         this.game = game;
 
         batch = new SpriteBatch();

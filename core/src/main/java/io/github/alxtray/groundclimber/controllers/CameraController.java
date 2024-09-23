@@ -25,9 +25,9 @@ public class CameraController {
     }
 
     public void update(float delta, Player player, GameMode gameMode) {
-        if (gameMode.equals(GameMode.ENDLESS) && player.getBody().getPosition().x > 100) {
+        if (gameMode == GameMode.ENDLESS && player.getBody().getPosition().x > 100) {
             camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
-        } else if (gameMode.equals(GameMode.NORMAL)) {
+        } else if (gameMode == GameMode.NORMAL) {
             repositionCamera(delta, player);
         }
         checkCameraInBounds();

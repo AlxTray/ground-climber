@@ -9,18 +9,17 @@ public class Player {
     private static final float PLAYER_RESTITUTION = 1f;
     private final Body body;
 
-    public Player(final World world, final int x, final int y, final int radius) {
-
-        final BodyDef bodyDef = new BodyDef();
+    public Player(World world, int x, int y, int radius) {
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
         body = world.createBody(bodyDef);
         body.setUserData(this);
 
-        final CircleShape playerShape = new CircleShape();
+        CircleShape playerShape = new CircleShape();
         playerShape.setRadius(radius);
 
-        final FixtureDef fixtureDef = new FixtureDef();
+        FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = playerShape;
         fixtureDef.density = PLAYER_DENSITY;
         fixtureDef.friction = PLAYER_FRICTION;

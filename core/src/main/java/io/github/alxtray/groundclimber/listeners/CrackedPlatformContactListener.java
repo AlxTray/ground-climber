@@ -17,17 +17,17 @@ public class CrackedPlatformContactListener implements ContactListener {
     }
 
     @Override
-    public void beginContact(final Contact contact) {
-        final Body bodyA = contact.getFixtureA().getBody();
-        final Body bodyB = contact.getFixtureB().getBody();
-        final Object bodyAUserData = bodyA.getUserData();
-        final Object bodyBUserData = bodyB.getUserData();
+    public void beginContact(Contact contact) {
+        Body bodyA = contact.getFixtureA().getBody();
+        Body bodyB = contact.getFixtureB().getBody();
+        Object bodyAUserData = bodyA.getUserData();
+        Object bodyBUserData = bodyB.getUserData();
         if (!(bodyAUserData instanceof CrackedPlatform) && !(bodyBUserData instanceof CrackedPlatform)) {
             return;
         }
 
-        final CrackedPlatform crackedPlatform;
-        final Body bodyToDestroy;
+        CrackedPlatform crackedPlatform;
+        Body bodyToDestroy;
         if (bodyAUserData instanceof Player) {
             crackedPlatform = (CrackedPlatform) bodyBUserData;
             bodyToDestroy = bodyB;

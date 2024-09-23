@@ -45,7 +45,6 @@ include:
   - name: InstanceofChain
   - name: ClassReferencesSubclass
   - name: DeclareCollectionAsInterface
-  - name: FeatureEnvy
   - name: MagicNumber
   - name: OverlyStrongTypeCast
   - name: MethodOnlyUsedFromInnerClass
@@ -61,7 +60,6 @@ include:
   - name: NestedAssignment
   - name: IncrementDecrementUsedAsExpression
   - name: AnonymousClassMethodCount
-  - name: ClassInheritanceDepth
   - name: ConstructorCount
   - name: FieldCount
   - name: MethodCount
@@ -72,7 +70,6 @@ include:
   - name: StaticNonFinalField
   - name: ClassMayBeInterface
   - name: AnonymousInnerClass
-  - name: FinalClass
   - name: ListenerMayUseAdapter
   - name: ClassNameDiffersFromFileName
   - name: ClassWithOnlyPrivateConstructors
@@ -114,7 +111,6 @@ include:
   - name: SwitchLabeledRuleCanBeCodeBlock
   - name: LambdaBodyCanBeCodeBlock
   - name: LambdaParameterTypeCanBeSpecified
-  - name: LocalCanBeFinal
   - name: MethodRefCanBeReplacedWithLambda
   - name: MissortedModifiers
   - name: MultiCatchCanBeSplit
@@ -231,8 +227,6 @@ include:
   - name: ZeroLengthArrayInitialization
   - name: ParametersPerConstructor
   - name: ThreeNegationsPerMethod
-  - name: MethodWithMultipleLoops
-  - name: MultipleReturnPointsPerMethod
   - name: ThrownExceptionsPerMethod
   - name: ParametersPerMethod
   - name: CyclomaticComplexity
@@ -309,7 +303,6 @@ include:
   - name: CharUsedInArithmeticContext
   - name: BigDecimalEquals
   - name: ComparisonOfShortAndChar
-  - name: ConfusingFloatingPointLiteral
   - name: ConstantMathCall
   - name: FloatingPointEquality
   - name: NonReproducibleMathCall

@@ -25,7 +25,7 @@ public class EndlessPlatformGenerator {
         generationThreshold = Gdx.graphics.getWidth() / 2;
     }
 
-    public void checkAndGenerateBatch(World world, Player player, Array<EnvironmentObject> environmentObjects) {
+    public void checkAndGenerateBatch(World world, Player player, Array<? super EnvironmentObject> environmentObjects) {
         if (player.getPosition().x > lastPlatformX - generationThreshold) {
             Array<Platform> platformBatch = generatePlatformBatch(world);
             environmentObjects.addAll(platformBatch);
@@ -37,13 +37,13 @@ public class EndlessPlatformGenerator {
     }
 
     private Array<Platform> generatePlatformBatch(World world) {
-        final Array<Platform> platformBatch = new Array<>();
+        Array<Platform> platformBatch = new Array<>();
         for (int i = 0; i < PLATFORM_BATCH_SIZE; i++) {
-            final float currentPlatformWidth = (float) MathUtils.random(3, 10) * TILE_SIZE;
-            final float currentPlatformHeight =
+            float currentPlatformWidth = (float) MathUtils.random(3, 10) * TILE_SIZE;
+            float currentPlatformHeight =
                 MathUtils.random(1, 5 + ((int) -lastPlatformHeight / TILE_SIZE)) * TILE_SIZE;
-            final float currentPlatformX = (lastPlatformX + lastPlatformWidth) + MathUtils.random(15, 80);
-            final Platform newPlatform = platformFactory.createPlatform(
+            float currentPlatformX = (lastPlatformX + lastPlatformWidth) + MathUtils.random(15, 80);
+            Platform newPlatform = platformFactory.createPlatform(
                 world,
                 ENDLESS_PLATFORM_TYPE,
                 currentPlatformX,

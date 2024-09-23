@@ -33,7 +33,7 @@ public class GameScreen implements Screen {
         this.renderMode = renderMode;
         batch = new SpriteBatch();
         debugRenderer =
-            (renderMode.equals(DebugRenderMode.ONLY) || renderMode.equals(DebugRenderMode.OVERLAY))
+            (renderMode == DebugRenderMode.ONLY || renderMode == DebugRenderMode.OVERLAY)
                 ? new Box2DDebugRenderer() : null;
         // Loads all assets that are required for all levels
         AssetLibrary.getInstance().loadGeneralLevelAssets();
@@ -41,7 +41,7 @@ public class GameScreen implements Screen {
             "GameScreen",
             "Begun loading general level assets",
             LogLevel.INFO);
-        final AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
+        AssetManager assetManager = AssetLibrary.getInstance().getAssetManager();
         while (!assetManager.isFinished()) {
             assetManager.update();
         }
@@ -70,23 +70,23 @@ public class GameScreen implements Screen {
         OrthographicCamera camera = controllerManager.getCamera();
         Player player = controllerManager.getPlayer();
         batch.setProjectionMatrix(camera.combined);
-        if (!renderMode.equals(DebugRenderMode.ONLY)) {
+        if (renderMode != DebugRenderMode.ONLY) {
             batch.begin();
             renderManager.render(camera, player, controllerManager.getEnvironmentObjects(), batch);
             batch.end();
         }
-        if (renderMode.equals(DebugRenderMode.ONLY) || renderMode.equals(DebugRenderMode.OVERLAY)) {
+        if (renderMode == DebugRenderMode.ONLY || renderMode == DebugRenderMode.OVERLAY) {
             debugRenderer.render(controllerManager.getWorld(), camera.combined);
         }
     }
 
-    private LevelData loadLevelData(GameMode gameMode, String... selectedLevelNames) {
-        final Json json = new Json();
-        if (gameMode.equals(GameMode.NORMAL)) {
+    private static LevelData loadLevelData(GameMode gameMode, String... selectedLevelNames) {
+        Json json = new Json();
+        if (gameMode == GameMode.NORMAL) {
             return json.fromJson(
                 LevelData.class,
                 Gdx.files.internal("levels/" + selectedLevelNames[0]).readString());
-        } else if (gameMode.equals(GameMode.ENDLESS)) {
+        } else if (gameMode == GameMode.ENDLESS) {
             Logger.log(
                 "GameScreen",
                 "Empty levelData successfully created for ENDLESS mode",

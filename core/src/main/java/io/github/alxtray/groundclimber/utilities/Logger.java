@@ -7,7 +7,7 @@ public final class Logger {
     private Logger() {
     }
 
-    public static void log(final String locationTag, final String message, final LogLevel level) {
+    public static void log(String locationTag, String message, LogLevel level) {
         switch (level) {
             case DEBUG:
                 Gdx.app.debug(locationTag + " DEBUG", message);

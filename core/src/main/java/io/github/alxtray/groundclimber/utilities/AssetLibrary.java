@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 
-public class AssetLibrary {
+public final class AssetLibrary {
     private static final String SKIN_ATLAS_PATH = "ui/skin.atlas";
     private static final String SKIN_JSON_PATH = "ui/skin.json";
     private AssetManager assetManager;
@@ -32,7 +32,7 @@ public class AssetLibrary {
     }
 
     private void loadInitialAssets() {
-        final SkinLoader.SkinParameter parameter = new SkinLoader.SkinParameter(SKIN_ATLAS_PATH);
+        SkinLoader.SkinParameter parameter = new SkinLoader.SkinParameter(SKIN_ATLAS_PATH);
         assetManager.load(SKIN_JSON_PATH, Skin.class, parameter);
         filePathAliases.put("skin", SKIN_JSON_PATH);
 
@@ -53,7 +53,7 @@ public class AssetLibrary {
         return assetManager.get(assetPath, type);
     }
 
-    private Array<String> getAssetPaths(String matchingSequence) {
+    private Array<String> getAssetPaths(CharSequence matchingSequence) {
         Array<String> assetPaths = new Array<>();
         // Cannot use lines() method because it is not supported on GWT
         String[] lines = assetsFile.readString().split("\n");

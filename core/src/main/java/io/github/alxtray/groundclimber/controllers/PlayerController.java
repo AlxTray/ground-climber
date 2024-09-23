@@ -9,8 +9,9 @@ import com.badlogic.gdx.utils.ObjectIntMap;
 import io.github.alxtray.groundclimber.bodies.Player;
 
 public class PlayerController {
-    private static final int PLAYER_INITIAL_RADIUS = 16;
+    private static final int INITIAL_RADIUS = 16;
     private static final int MAX_VELOCITY = 240;
+    private static final float Y_INITIAL_VELOCITY = -150f;
     private static final float DEFAULT_FORCE = 1500000;
     private final Player player;
 
@@ -18,8 +19,8 @@ public class PlayerController {
         player = new Player(
             world,
             playerSpawn.get("x", 0),
-            playerSpawn.get("y", 0), PLAYER_INITIAL_RADIUS);
-        player.getBody().setLinearVelocity(0, -150);
+            playerSpawn.get("y", 0), INITIAL_RADIUS);
+        player.getBody().setLinearVelocity(0, Y_INITIAL_VELOCITY);
     }
 
     public void update(float delta) {
