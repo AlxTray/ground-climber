@@ -24,10 +24,16 @@ public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
                 String platformTileTexture = selectTileTexture(
                     columnTileNumber, numberOfColumns, rowTileNumber, numberOfRows);
 
+                // Minus half width and height as x and y used here is the adjusted version for Box2D
+                float adjustedPlacementX = placementX - (platform.getWidth() / 2);
+                float adjustedPlacementY = placementY - (platform.getHeight() / 2);
                 batch.draw(
                     AssetLibrary.getInstance().getAsset(platformTileTexture, Texture.class),
-                    // Minus half width and height as x and y used here is the adjusted version for Box2D
-                    placementX - (platform.getWidth() / 2), placementY - (platform.getHeight() / 2));
+                    adjustedPlacementX, adjustedPlacementY);
+                Texture overlayTexture = platform.getOverlayTexture();
+                if (overlayTexture != null) {
+                    batch.draw(overlayTexture, adjustedPlacementX, adjustedPlacementY);
+                }
             }
             columnTileNumber = 0;
         }
