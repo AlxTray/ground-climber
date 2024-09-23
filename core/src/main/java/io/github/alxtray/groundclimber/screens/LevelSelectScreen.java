@@ -34,9 +34,13 @@ public class LevelSelectScreen extends MenuScreen {
             BUTTON_WIDTH_FACTOR);
 
         Array<String> levelsFilePaths = new Array<>();
-        Gdx.files.internal("assets.txt").readString().lines()
-            .filter(line -> line.contains("levels"))
-            .forEach(levelsFilePaths::add);
+        // Cannot use lines() method because it is not supported on GWT
+        String[] lines = Gdx.files.internal("assets.txt").readString().split("\n");
+        for (String line : lines) {
+            if (line.contains("levels")) {
+                levelsFilePaths.add(line);
+            }
+        }
         Logger.log(
             "LevelScreen",
             Stringf.format("Found the following level files: %s", levelsFilePaths.toString(", ")),

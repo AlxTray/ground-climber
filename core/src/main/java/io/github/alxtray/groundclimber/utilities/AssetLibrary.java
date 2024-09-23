@@ -55,9 +55,13 @@ public class AssetLibrary {
 
     private Array<String> getAssetPaths(String matchingSequence) {
         Array<String> assetPaths = new Array<>();
-        assetsFile.readString().lines()
-            .filter(line -> line.contains(matchingSequence))
-            .forEach(assetPaths::add);
+        // Cannot use lines() method because it is not supported on GWT
+        String[] lines = assetsFile.readString().split("\n");
+        for (String line : lines) {
+            if (line.contains(matchingSequence)) {
+                assetPaths.add(line);
+            }
+        }
         return assetPaths;
     }
 
