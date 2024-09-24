@@ -33,12 +33,36 @@
         "width": 198
       },
       {
-        "type": "normal",
+        "type": "gravity",
         "orientation": "NORTH",
-        "x": 800,
+        "x": 870,
         "y": 0,
         "height": 18,
-        "width": 900
+        "width": 90
+      },
+      {
+        "type": "normal",
+        "orientation": "SOUTH",
+        "x": 800,
+        "y": 350,
+        "height": 54,
+        "width": 324
+      },
+      {
+        "type": "gravity",
+        "orientation": "SOUTH",
+        "x": 1200,
+        "y": 350,
+        "height": 54,
+        "width": 144
+      },
+      {
+        "type": "gravity",
+        "orientation": "NORTH",
+        "x": 1200,
+        "y": 0,
+        "height": 36,
+        "width": 144
       }
     ]
   }
