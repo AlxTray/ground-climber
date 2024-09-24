@@ -4,14 +4,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import io.github.alxtray.groundclimber.enums.PlatformOrientation;
 import io.github.alxtray.groundclimber.renderers.EnvironmentObjectVisitor;
 
 public class Platform extends EnvironmentObject {
     protected final Body body;
+    private final PlatformOrientation orientation;
     private final float height;
     private final float width;
 
-    public Platform(World world, float x, float y, float height, float width) {
+    public Platform(World world, PlatformOrientation orientation, float x, float y, float height, float width) {
+        this.orientation = orientation;
         this.height = height;
         this.width = width;
 
@@ -42,6 +45,10 @@ public class Platform extends EnvironmentObject {
 
     public Body getBody() {
         return body;
+    }
+
+    public PlatformOrientation getOrientation() {
+        return orientation;
     }
 
     public Vector2 getPosition() {

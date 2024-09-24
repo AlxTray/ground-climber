@@ -10,6 +10,7 @@
     "platforms": [
       {
         "type": "normal",
+        "orientation": "NORTH",
         "x": 0,
         "y": 0,
         "height": 54,
@@ -17,6 +18,7 @@
       },
       {
         "type": "cracked",
+        "orientation": "NORTH",
         "x": 230,
         "y": 0,
         "height": 36,
@@ -24,6 +26,7 @@
       },
       {
         "type": "bouncy",
+        "orientation": "NORTH",
         "x": 550,
         "y": 0,
         "height": 18,
@@ -31,6 +34,7 @@
       },
       {
         "type": "normal",
+        "orientation": "NORTH",
         "x": 800,
         "y": 0,
         "height": 18,

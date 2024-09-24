@@ -13,6 +13,7 @@ public class EndlessPlatformGenerator {
     private static final int TILE_SIZE = 18;
     private static final int PLATFORM_BATCH_SIZE = 10;
     private static final String ENDLESS_PLATFORM_TYPE = "normal";
+    private static final String ENDLESS_PLATFORM_ORIENTATION = "NORTH";
     private final int generationThreshold;
     private final PlatformFactory platformFactory;
     // Values set to values from last platform in the initial batch
@@ -46,6 +47,7 @@ public class EndlessPlatformGenerator {
             Platform newPlatform = platformFactory.createPlatform(
                 world,
                 ENDLESS_PLATFORM_TYPE,
+                ENDLESS_PLATFORM_ORIENTATION,
                 currentPlatformX,
                 0,
                 currentPlatformHeight,

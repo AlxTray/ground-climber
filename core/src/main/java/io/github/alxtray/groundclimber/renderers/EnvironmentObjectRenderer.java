@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import io.github.alxtray.groundclimber.bodies.Platform;
+import io.github.alxtray.groundclimber.enums.PlatformOrientation;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 
 public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
@@ -22,14 +23,21 @@ public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
                 columnTileNumber++;
 
                 String platformTileTexture = selectTileTexture(
-                    columnTileNumber, numberOfColumns, rowTileNumber, numberOfRows);
+                    platform.getOrientation(), columnTileNumber, numberOfColumns, rowTileNumber, numberOfRows);
 
                 // Minus half width and height as x and y used here is the adjusted version for Box2D
                 float adjustedPlacementX = placementX - (platform.getWidth() / 2);
                 float adjustedPlacementY = placementY - (platform.getHeight() / 2);
                 batch.draw(
                     AssetLibrary.getInstance().getAsset(platformTileTexture, Texture.class),
-                    adjustedPlacementX, adjustedPlacementY);
+                    adjustedPlacementX, adjustedPlacementY,
+                    TILE_SIZE / 2f, TILE_SIZE / 2f,
+                    TILE_SIZE, TILE_SIZE,
+                    1f, 1f,
+                    platform.getOrientation().getAngle(),
+                    0, 0,
+                    TILE_SIZE, TILE_SIZE,
+                    false, false);
                 Texture overlayTexture = platform.getOverlayTexture();
                 if (overlayTexture != null) {
                     batch.draw(overlayTexture, adjustedPlacementX, adjustedPlacementY);
@@ -39,21 +47,40 @@ public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
         }
     }
 
-    private static String selectTileTexture(int columnTileNumber, int numberOfColumns, int rowTileNumber, int numberOfRows) {
-        if (columnTileNumber == numberOfColumns && rowTileNumber == 1) {
+    private static String selectTileTexture(PlatformOrientation orientation, int columnTileNumber, int numberOfColumns, int rowTileNumber, int numberOfRows) {
+        // Quite a horrible way of doing it but works well for now
+        // Number of rows is basically far side of the platform and 1 is the near side
+        // So changing what is assigned to each check variables to denote what should be placed where
+        // Based on the "orientation" of the platform
+        int rowTopLeftCheck = 1;
+        int rowTopRightCheck = numberOfRows;
+        int columnTopCheck = numberOfColumns;
+        int rowGroundLeftCheck = 1;
+        int rowGroundRightCheck = numberOfRows;
+        int columnGroundCheck = 1;
+        if (orientation == PlatformOrientation.SOUTH) {
+            rowTopLeftCheck = numberOfRows;
+            rowTopRightCheck = 1;
+            columnTopCheck = 1;
+            rowGroundLeftCheck = numberOfRows;
+            rowGroundRightCheck = 1;
+            columnGroundCheck = numberOfColumns;
+        }
+
+        if (columnTileNumber == columnTopCheck && rowTileNumber == rowTopLeftCheck) {
             return (numberOfColumns == 1) ? "grass_single_left" : "grass_top_left";
         }
-        if (columnTileNumber == numberOfColumns && rowTileNumber == numberOfRows) {
+        if (columnTileNumber == columnTopCheck && rowTileNumber == rowTopRightCheck) {
             return (numberOfColumns == 1) ? "grass_single_right" : "grass_top_right";
         }
-        if (columnTileNumber == numberOfColumns) {
+        if (columnTileNumber == columnTopCheck) {
             return (numberOfColumns == 1) ? "grass_single_middle" : "grass_top_middle";
         }
-        if (columnTileNumber == 1 && rowTileNumber == 1) return "ground_left_bottom";
-        if (rowTileNumber == 1) return "ground_left_middle";
-        if (columnTileNumber == 1 && rowTileNumber == numberOfRows) return "ground_right_bottom";
-        if (rowTileNumber == numberOfRows) return "ground_right_middle";
-        if (columnTileNumber == 1) return "ground_middle_bottom";
+        if (columnTileNumber == columnGroundCheck && rowTileNumber == rowGroundLeftCheck) return "ground_left_bottom";
+        if (rowTileNumber == rowGroundLeftCheck) return "ground_left_middle";
+        if (columnTileNumber == columnGroundCheck && rowTileNumber == rowGroundRightCheck) return "ground_right_bottom";
+        if (rowTileNumber == rowGroundRightCheck) return "ground_right_middle";
+        if (columnTileNumber == columnGroundCheck) return "ground_middle_bottom";
 
         return "ground_no_border";
     }

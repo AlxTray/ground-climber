@@ -8,6 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.enums.PlatformOrientation;
 import io.github.alxtray.groundclimber.level.PlatformData;
 import io.github.alxtray.groundclimber.listeners.BouncyPlatformContactListener;
 import io.github.alxtray.groundclimber.listeners.ContactListenerImpl;
@@ -44,6 +45,7 @@ public class PhysicsController {
             environmentObjects.add(platformFactory.createPlatform(
                 world,
                 data.getType(),
+                data.getOrientation(),
                 data.getX(),
                 data.getY(),
                 data.getHeight(),
