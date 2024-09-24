@@ -8,6 +8,7 @@ public class Player {
     private static final float PLAYER_FRICTION = 0.3f;
     private static final float PLAYER_RESTITUTION = 1f;
     private final Body body;
+    private boolean upsideDown = false;
 
     public Player(World world, int x, int y, int radius) {
         BodyDef bodyDef = new BodyDef();
@@ -35,6 +36,14 @@ public class Player {
 
     public Vector2 getPosition() {
         return body.getPosition();
+    }
+
+    public boolean isUpsideDown() {
+        return upsideDown;
+    }
+
+    public void toggleUpsideDown() {
+        this.upsideDown = !upsideDown;
     }
 
 }

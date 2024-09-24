@@ -21,6 +21,9 @@ public class GravityPlatformContactListener implements ContactListener {
         World world = playerBody.getWorld();
         Vector2 currentGravity = world.getGravity();
         world.setGravity(new Vector2(currentGravity.x, -currentGravity.y));
+
+        Player player = (Player) playerBody.getUserData();
+        player.toggleUpsideDown();
     }
 
     @Override
