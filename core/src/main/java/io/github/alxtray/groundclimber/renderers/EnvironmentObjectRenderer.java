@@ -28,23 +28,36 @@ public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
                 // Minus half width and height as x and y used here is the adjusted version for Box2D
                 float adjustedPlacementX = placementX - (platform.getWidth() / 2);
                 float adjustedPlacementY = placementY - (platform.getHeight() / 2);
-                batch.draw(
+                drawRotatedPlatformTexture(
                     AssetLibrary.getInstance().getAsset(platformTileTexture, Texture.class),
+                    platform,
                     adjustedPlacementX, adjustedPlacementY,
-                    TILE_SIZE / 2f, TILE_SIZE / 2f,
-                    TILE_SIZE, TILE_SIZE,
-                    1f, 1f,
-                    platform.getOrientation().getAngle(),
-                    0, 0,
-                    TILE_SIZE, TILE_SIZE,
-                    false, false);
+                    batch);
+
                 Texture overlayTexture = platform.getOverlayTexture();
                 if (overlayTexture != null) {
-                    batch.draw(overlayTexture, adjustedPlacementX, adjustedPlacementY);
+                    drawRotatedPlatformTexture(
+                        overlayTexture,
+                        platform,
+                        adjustedPlacementX, adjustedPlacementY,
+                        batch);
                 }
             }
             columnTileNumber = 0;
         }
+    }
+
+    private static void drawRotatedPlatformTexture(Texture texture, Platform platform, float placementX, float placementY, SpriteBatch batch) {
+        batch.draw(
+            texture,
+            placementX, placementY,
+            TILE_SIZE / 2f, TILE_SIZE / 2f,
+            TILE_SIZE, TILE_SIZE,
+            1f, 1f,
+            platform.getOrientation().getAngle(),
+            0, 0,
+            TILE_SIZE, TILE_SIZE,
+            false, false);
     }
 
     private static String selectTileTexture(PlatformOrientation orientation, int columnTileNumber, int numberOfColumns, int rowTileNumber, int numberOfRows) {
