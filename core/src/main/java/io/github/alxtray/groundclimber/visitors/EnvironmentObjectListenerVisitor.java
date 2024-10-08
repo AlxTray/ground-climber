@@ -1,6 +1,6 @@
 package io.github.alxtray.groundclimber.visitors;
 
-import io.github.alxtray.groundclimber.bodies.CrackedPlatform;
+import io.github.alxtray.groundclimber.bodies.platforms.CrackedPlatform;
 import io.github.alxtray.groundclimber.bodies.Player;
 
 public interface EnvironmentObjectListenerVisitor {

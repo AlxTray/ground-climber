@@ -1,4 +1,4 @@
-package io.github.alxtray.groundclimber.bodies;
+package io.github.alxtray.groundclimber.bodies.platforms;
 
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;

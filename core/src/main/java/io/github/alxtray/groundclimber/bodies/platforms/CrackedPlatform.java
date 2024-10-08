@@ -1,7 +1,8 @@
-package io.github.alxtray.groundclimber.bodies;
+package io.github.alxtray.groundclimber.bodies.platforms;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
+import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
 import io.github.alxtray.groundclimber.enums.PlatformStatus;

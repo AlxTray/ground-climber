@@ -3,7 +3,7 @@ package io.github.alxtray.groundclimber.renderers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import io.github.alxtray.groundclimber.bodies.Platform;
+import io.github.alxtray.groundclimber.bodies.platforms.Platform;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.visitors.EnvironmentObjectRenderVisitor;
