@@ -24,18 +24,11 @@ public class PhysicsController {
     private final World world;
     private float deltaAccumulator;
     private final Array<EnvironmentObject> environmentObjects = new Array<>();
-    private final Array<Body> objectsToDestroy = new Array<>();
 
     public PhysicsController(Array<PlatformData> platformsData) {
         world = new World(new Vector2(X_GRAVITY, Y_GRAVITY), true);
         contactListener = new ContactListenerImpl();
         world.setContactListener(contactListener);
-        contactListener.addContactListener(new CrackedPlatformContactListener());
-        contactListener.addContactListener(new BouncyPlatformContactListener());
-        contactListener.addContactListener(new GravityPlatformContactListener());
-        if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
-            contactListener.addContactListener(new DebugContactListener());
-        }
 
         PlatformFactory platformFactory = new PlatformFactory();
         for (PlatformData data : platformsData) {
@@ -52,7 +45,6 @@ public class PhysicsController {
 
     public void step(float delta) {
         doPhysicsStep(delta);
-        queueObjectsToDestroy();
         destroyQueuedObjects();
     }
 
@@ -64,16 +56,8 @@ public class PhysicsController {
         }
     }
 
-    public void addObjectToDestroy(Body object) {
-        objectsToDestroy.add(object);
-    }
-
-    private void queueObjectsToDestroy() {
-        objectsToDestroy.addAll(contactListener.getBodiesToDestroy());
-    }
-
     private void destroyQueuedObjects() {
-        for (Body objectToDestroy : objectsToDestroy) {
+        for (Body objectToDestroy : contactListener.getObjectsToDestroy()) {
             EnvironmentObject objectData = (EnvironmentObject) objectToDestroy.getUserData();
             environmentObjects.removeValue(objectData, false);
             world.destroyBody(objectToDestroy);
@@ -84,7 +68,7 @@ public class PhysicsController {
                     objectData.getClass().getSimpleName()),
                 LogLevel.DEBUG);
         }
-        objectsToDestroy.clear();
+        contactListener.clearObjectsToDestroy();
     }
 
     public World getWorld() {

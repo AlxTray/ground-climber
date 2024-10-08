@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
+import io.github.alxtray.groundclimber.enums.PlatformStatus;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
 import text.formic.Stringf;
 
 public class CrackedPlatform extends Platform {
@@ -21,6 +23,12 @@ public class CrackedPlatform extends Platform {
         return AssetLibrary.getInstance().getAsset("cracked_platform_overlay", Texture.class);
     }
 
+    @Override
+    public PlatformStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
+        visitor.visitCrackedPlatform(this);
+        return (crackLevel >= 3) ? PlatformStatus.Remove : PlatformStatus.NoChange;
+    }
+
     public void incrementCrackLevel() {
         crackLevel++;
         Logger.log(
@@ -31,10 +39,6 @@ public class CrackedPlatform extends Platform {
                 body.getPosition().y,
                 crackLevel),
             LogLevel.DEBUG);
-    }
-
-    public int getCrackLevel() {
-        return crackLevel;
     }
 
 }

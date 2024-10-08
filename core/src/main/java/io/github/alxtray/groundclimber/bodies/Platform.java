@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
-import io.github.alxtray.groundclimber.renderers.EnvironmentObjectVisitor;
+import io.github.alxtray.groundclimber.enums.PlatformStatus;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectRenderVisitor;
 
 public class Platform extends EnvironmentObject {
     protected final Body body;
@@ -39,8 +41,13 @@ public class Platform extends EnvironmentObject {
     }
 
     @Override
-    public void acceptRender(EnvironmentObjectVisitor visitor, SpriteBatch batch) {
+    public void acceptRender(EnvironmentObjectRenderVisitor visitor, SpriteBatch batch) {
         visitor.visitPlatform(this, batch);
+    }
+
+    @Override
+    public PlatformStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
+        return PlatformStatus.NoChange;
     }
 
     public Body getBody() {

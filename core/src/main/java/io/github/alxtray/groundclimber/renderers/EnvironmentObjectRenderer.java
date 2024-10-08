@@ -6,8 +6,9 @@ import com.badlogic.gdx.math.Vector2;
 import io.github.alxtray.groundclimber.bodies.Platform;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectRenderVisitor;
 
-public class EnvironmentObjectRenderer implements EnvironmentObjectVisitor {
+public class EnvironmentObjectRenderer implements EnvironmentObjectRenderVisitor {
     private static final int TILE_SIZE = 18;
 
     @Override
