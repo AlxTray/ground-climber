@@ -1,34 +1,48 @@
 package io.github.alxtray.groundclimber.listeners;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
+import io.github.alxtray.groundclimber.bodies.Player;
+import io.github.alxtray.groundclimber.enums.LogLevel;
+import io.github.alxtray.groundclimber.enums.ObjectStatus;
+import io.github.alxtray.groundclimber.utilities.Logger;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
+import text.formic.Stringf;
+
+import java.util.Objects;
 
 public class ContactListenerImpl implements ContactListener {
-    private final Array<ContactListener> contactListeners = new Array<>();
+    private final EnvironmentObjectListenerVisitor environmentObjectListener;
+    private final Array<Body> objectsToDestroy = new Array<>();
 
-    public void addContactListener(ContactListener contactListener) {
-        contactListeners.add(contactListener);
-    }
-
-    public Array<Body> getBodiesToDestroy() {
-        Array<Body> bodiesToDestroy = new Array<>();
-        for (ContactListener contactListener : contactListeners) {
-            if (!(contactListener instanceof CrackedPlatformContactListener)) {
-                continue;
-            }
-            CrackedPlatformContactListener crackedPlatformListener =
-                (CrackedPlatformContactListener) contactListener;
-            bodiesToDestroy.addAll(crackedPlatformListener.getPlatformsToDestroy());
-            crackedPlatformListener.clearPlatformsToDestroy();
-        }
-
-        return bodiesToDestroy;
+    public ContactListenerImpl() {
+        environmentObjectListener = new EnvironmentObjectListener();
     }
 
     @Override
     public void beginContact(Contact contact) {
-        for (ContactListener contactListener : contactListeners) {
-            contactListener.beginContact(contact);
+        Body environmentObjectBody = (contact.getFixtureA().getBody().getUserData() instanceof Player) ?
+            contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
+        Body playerBody = (contact.getFixtureA().getBody().getUserData() instanceof Player) ?
+            contact.getFixtureA().getBody() : contact.getFixtureB().getBody();
+        ObjectStatus status =
+            ((EnvironmentObject) environmentObjectBody.getUserData()).acceptContact(environmentObjectListener, (Player) playerBody.getUserData());
+
+        if (Objects.requireNonNull(status) == ObjectStatus.Remove) {
+            objectsToDestroy.add(environmentObjectBody);
+        }
+
+        if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
+            Logger.log(
+                "Contact",
+                Stringf.format(
+                    "Object %s collided with %s",
+                    playerBody.getUserData().getClass().getSimpleName(),
+                    environmentObjectBody.getUserData().getClass().getSimpleName()),
+                LogLevel.DEBUG);
         }
     }
 
@@ -42,6 +56,14 @@ public class ContactListenerImpl implements ContactListener {
 
     @Override
     public void postSolve(Contact contact, ContactImpulse contactImpulse) { // No logic needed here
+    }
+
+    public Array<Body> getObjectsToDestroy() {
+        return objectsToDestroy;
+    }
+
+    public void clearObjectsToDestroy() {
+        objectsToDestroy.clear();
     }
 
 }

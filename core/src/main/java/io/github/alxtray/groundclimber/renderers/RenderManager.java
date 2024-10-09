@@ -9,13 +9,14 @@ import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.utilities.Logger;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectRenderVisitor;
 import text.formic.Stringf;
 
 public class RenderManager {
     private final BitmapFont font;
     private final PlayerRenderer playerRenderer;
     private final BackgroundObjectRenderer backgroundObjectRenderer;
-    private final EnvironmentObjectVisitor environmentObjectRenderer;
+    private final EnvironmentObjectRenderVisitor environmentObjectRenderer;
     private boolean displayDebugInfo;
 
     public RenderManager() {

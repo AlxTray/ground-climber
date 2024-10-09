@@ -9,9 +9,7 @@ import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.level.PlatformData;
-import io.github.alxtray.groundclimber.listeners.ContactListenerImpl;
-import io.github.alxtray.groundclimber.listeners.CrackedPlatformContactListener;
-import io.github.alxtray.groundclimber.listeners.DebugContactListener;
+import io.github.alxtray.groundclimber.listeners.*;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import io.github.alxtray.groundclimber.utilities.PlatformFactory;
 import text.formic.Stringf;
@@ -26,22 +24,18 @@ public class PhysicsController {
     private final World world;
     private float deltaAccumulator;
     private final Array<EnvironmentObject> environmentObjects = new Array<>();
-    private final Array<Body> objectsToDestroy = new Array<>();
 
     public PhysicsController(Array<PlatformData> platformsData) {
         world = new World(new Vector2(X_GRAVITY, Y_GRAVITY), true);
         contactListener = new ContactListenerImpl();
         world.setContactListener(contactListener);
-        contactListener.addContactListener(new CrackedPlatformContactListener());
-        if (Gdx.app.getLogLevel() == Application.LOG_DEBUG) {
-            contactListener.addContactListener(new DebugContactListener());
-        }
 
         PlatformFactory platformFactory = new PlatformFactory();
         for (PlatformData data : platformsData) {
             environmentObjects.add(platformFactory.createPlatform(
                 world,
                 data.getType(),
+                data.getOrientation(),
                 data.getX(),
                 data.getY(),
                 data.getHeight(),
@@ -51,7 +45,6 @@ public class PhysicsController {
 
     public void step(float delta) {
         doPhysicsStep(delta);
-        queueObjectsToDestroy();
         destroyQueuedObjects();
     }
 
@@ -63,16 +56,8 @@ public class PhysicsController {
         }
     }
 
-    public void addObjectToDestroy(Body object) {
-        objectsToDestroy.add(object);
-    }
-
-    private void queueObjectsToDestroy() {
-        objectsToDestroy.addAll(contactListener.getBodiesToDestroy());
-    }
-
     private void destroyQueuedObjects() {
-        for (Body objectToDestroy : objectsToDestroy) {
+        for (Body objectToDestroy : contactListener.getObjectsToDestroy()) {
             EnvironmentObject objectData = (EnvironmentObject) objectToDestroy.getUserData();
             environmentObjects.removeValue(objectData, false);
             world.destroyBody(objectToDestroy);
@@ -83,7 +68,7 @@ public class PhysicsController {
                     objectData.getClass().getSimpleName()),
                 LogLevel.DEBUG);
         }
-        objectsToDestroy.clear();
+        contactListener.clearObjectsToDestroy();
     }
 
     public World getWorld() {

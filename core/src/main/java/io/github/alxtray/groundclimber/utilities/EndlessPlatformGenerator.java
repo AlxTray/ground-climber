@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
-import io.github.alxtray.groundclimber.bodies.Platform;
+import io.github.alxtray.groundclimber.bodies.platforms.Platform;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 
@@ -13,6 +13,7 @@ public class EndlessPlatformGenerator {
     private static final int TILE_SIZE = 18;
     private static final int PLATFORM_BATCH_SIZE = 10;
     private static final String ENDLESS_PLATFORM_TYPE = "normal";
+    private static final String ENDLESS_PLATFORM_ORIENTATION = "NORTH";
     private final int generationThreshold;
     private final PlatformFactory platformFactory;
     // Values set to values from last platform in the initial batch
@@ -46,6 +47,7 @@ public class EndlessPlatformGenerator {
             Platform newPlatform = platformFactory.createPlatform(
                 world,
                 ENDLESS_PLATFORM_TYPE,
+                ENDLESS_PLATFORM_ORIENTATION,
                 currentPlatformX,
                 0,
                 currentPlatformHeight,

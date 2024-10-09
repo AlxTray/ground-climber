@@ -47,6 +47,7 @@ public class LevelData implements Json.Serializable {
         for (JsonValue platformData = platformsValue.child; platformData != null; platformData = platformData.next) {
             platformsData.add(new PlatformData(
                 platformData.get("type").asString(),
+                platformData.get("orientation").asString(),
                 platformData.get("x").asFloat(),
                 platformData.get("y").asFloat(),
                 platformData.get("height").asFloat(),

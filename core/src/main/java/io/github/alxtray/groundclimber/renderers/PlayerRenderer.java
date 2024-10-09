@@ -36,7 +36,7 @@ public class PlayerRenderer {
             playerFaceImage.getWidth(),
             playerFaceImage.getHeight(),
             false,
-            false);
+            player.isUpsideDown());
     }
 
 }
