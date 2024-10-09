@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
-import io.github.alxtray.groundclimber.enums.PlatformStatus;
+import io.github.alxtray.groundclimber.enums.ObjectStatus;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
 
@@ -19,9 +19,9 @@ public class GravityPlatform extends Platform {
     }
 
     @Override
-    public PlatformStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
+    public ObjectStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
         visitor.visitGravityPlatform(player);
-        return PlatformStatus.NoChange;
+        return ObjectStatus.NoChange;
     }
 
 }

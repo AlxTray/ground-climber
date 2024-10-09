@@ -1,5 +1,5 @@
 package io.github.alxtray.groundclimber.enums;
 
-public enum PlatformStatus {
+public enum ObjectStatus {
     NoChange, Remove
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.LogLevel;
-import io.github.alxtray.groundclimber.enums.PlatformStatus;
+import io.github.alxtray.groundclimber.enums.ObjectStatus;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
 import text.formic.Stringf;
@@ -28,10 +28,10 @@ public class ContactListenerImpl implements ContactListener {
             contact.getFixtureB().getBody() : contact.getFixtureA().getBody();
         Body playerBody = (contact.getFixtureA().getBody().getUserData() instanceof Player) ?
             contact.getFixtureA().getBody() : contact.getFixtureB().getBody();
-        PlatformStatus status =
+        ObjectStatus status =
             ((EnvironmentObject) environmentObjectBody.getUserData()).acceptContact(environmentObjectListener, (Player) playerBody.getUserData());
 
-        if (Objects.requireNonNull(status) == PlatformStatus.Remove) {
+        if (Objects.requireNonNull(status) == ObjectStatus.Remove) {
             objectsToDestroy.add(environmentObjectBody);
         }
 

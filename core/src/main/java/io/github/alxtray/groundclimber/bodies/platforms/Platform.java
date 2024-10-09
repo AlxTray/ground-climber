@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.PlatformOrientation;
-import io.github.alxtray.groundclimber.enums.PlatformStatus;
+import io.github.alxtray.groundclimber.enums.ObjectStatus;
 import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
 import io.github.alxtray.groundclimber.visitors.EnvironmentObjectRenderVisitor;
 
@@ -48,8 +48,8 @@ public class Platform extends EnvironmentObject {
     }
 
     @Override
-    public PlatformStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
-        return PlatformStatus.NoChange;
+    public ObjectStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
+        return ObjectStatus.NoChange;
     }
 
     public Body getBody() {
