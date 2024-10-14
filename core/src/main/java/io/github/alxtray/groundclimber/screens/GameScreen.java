@@ -15,8 +15,10 @@ import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.controllers.ControllerManager;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
+import io.github.alxtray.groundclimber.enums.GameStatus;
 import io.github.alxtray.groundclimber.enums.LogLevel;
 import io.github.alxtray.groundclimber.level.LevelData;
+import io.github.alxtray.groundclimber.overlays.OverlayManager;
 import io.github.alxtray.groundclimber.renderers.RenderManager;
 import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
@@ -24,13 +26,16 @@ import text.formic.Stringf;
 
 public class GameScreen implements Screen {
     private final DebugRenderMode renderMode;
+    private GameStatus gameStatus;
     private final SpriteBatch batch;
     private final Box2DDebugRenderer debugRenderer;
     private final ControllerManager controllerManager;
     private final RenderManager renderManager;
+    private final OverlayManager overlayManager;
 
     public GameScreen(final GameMode gameMode, DebugRenderMode renderMode, final String... selectedLevelNames) {
         this.renderMode = renderMode;
+        gameStatus = GameStatus.PLAYING;
         batch = new SpriteBatch();
         debugRenderer =
             (renderMode == DebugRenderMode.ONLY || renderMode == DebugRenderMode.OVERLAY)
@@ -57,6 +62,7 @@ public class GameScreen implements Screen {
         LevelData levelData = loadLevelData(gameMode, selectedLevelNames);
         controllerManager = new ControllerManager(gameMode, levelData);
         renderManager = new RenderManager();
+        overlayManager = new OverlayManager();
     }
 
     @Override
@@ -70,14 +76,15 @@ public class GameScreen implements Screen {
         OrthographicCamera camera = controllerManager.getCamera();
         Player player = controllerManager.getPlayer();
         batch.setProjectionMatrix(camera.combined);
+        batch.begin();
         if (renderMode != DebugRenderMode.ONLY) {
-            batch.begin();
             renderManager.render(camera, player, controllerManager.getEnvironmentObjects(), batch);
-            batch.end();
         }
         if (renderMode == DebugRenderMode.ONLY || renderMode == DebugRenderMode.OVERLAY) {
             debugRenderer.render(controllerManager.getWorld(), camera.combined);
         }
+        overlayManager.checkAndRender(gameStatus, delta, camera, batch);
+        batch.end();
     }
 
     private static LevelData loadLevelData(GameMode gameMode, String... selectedLevelNames) {
@@ -99,6 +106,10 @@ public class GameScreen implements Screen {
     private void handleInput() {
         if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
             renderManager.toggleDebugInfo();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (gameStatus == GameStatus.PLAYING) gameStatus = GameStatus.PAUSED;
+            else gameStatus = GameStatus.PLAYING;
         }
     }
 
