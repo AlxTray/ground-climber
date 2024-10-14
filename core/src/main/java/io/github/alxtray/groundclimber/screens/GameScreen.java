@@ -70,8 +70,10 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
         handleInput();
 
-        controllerManager.update(delta);
-        checkPlayerInBounds();
+        if (gameStatus == GameStatus.PLAYING) {
+            controllerManager.update(delta);
+            checkPlayerInBounds();
+        }
 
         OrthographicCamera camera = controllerManager.getCamera();
         Player player = controllerManager.getPlayer();
