@@ -37,6 +37,10 @@ public class ControllerManager {
         physicsController.step(delta);
     }
 
+    public void resetPlayer(LevelData levelData) {
+        playerController.spawnNewPlayer(physicsController.getWorld(), levelData.getPlayerSpawn());
+    }
+
     public Player getPlayer() {
         return playerController.getPlayer();
     }

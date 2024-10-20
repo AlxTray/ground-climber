@@ -2,6 +2,7 @@ package io.github.alxtray.groundclimber.overlays;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import io.github.alxtray.groundclimber.enums.GameStatus;
 
 public class OverlayManager {
@@ -9,10 +10,10 @@ public class OverlayManager {
     private final DeadOverlay deadOverlay;
     private final CompletedOverlay completedOverlay;
 
-    public OverlayManager() {
-        pausedOverlay = new PausedOverlay();
-        deadOverlay = new DeadOverlay();
-        completedOverlay = new CompletedOverlay();
+    public OverlayManager(ClickListener resetListener, ClickListener quitListener) {
+        pausedOverlay = new PausedOverlay(resetListener, quitListener);
+        deadOverlay = new DeadOverlay(resetListener, quitListener);
+        completedOverlay = new CompletedOverlay(resetListener, quitListener);
     }
 
     public void checkAndRender(GameStatus status, float delta, OrthographicCamera camera, SpriteBatch batch) {

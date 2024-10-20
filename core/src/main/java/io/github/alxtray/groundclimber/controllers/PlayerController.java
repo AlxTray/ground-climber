@@ -13,14 +13,10 @@ public class PlayerController {
     private static final int MAX_VELOCITY = 240;
     private static final float Y_INITIAL_VELOCITY = -150f;
     private static final float DEFAULT_FORCE = 1500000;
-    private final Player player;
+    private Player player;
 
     public PlayerController(World world, ObjectIntMap<String> playerSpawn) {
-        player = new Player(
-            world,
-            playerSpawn.get("x", 0),
-            playerSpawn.get("y", 0), INITIAL_RADIUS);
-        player.getBody().setLinearVelocity(0, Y_INITIAL_VELOCITY);
+        spawnNewPlayer(world, playerSpawn);
     }
 
     public void update(float delta) {
@@ -36,6 +32,14 @@ public class PlayerController {
         if (Gdx.input.isKeyPressed(Input.Keys.D) && velocity.x < MAX_VELOCITY) {
             playerBody.applyForceToCenter(DEFAULT_FORCE * delta, 0, true);
         }
+    }
+
+    public void spawnNewPlayer(World world, ObjectIntMap<String> playerSpawn) {
+        player = new Player(
+            world,
+            playerSpawn.get("x", 0),
+            playerSpawn.get("y", 0), INITIAL_RADIUS);
+        player.getBody().setLinearVelocity(0, Y_INITIAL_VELOCITY);
     }
 
     public Player getPlayer() {

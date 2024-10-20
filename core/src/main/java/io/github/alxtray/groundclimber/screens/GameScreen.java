@@ -8,9 +8,12 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectIntMap;
 import com.badlogic.gdx.utils.ScreenUtils;
+import io.github.alxtray.groundclimber.Core;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.controllers.ControllerManager;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
@@ -24,17 +27,21 @@ import io.github.alxtray.groundclimber.utilities.AssetLibrary;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import text.formic.Stringf;
 
-public class GameScreen implements Screen {
+public class GameScreen implements Screen, GameActions {
+    private final Core game;
     private final DebugRenderMode renderMode;
     private GameStatus gameStatus;
     private final SpriteBatch batch;
     private final Box2DDebugRenderer debugRenderer;
+    private final LevelData levelData;
     private final ControllerManager controllerManager;
     private final RenderManager renderManager;
     private final OverlayManager overlayManager;
 
-    public GameScreen(final GameMode gameMode, DebugRenderMode renderMode, final String... selectedLevelNames) {
+    public GameScreen(Core game, GameMode gameMode, DebugRenderMode renderMode, String... selectedLevelNames) {
+        this.game = game;
         this.renderMode = renderMode;
+
         gameStatus = GameStatus.PLAYING;
         batch = new SpriteBatch();
         debugRenderer =
@@ -59,7 +66,7 @@ public class GameScreen implements Screen {
             Stringf.format("The current game mode is: %s", gameMode.name()),
             LogLevel.INFO);
 
-        LevelData levelData = loadLevelData(gameMode, selectedLevelNames);
+        levelData = loadLevelData(gameMode, selectedLevelNames);
         controllerManager = new ControllerManager(gameMode, levelData);
         renderManager = new RenderManager();
         overlayManager = new OverlayManager();
@@ -129,6 +136,16 @@ public class GameScreen implements Screen {
                 LogLevel.INFO);
             Gdx.app.exit();
         }
+    }
+
+    @Override
+    public void resetLevel() {
+        controllerManager.resetPlayer(levelData);
+    }
+
+    @Override
+    public void quitLevel() {
+        game.setScreen(new LevelSelectScreen(game, renderMode));
     }
 
     @Override
