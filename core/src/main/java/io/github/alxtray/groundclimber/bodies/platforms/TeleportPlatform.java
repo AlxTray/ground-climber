@@ -1,0 +1,30 @@
+package io.github.alxtray.groundclimber.bodies.platforms;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.physics.box2d.World;
+import io.github.alxtray.groundclimber.bodies.Player;
+import io.github.alxtray.groundclimber.enums.ObjectStatus;
+import io.github.alxtray.groundclimber.enums.PlatformOrientation;
+import io.github.alxtray.groundclimber.utilities.AssetLibrary;
+import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
+
+public class TeleportPlatform extends Platform {
+    private final TeleportPlatform linkedPlatform;
+
+    public TeleportPlatform(World world, PlatformOrientation orientation, float x, float y, float height, float width, TeleportPlatform linkedPlatform) {
+        super(world, orientation, x, y, height, width);
+        this.linkedPlatform = linkedPlatform;
+        body.setUserData(this);
+    }
+
+    public Texture getOverlayTexture() {
+        return AssetLibrary.getInstance().getAsset("cracked_platform_overlay", Texture.class);
+    }
+
+    @Override
+    public ObjectStatus acceptContact(EnvironmentObjectListenerVisitor visitor, Player player) {
+        visitor.visitTeleportPlatform(player, linkedPlatform);
+        return ObjectStatus.NoChange;
+    }
+
+}

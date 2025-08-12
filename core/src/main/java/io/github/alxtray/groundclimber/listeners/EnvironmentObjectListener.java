@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import io.github.alxtray.groundclimber.bodies.platforms.CrackedPlatform;
 import io.github.alxtray.groundclimber.bodies.Player;
+import io.github.alxtray.groundclimber.bodies.platforms.TeleportPlatform;
 import io.github.alxtray.groundclimber.visitors.EnvironmentObjectListenerVisitor;
 
 public class EnvironmentObjectListener implements EnvironmentObjectListenerVisitor {
@@ -25,6 +26,11 @@ public class EnvironmentObjectListener implements EnvironmentObjectListenerVisit
         Vector2 currentGravity = world.getGravity();
         world.setGravity(new Vector2(currentGravity.x, -currentGravity.y));
         player.toggleUpsideDown();
+    }
+
+    @Override
+    public void visitTeleportPlatform(Player player, TeleportPlatform linkedPlatform) {
+        player.getBody().setTransform(linkedPlatform.getPosition(), 0);
     }
 
 }

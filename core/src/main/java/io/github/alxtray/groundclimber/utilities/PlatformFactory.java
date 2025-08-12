@@ -22,6 +22,8 @@ public class PlatformFactory {
                 return new BouncyPlatform(world, platformOrientation, x, y, height, width);
             case "gravity":
                 return new GravityPlatform(world, platformOrientation, x, y, height, width);
+            case "teleport":
+
             default:
                 throw new IllegalArgumentException("Invalid platform type " + type);
         }
