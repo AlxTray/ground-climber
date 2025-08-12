@@ -1,4 +1,4 @@
-package io.github.alxtray.groundclimber.controllers;
+package io.github.alxtray.groundclimber.services;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
@@ -7,14 +7,14 @@ import com.badlogic.gdx.utils.ObjectIntMap;
 import io.github.alxtray.groundclimber.bodies.Player;
 import io.github.alxtray.groundclimber.enums.GameMode;
 
-public class CameraController {
+public class CameraService {
     private static final int CAMERA_MOVEMENT_THRESHOLD = 300;
     private static final float CAMERA_TRANSLATION_STEP = 170f;
     private static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
     private final ObjectIntMap<String> bounds;
     private final OrthographicCamera camera;
 
-    public CameraController(ObjectFloatMap<String> cameraPosition, ObjectIntMap<String> bounds) {
+    public CameraService(ObjectFloatMap<String> cameraPosition, ObjectIntMap<String> bounds) {
         this.bounds = bounds;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);

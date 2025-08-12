@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.ObjectIntMap;
 import com.badlogic.gdx.utils.ScreenUtils;
 import io.github.alxtray.groundclimber.bodies.Player;
-import io.github.alxtray.groundclimber.controllers.ControllerManager;
+import io.github.alxtray.groundclimber.services.ControllerService;
 import io.github.alxtray.groundclimber.enums.DebugRenderMode;
 import io.github.alxtray.groundclimber.enums.GameMode;
 import io.github.alxtray.groundclimber.enums.LogLevel;
@@ -26,7 +26,7 @@ public class GameScreen implements Screen {
     private final DebugRenderMode renderMode;
     private final SpriteBatch batch;
     private final Box2DDebugRenderer debugRenderer;
-    private final ControllerManager controllerManager;
+    private final ControllerService controllerService;
     private final RenderManager renderManager;
 
     public GameScreen(final GameMode gameMode, DebugRenderMode renderMode, final String... selectedLevelNames) {
@@ -55,7 +55,7 @@ public class GameScreen implements Screen {
             LogLevel.INFO);
 
         LevelData levelData = loadLevelData(gameMode, selectedLevelNames);
-        controllerManager = new ControllerManager(gameMode, levelData);
+        controllerService = new ControllerService(gameMode, levelData);
         renderManager = new RenderManager();
     }
 
@@ -64,19 +64,19 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
         handleInput();
 
-        controllerManager.update(delta);
+        controllerService.update(delta);
         checkPlayerInBounds();
 
-        OrthographicCamera camera = controllerManager.getCamera();
-        Player player = controllerManager.getPlayer();
+        OrthographicCamera camera = controllerService.getCamera();
+        Player player = controllerService.getPlayer();
         batch.setProjectionMatrix(camera.combined);
         if (renderMode != DebugRenderMode.ONLY) {
             batch.begin();
-            renderManager.render(camera, player, controllerManager.getEnvironmentObjects(), batch);
+            renderManager.render(camera, player, controllerService.getEnvironmentObjects(), batch);
             batch.end();
         }
         if (renderMode == DebugRenderMode.ONLY || renderMode == DebugRenderMode.OVERLAY) {
-            debugRenderer.render(controllerManager.getWorld(), camera.combined);
+            debugRenderer.render(controllerService.getWorld(), camera.combined);
         }
     }
 
@@ -103,8 +103,8 @@ public class GameScreen implements Screen {
     }
 
     private void checkPlayerInBounds() {
-        Player player = controllerManager.getPlayer();
-        ObjectIntMap<String> bounds = controllerManager.getBounds();
+        Player player = controllerService.getPlayer();
+        ObjectIntMap<String> bounds = controllerService.getBounds();
         // Kill player if they leave map bounds
         if (player.getBody().getPosition().x < bounds.get("left", 0)
             || player.getPosition().x > bounds.get("right", 0)

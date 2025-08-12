@@ -1,7 +1,5 @@
-package io.github.alxtray.groundclimber.controllers;
+package io.github.alxtray.groundclimber.services;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -14,7 +12,7 @@ import io.github.alxtray.groundclimber.utilities.Logger;
 import io.github.alxtray.groundclimber.utilities.PlatformFactory;
 import text.formic.Stringf;
 
-public class PhysicsController {
+public class PhysicsService {
     private static final float TIME_STEP = 1 / 120f;
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
@@ -25,7 +23,7 @@ public class PhysicsController {
     private float deltaAccumulator;
     private final Array<EnvironmentObject> environmentObjects = new Array<>();
 
-    public PhysicsController(Array<PlatformData> platformsData) {
+    public PhysicsService(Array<PlatformData> platformsData) {
         world = new World(new Vector2(X_GRAVITY, Y_GRAVITY), true);
         contactListener = new ContactListenerImpl();
         world.setContactListener(contactListener);

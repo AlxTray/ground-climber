@@ -1,4 +1,4 @@
-package io.github.alxtray.groundclimber.controllers;
+package io.github.alxtray.groundclimber.services;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -8,14 +8,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.ObjectIntMap;
 import io.github.alxtray.groundclimber.bodies.Player;
 
-public class PlayerController {
+public class PlayerService {
     private static final int INITIAL_RADIUS = 16;
     private static final int MAX_VELOCITY = 240;
     private static final float Y_INITIAL_VELOCITY = -150f;
     private static final float DEFAULT_FORCE = 1500000;
     private final Player player;
 
-    public PlayerController(World world, ObjectIntMap<String> playerSpawn) {
+    public PlayerService(World world, ObjectIntMap<String> playerSpawn) {
         player = new Player(
             world,
             playerSpawn.get("x", 0),
