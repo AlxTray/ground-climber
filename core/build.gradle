@@ -7,6 +7,9 @@ dependencies {
   api "com.badlogicgames.gdx:gdx:$gdxVersion"
   api 'com.github.tommyettinger:formic:0.1.5'
 
+  implementation "com.google.dagger:dagger:2.52"
+  annotationProcessor "com.google.dagger:dagger-compiler:2.52"
+
   if(enableGraalNative == 'true') {
     implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
   }
