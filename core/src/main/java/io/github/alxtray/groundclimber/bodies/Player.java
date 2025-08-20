@@ -7,6 +7,7 @@ public class Player {
     private static final float PLAYER_DENSITY = 0.1f;
     private static final float PLAYER_FRICTION = 0.3f;
     private static final float PLAYER_RESTITUTION = 1f;
+
     private final Body body;
     private boolean upsideDown = false;
 

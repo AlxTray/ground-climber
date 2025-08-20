@@ -1,4 +1,4 @@
-package io.github.alxtray.groundclimber.level;
+package io.github.alxtray.groundclimber.pojo;
 
 public class PlatformData {
     private final String type;

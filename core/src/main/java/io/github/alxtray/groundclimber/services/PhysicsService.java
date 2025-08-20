@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import io.github.alxtray.groundclimber.bodies.EnvironmentObject;
 import io.github.alxtray.groundclimber.enums.LogLevel;
-import io.github.alxtray.groundclimber.level.PlatformData;
+import io.github.alxtray.groundclimber.pojo.PlatformData;
 import io.github.alxtray.groundclimber.listeners.*;
 import io.github.alxtray.groundclimber.utilities.Logger;
 import io.github.alxtray.groundclimber.utilities.PlatformFactory;
@@ -18,19 +18,23 @@ public class PhysicsService {
     private static final int POSITION_ITERATIONS = 2;
     private static final float X_GRAVITY = 0;
     private static final float Y_GRAVITY = -425f;
+
     private final ContactListenerImpl contactListener;
     private final World world;
     private float deltaAccumulator;
-    private final Array<EnvironmentObject> environmentObjects = new Array<>();
+    private final Array<EnvironmentObject> physicsObjects = new Array<>();
 
-    public PhysicsService(Array<PlatformData> platformsData) {
+    private LevelService levelService;
+
+    public PhysicsService(LevelService levelService) {
+        this.levelService = levelService;
+
         world = new World(new Vector2(X_GRAVITY, Y_GRAVITY), true);
         contactListener = new ContactListenerImpl();
         world.setContactListener(contactListener);
 
-        PlatformFactory platformFactory = new PlatformFactory();
-        for (PlatformData data : platformsData) {
-            environmentObjects.add(platformFactory.createPlatform(
+        for (PlatformData data : levelService.getPlatformsData()) {
+            physicsObjects.add(PlatformFactory.createPlatform(
                 world,
                 data.getType(),
                 data.getOrientation(),
@@ -57,7 +61,7 @@ public class PhysicsService {
     private void destroyQueuedObjects() {
         for (Body objectToDestroy : contactListener.getObjectsToDestroy()) {
             EnvironmentObject objectData = (EnvironmentObject) objectToDestroy.getUserData();
-            environmentObjects.removeValue(objectData, false);
+            physicsObjects.removeValue(objectData, false);
             world.destroyBody(objectToDestroy);
             Logger.log(
                 "Map",
@@ -73,8 +77,8 @@ public class PhysicsService {
         return world;
     }
 
-    public Array<EnvironmentObject> getEnvironmentObjects() {
-        return environmentObjects;
+    public Array<EnvironmentObject> getPhysicsObjects() {
+        return physicsObjects;
     }
 
 }

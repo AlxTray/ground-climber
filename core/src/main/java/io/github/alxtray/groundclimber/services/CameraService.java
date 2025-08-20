@@ -11,30 +11,36 @@ public class CameraService {
     private static final int CAMERA_MOVEMENT_THRESHOLD = 300;
     private static final float CAMERA_TRANSLATION_STEP = 170f;
     private static final float AUTOSCROLL_CAMERA_TRANSLATION_STEP = 100f;
-    private final ObjectIntMap<String> bounds;
+
     private final OrthographicCamera camera;
 
-    public CameraService(ObjectFloatMap<String> cameraPosition, ObjectIntMap<String> bounds) {
-        this.bounds = bounds;
+    private LevelService levelService;
+
+
+    public CameraService(LevelService levelService) {
+        this.levelService = levelService;
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         camera.position.set(
-            cameraPosition.get("x", 0),
-            cameraPosition.get("y", 0),
+            levelService.getCameraStartPosition().get("x", 0),
+            levelService.getCameraStartPosition().get("y", 0),
             0);
     }
 
     public void update(float delta, Player player, GameMode gameMode) {
+        ObjectIntMap<String> bounds = levelService.getBounds();
+
         if (gameMode == GameMode.ENDLESS && player.getBody().getPosition().x > 100) {
             camera.translate(AUTOSCROLL_CAMERA_TRANSLATION_STEP * delta, 0);
         } else if (gameMode == GameMode.NORMAL) {
-            repositionCamera(delta, player);
+            repositionCamera(delta, player, bounds);
         }
-        checkCameraInBounds();
+        checkCameraInBounds(bounds);
         camera.update();
     }
 
-    private void repositionCamera(float delta, Player player) {
+    private void repositionCamera(float delta, Player player, ObjectIntMap<String> bounds) {
         ObjectFloatMap<String> cameraScreenBounds = getCameraScreenBounds();
         Vector2 playerPos = player.getPosition();
         // Have to add/subtract threshold back so the camera stop bound is absolute to
@@ -57,8 +63,9 @@ public class CameraService {
         }
     }
 
-    private void checkCameraInBounds() {
+    private void checkCameraInBounds(ObjectIntMap<String> bounds) {
         ObjectFloatMap<String> cameraScreenBounds = getCameraScreenBounds();
+
         int boundsLeft = bounds.get("left", 0);
         int boundsRight = bounds.get("right", 0);
         int boundsBottom = bounds.get("bottom", 0);
@@ -86,13 +93,4 @@ public class CameraService {
         cameraPosition.put("top", camera.position.y + camera.viewportHeight / 2);
         return cameraPosition;
     }
-
-    public OrthographicCamera getCamera() {
-        return camera;
-    }
-
-    public ObjectIntMap<String> getBounds() {
-        return bounds;
-    }
-
 }

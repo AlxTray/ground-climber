@@ -1,4 +1,4 @@
-package io.github.alxtray.groundclimber.level;
+package io.github.alxtray.groundclimber.pojo;
 
 import com.badlogic.gdx.utils.*;
 import io.github.alxtray.groundclimber.enums.GameMode;
@@ -7,11 +7,10 @@ import io.github.alxtray.groundclimber.utilities.Logger;
 import text.formic.Stringf;
 
 public class LevelData implements Json.Serializable {
-    private final ObjectIntMap<String> bounds = new ObjectIntMap<>();
-    private final ObjectIntMap<String> playerSpawn = new ObjectIntMap<>();
-    private final ObjectFloatMap<String> cameraStartPosition = new ObjectFloatMap<>();
-    private final Array<PlatformData> platformsData = new Array<>();
-    private GameMode gameMode;
+    public final ObjectIntMap<String> bounds = new ObjectIntMap<>();
+    public final ObjectIntMap<String> playerSpawn = new ObjectIntMap<>();
+    public final ObjectFloatMap<String> cameraStartPosition = new ObjectFloatMap<>();
+    public final Array<PlatformData> platformsData = new Array<>();
 
     @Override
     public void write(Json json) { // No need to be used at the moment. (Useful if level editor is made)
@@ -23,6 +22,7 @@ public class LevelData implements Json.Serializable {
             "LevelData",
             "Loading level data...",
             LogLevel.INFO);
+
         JsonValue boundsValue = jsonData.get("data").get("bounds");
         int[] boundsArray = boundsValue.asIntArray();
         bounds.put("left", boundsArray[0]);
@@ -34,9 +34,6 @@ public class LevelData implements Json.Serializable {
         int[] playerSpawnArray = playerSpawnValue.asIntArray();
         playerSpawn.put("x", playerSpawnArray[0]);
         playerSpawn.put("y", playerSpawnArray[1]);
-
-        JsonValue gameModeValue = jsonData.get("data").get("mode");
-        gameMode = GameMode.valueOf(gameModeValue.asString());
 
         JsonValue cameraStartPosValue = jsonData.get("data").get("camera_start_pos");
         float[] cameraStartPositionArray = cameraStartPosValue.asFloatArray();
@@ -53,30 +50,11 @@ public class LevelData implements Json.Serializable {
                 platformData.get("height").asFloat(),
                 platformData.get("width").asFloat()));
         }
+
         Logger.log(
             "LevelData",
             Stringf.format("Data for level %s loaded successfully", jsonData.get("data").get("name").asString()),
             LogLevel.INFO);
-    }
-
-    public ObjectIntMap<String> getBounds() {
-        return bounds;
-    }
-
-    public ObjectIntMap<String> getPlayerSpawn() {
-        return playerSpawn;
-    }
-
-    public ObjectFloatMap<String> getCameraStartPosition() {
-        return cameraStartPosition;
-    }
-
-    public GameMode getGameMode() {
-        return gameMode;
-    }
-
-    public Array<PlatformData> getPlatformsData() {
-        return platformsData;
     }
 
 }
